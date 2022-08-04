@@ -1,4 +1,3 @@
-from urllib import request
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -33,6 +32,33 @@ def register_complaint(request):
         return render(request, 'complaint/new_complaint.html',context) 
 
 @login_required
+def update_complaint(request,pk):
+    complaint = Complaint.objects.get(id=pk)
+    registred_by = complaint.registred_by
+    stat = complaint.complaint_status
+    form  = ComplaintRegisterForm(instance=complaint)
+    context = {
+            
+            'complaint_register_form':form,
+            'complaint':complaint
+        }
+    if request.method == "GET":
+        return render(request, 'complaint/update_complaint.html',context) 
+    if request.method == "POST":
+        form = ComplaintRegisterForm(request.POST, instance=complaint)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Complaint has been successfully updated.')
+            if request.user.is_superuser:
+                return redirect('view_complaint', complaint.id)
+            else:
+                return redirect('view_complaint_engg', complaint.id)
+        
+        messages.error(request, 'Complaint not Updated! Please provide valid input.')
+        return render(request, 'complaint/update_complaint.html',context) 
+
+
+@login_required
 def list_complaints(request):
     if request.user.is_staff:
         all_complaints = Complaint.objects.all()
@@ -43,41 +69,47 @@ def list_complaints(request):
 
 @login_required
 def view_complaint(request,pk):
-    complaint = Complaint.objects.get(id = pk)
-    component_list = Item.objects.filter(complaint = complaint)
-    # print(complaint.complaint_status)
-    # print(component_list)
-    complaint_status_form = ChangeComplaintStatusForm()
-    engineers = Engineer.objects.all()
-    # print(engineers)
-    context = {
-        'components':component_list,
-        'complaint':complaint,
-        'complaint_status_form':complaint_status_form,
-        'engineers' : engineers,
-    }
-    return render(request, 'complaint/view_complaint.html', context)
+    try:
+        complaint = Complaint.objects.get(id = pk)
+        component_list = Item.objects.filter(complaint = complaint)
+        # print(complaint.complaint_status)
+        # print(component_list)
+        complaint_status_form = ChangeComplaintStatusForm()
+        engineers = Engineer.objects.all()
+        # print(engineers)
+        context = {
+            'components':component_list,
+            'complaint':complaint,
+            'complaint_status_form':complaint_status_form,
+            'engineers' : engineers,
+        }
+        return render(request, 'complaint/view_complaint.html', context)
+    except Complaint.DoesNotExist:
+        return redirect('all_complaints')
 
 @login_required        
 def view_complaint_engg(request,pk):
-    complaint = Complaint.objects.get(id = pk)
-    component_list = Item.objects.filter(complaint = complaint)
+    try:
+        complaint = Complaint.objects.get(id = pk)
+        component_list = Item.objects.filter(complaint = complaint)
 
-    # print(engineers)
-    context = {
-        'components':component_list,
-        'complaint':complaint,
-    }
-    if request.method == 'GET':
-        return render(request, 'complaint/view_complaint_e.html', context)
+        # print(engineers)
+        context = {
+            'components':component_list,
+            'complaint':complaint,
+        }
+        if request.method == 'GET':
+            return render(request, 'complaint/view_complaint_e.html', context)
 
-    if request.method == 'POST':
-        stat = request.POST['cmpStatus']        
-        complaint.complaint_status = stat
-        complaint.resolved_date = datetime.datetime.now()
-        complaint.save()
-        messages.success(request, 'Status updated successfully.')
-        return redirect('view_complaint_engg', pk)
+        if request.method == 'POST':
+            stat = request.POST['cmpStatus']        
+            complaint.complaint_status = stat
+            complaint.resolved_date = datetime.datetime.now()
+            complaint.save()
+            messages.success(request, 'Status updated successfully.')
+            return redirect('view_complaint_engg', pk)
+    except Complaint.DoesNotExist:
+        return redirect('all_complaints')
 
 
 @login_required
@@ -185,8 +217,42 @@ def add_component(request,pk):
                 return redirect('view_complaint', pk)
             else:
                 return redirect('view_complaint_engg', pk)
-        messages.error(request, 'Could not add add component! Plese provide valid input.')
+        messages.error(request, 'Could not add component! Plese provide valid input.')
         return render(request, 'complaint/add_component.html',context)
+
+@login_required
+def update_component(request,pk):
+    item = Item.objects.get(id=pk)
+
+    form  = AddComponentForm(instance=item)
+    complaint = Complaint.objects.get(id = item.complaint.id)
+    c_id = complaint.id
+    context = {
+            'form':form,
+            'complaint':complaint
+        }
+    if request.method == "GET":
+        return render(request, 'complaint/update_component.html',context)
+    if request.method == "POST":
+
+        form  = AddComponentForm(request.POST,instance=item)
+        context = {
+            'form':form,
+            'complaint':complaint
+        }
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Component updated successfully.')
+            if request.user.is_superuser:
+                return redirect('view_complaint', c_id)
+            else:
+                return redirect('view_complaint_engg', c_id)
+        messages.error(request, 'Could not update component! Plese provide valid input.')
+        return render(request, 'complaint/update_component.html',context)
+
+
+
+
 
 
 @login_required
@@ -289,22 +355,82 @@ def check_complaint_status(request):
     if request.method == 'GET':
         return render(request,'home/check_status.html')
     if request.method == "POST":
-        complaint_id = request.POST['complaint_id']
-        complaint =  Complaint.objects.get(id = complaint_id) 
-        print(complaint)
         context = {
-            'complaint_status':complaint.complaint_status
+
         }
-        return render(request,'home/check_status.html',context)
+        try:
+            complaint_id = request.POST['complaint_id']
+            complaint =  Complaint.objects.get(id = complaint_id) 
+            stat = complaint.complaint_status
+            stat_msg = ""
+            stat_type = ""
+            if(stat == 1):
+                stat_msg = "Your camplaint have been successfully registred."
+                stat_type = "warning"
+                context = {
+                    'complaint':complaint,
+                    'status_msg':stat_msg,
+                    'type':stat_type
+                }
+            elif(stat==2):
+                stat_msg = "Hurrey! Service Initiatetd"
+                stat_type = "info"
+                context = {
+                    'complaint':complaint,
+                    'status_msg':stat_msg,
+                    'type':stat_type
+                }
+
+            elif(stat>2 and stat<4):
+                stat_msg = "W'll inform you when your device is ready!"
+                stat_type = "success"
+                context = {
+                    'complaint':complaint,
+                    'status_msg':stat_msg,
+                    'type':stat_type
+                }
+            
+            else:
+                stat_msg = f"Sorry! No information available with this id."
+                stat_type = "info"
+                context = {
+                    # 'complaint':complaint,
+                    'status_msg':stat_msg,
+                    'type':stat_type
+                }
+            # print(complaint)
+            return render(request,'home/check_status.html',context)
+        except Complaint.DoesNotExist:
+            stat_msg = "Sorry! We couldn't find any querry. Please try again"
+            stat_type = "danger"
+            context = {
+                # 'complaint':complaint,
+                'status_msg':stat_msg,
+                'type':stat_type
+            }
+            return render(request,'home/check_status.html',context)
 
 
-def delete_complaint(request,pk):
+
+def deleteComplaint(request,pk):
     if request.method == 'POST':
         complaint = Complaint.objects.get(id=pk)
         c_id = complaint.id
         complaint.delete()
         messages.success(request, f'Complaint with #id {c_id} deleted successfully')
         return redirect('all_complaints')
+
+def deleteComponent(request,pk):
+    if request.method == 'POST':
+        item = Item.objects.get(id = pk)
+        complaint = item.complaint
+        print("deleting...")
+        item.delete()
+        messages.success(request, 'Item removed successfully ')
+        if request.user.is_superuser:
+            return redirect('view_complaint', complaint.id)
+        else:
+            return redirect('view_complaint_engg', complaint.id)
 
 
 

@@ -31,13 +31,7 @@
                         </span>
 
                         <span class="col-sm-7 d-flex align-items-center justify-content-end" id="header_action">
-                                <div class="form-container mx-1" id="delete_complaint">
-                                        <form action="{% url 'delete_complaint' complaint.id %}" method="post">
-                                                {% csrf_token %}
-                                                <input type="submit" class="btn btn-danger m-0" value="Delete">
-                                        </form>
-                                </div>
-                                <span class="d-flex align-items-center justify-content-end" id="print_action">
+                                <span class="d-flex align-items-center " id="print_action">
 
                                         <div class="form-container" id="print_checkout">
                                                 <form action="{% url 'close_complaint' complaint.id %}" method="post">
@@ -46,11 +40,19 @@
                                                                 value="Close & Checkout">
                                                 </form>
                                         </div>
-                                        <a class="text-right my-auto tn btn-sm rounded btn-secondary mx-1 py-0"
+                                        <a class="text-right my-auto tn btn-sm rounded btn-secondary mx-2 py-0"
                                                 href="{% url 'print_record' complaint.id %}" style="font-size:1.2rem;"
                                                 title="print"><i class="fa-solid fa-print"></i></a>
                                 </span>
-
+                                <div class="rigit-control pl-2 d-flex" style="border-left:solid rgb(206, 206, 206) 2px;">
+                                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-primary"  >Update</a>
+                                        <div class="form-container mx-1" id="delete_complaint">
+                                                <form action="{% url 'delete_complaint' complaint.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <input type="submit" class="btn btn-danger m-0" value="Delete">
+                                                </form>
+                                        </div>
+                                </div>
                         </span>
                 </div>
 
@@ -222,9 +224,12 @@
                                                 <td>{{component.unit_price}}</td>
                                                 <td>{{component.quantity}}</td>
                                                 <td>
-                                                        <span>
-                                                                <div class="btn btn-secondary btn-sm">Edit</div>
-                                                                <div class="btn btn-danger btn-sm">Remove</div>
+                                                        <span class="d-flex">
+                                                                <a class="btn btn-primary btn-sm mx-2 rounded" href="{% url 'update_component' component.id %}">Edit</a>
+                                                                <form action="{% url 'delete_component' component.id %}" method="post">
+                                                                        {% csrf_token %}
+                                                                        <input type="submit" class="btn btn-danger rounded btn-sm" value="remove">
+                                                                </form>
                                                         </span>
                                                 </td>
                                         </tr>
