@@ -1,3 +1,4 @@
+from urllib import request
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -295,6 +296,17 @@ def check_complaint_status(request):
             'complaint_status':complaint.complaint_status
         }
         return render(request,'home/check_status.html',context)
+
+
+def delete_complaint(request,pk):
+    if request.method == 'POST':
+        complaint = Complaint.objects.get(id=pk)
+        c_id = complaint.id
+        complaint.delete()
+        messages.success(request, f'Complaint with #id {c_id} deleted successfully')
+        return redirect('all_complaints')
+
+
 
 
 from rest_framework.views import APIView

@@ -23,4 +23,6 @@ urlpatterns = [
     path('close_complaint/<int:pk>', views.close_complaint, name="close_complaint"),
     path('print_record/<int:pk>', views.print_record, name="print_record"),
     path('check_status/', views.check_complaint_status, name="check_complaint_status"),
+    path('delete_complaint/<int:pk>', views.delete_complaint, name="delete_complaint"),
+    
 ]
