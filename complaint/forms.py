@@ -92,7 +92,7 @@ class ChangeComplaintStatusForm(ModelForm):
     (6,"Failed and Closed"), # Fail and Closed
 )
 
-    complaint_status = forms.ChoiceField(choices = STATUS_CHOICES, label="", initial='', widget=forms.Select(attrs={'class':'form-control form-control-sm'}), required=True)
+    complaint_status = forms.ChoiceField(choices = STATUS_CHOICES, label="", initial='', widget=forms.Select(attrs={'class':'form-control form-control-sm rounded'}), required=True)
 
     class Meta:
         model = Complaint

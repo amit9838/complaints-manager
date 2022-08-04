@@ -20,19 +20,18 @@
         {% if user.is_staff %}
 
 
+        <!-- <a class="btn btn-primary btn-sm mb-3" href="{% url 'check_complaint_status' %}">Check Status</a> -->
         <div class="card-body">
-                <a class="btn btn-primary btn-sm mb-3" href="{% url 'check_complaint_status' %}">Check Status</a>
-                <div class="titlebar row bg-light mb-1 w-100   rounded flex-wrap">
-                        <span class="col-sm-5 d-flex align-items-center">
+                <div class="titlebar row bg-light mb-1 w-100 d-flex justify-content-between  rounded mx-auto">
+                        <span class="col-sm-8 d-flex align-items-center">
                                 <h3 class="pl-2 my-2 px-2 text-secondary rounded"> Complaint ID #{{complaint.id}}</h3>
                                 <span class="badge mx-2" id="status_badge"
                                         style="font-size: .9rem;">{{complaint.complaint_status}}</span>
 
                         </span>
 
-                        <span class="col-sm-7 d-flex align-items-center justify-content-end" id="header_action">
-                                <span class="d-flex align-items-center " id="print_action">
-
+                        <span class="col-sm-4 d-flex justify-content-end align-items-center" id="header_action">
+                                <div class=" mx-2" id="print_action">
                                         <div class="form-container" id="print_checkout">
                                                 <form action="{% url 'close_complaint' complaint.id %}" method="post">
                                                         {% csrf_token %}
@@ -40,19 +39,36 @@
                                                                 value="Close & Checkout">
                                                 </form>
                                         </div>
-                                        <a class="text-right my-auto tn btn-sm rounded btn-secondary mx-2 py-0"
-                                                href="{% url 'print_record' complaint.id %}" style="font-size:1.2rem;"
-                                                title="print"><i class="fa-solid fa-print"></i></a>
-                                </span>
-                                <div class="rigit-control pl-2 d-flex" style="border-left:solid rgb(206, 206, 206) 2px;">
-                                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-primary"  >Update</a>
-                                        <div class="form-container mx-1" id="delete_complaint">
+                                </div>
+
+                                <div class="btn-group">
+                                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Options
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" style="margin-top:.2rem;"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <!-- <a class="dropdown-item" href="#">Print</a> -->
+
+                                                <div class="dropdown-item" id="print_action">
+                                                        <a class="" href="{% url 'print_record' complaint.id %}"
+                                                                style="font-size:1.2remaads;" title="print"><i
+                                                                        class="fa-solid fa-print"></i> Print
+                                                        </a>
+                                                </div>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" style=""
+                                                        href="{% url 'update_complaint' complaint.id %}"><i
+                                                                class="fa-solid fa-pencil"></i> Edit</a>
                                                 <form action="{% url 'delete_complaint' complaint.id %}" method="post">
                                                         {% csrf_token %}
-                                                        <input type="submit" class="btn btn-danger m-0" value="Delete">
+                                                        <button type="submit" class="dropdown-item text-danger m-0"> <i
+                                                                        class="fa-solid fa-trash-can"></i>
+                                                                Delete</button>
                                                 </form>
                                         </div>
                                 </div>
+
                         </span>
                 </div>
 
@@ -108,7 +124,7 @@
                                         <form action="{% url 'assign_engineer' complaint.id %}" method="post">
                                                 {% csrf_token %}
                                                 <label class="text-secondary mb-0" for="">Assigned Engineer </label>
-                                                <select name="assign_engineer" class="form-control form-control-sm"
+                                                <select name="assign_engineer" class="form-control form-control-sm rounded"
                                                         id="id_assign_engineer">
                                                         <option value="-1">Assign Engineer</option>
                                                         {% for engineer in engineers %}
@@ -225,11 +241,57 @@
                                                 <td>{{component.quantity}}</td>
                                                 <td>
                                                         <span class="d-flex">
-                                                                <a class="btn btn-primary btn-sm mx-2 rounded" href="{% url 'update_component' component.id %}">Edit</a>
-                                                                <form action="{% url 'delete_component' component.id %}" method="post">
-                                                                        {% csrf_token %}
-                                                                        <input type="submit" class="btn btn-danger rounded btn-sm" value="remove">
-                                                                </form>
+                                                                <a class="btn btn-primary btn-sm mx-2 rounded"
+                                                                        href="{% url 'update_component' component.id %}">Edit</a>
+
+
+
+                                                                <!-- Button trigger modal -->
+                                                                <button type="button" class="btn btn-danger btn-sm rounded"
+                                                                        data-toggle="modal" data-target="#exampleModal">
+                                                                        Remove
+                                                                </button>
+
+                                                                <!-- Modal -->
+                                                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                                        role="dialog"
+                                                                        aria-labelledby="exampleModalLabel"
+                                                                        aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                                <h5 class="modal-title"
+                                                                                                        id="exampleModalLabel">
+                                                                                                        Are you sure want to remove?</h5>
+                                                                                                <button type="button"
+                                                                                                        class="close"
+                                                                                                        data-dismiss="modal"
+                                                                                                        aria-label="Close">
+                                                                                                        <span
+                                                                                                                aria-hidden="true">&times;</span>
+                                                                                                </button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                                Item can not be recovred once deleted!
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                                <button type="button"
+                                                                                                        class="btn btn-secondary"
+                                                                                                        data-dismiss="modal">Close</button>
+                                                                                                                                        
+                                                                                                        <form action="{% url 'delete_component' component.id %}"
+                                                                                                        method="post">
+                                                                                                        {% csrf_token %}
+                                                                                                        <input type="submit"
+                                                                                                                class="btn btn-danger rounded"
+                                                                                                                value="Yes">
+                                                                                                </form>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+
+
                                                         </span>
                                                 </td>
                                         </tr>
