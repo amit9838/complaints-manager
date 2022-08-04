@@ -1,0 +1,236 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}All Complaints{% endblock title %}
+
+{% block navbar_content %}
+
+{% endblock navbar_content %}
+
+
+
+{% block body_content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">All Complaints</li>
+    </ol>
+</nav>
+
+<div class="card flex-fill px-2">
+    <div class="card-header pb-0 d-flex justify-content-between flex-wrap">
+        <span>
+            <h2 class="card-title"> All Complaints </h2>
+        </span>
+        <span class="d-flex justify-content-center">
+            <input type="text" id="search_box" class="form-control" name="search_text" placeholder="Search">
+            <div class=" ml-2 btn btn-secondary  py-1" style="font-size: 1rem;" id="search_btn">Search</div>
+        </span>
+    </div>
+
+    <div class="card-body" id="table_container" style="overflow-x:scroll ;">
+        <div id="all_comlpaints_table">
+            <table class="table table-sm table-striped" style="min-width: 50rem;">
+                <thead>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th style=" width: 40%;">Problem</th>
+                        <th>Registred on</th>
+                        <th width="100" style="min-width:11rem; text-align: center; ">Status</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table_body">
+                    {% for complaint in all_complaints %}
+                    <tr>
+                        <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
+                        <td>{{complaint.customer_name}}</td>
+                        <td> <span>{{complaint.product_name}}</span> - <span>{{complaint.product_model}}</span> </td>
+                        <td>{{complaint.problem}}</td>
+                        <td>{{complaint.registred_date}}</td>
+                        <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
+                                id="status_badge" style="font-size: .9rem;"></span></td>
+                        <td>
+                            {% if user.is_staff %}
+                            <a href="{% url 'view_complaint' complaint.id %}">
+                                <div class="btn btn-primary rounded py-1">View</div>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'view_complaint_engg' complaint.id %}">
+                                <div class="btn btn-primary rounded py-1">View</div>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="search_msg"></div>
+        <div id="search_res_table" style="display:none ;">
+            <h5 class="mb-2" id="res_found_msg">
+                Search Results...
+            </h5>
+            <table class="table table-sm table-striped" style="min-width: 50rem;">
+                <thead>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th style=" width: 40%;">Problem</th>
+                        <th>Registred on</th>
+                        <th style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+
+                <tbody id="table_body">
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let all_comlpaints_table = document.getElementById('all_comlpaints_table');
+
+    let search_res_table = document.getElementById('search_res_table');
+    let table_body = document.getElementById("table_body");
+    // let item = document.getElementById('search_msg');
+    let search_msg = document.getElementById("search_msg");
+    let res_found_msg = document.getElementById("res_found_msg");
+    console.log(all_comlpaints_table);
+
+
+
+
+    searchVal = '';
+    function populate_res(data) {
+        all_comlpaints_table.style.display = "none";
+        search_res_table.style.display = "block";
+
+        console.log(data.length);
+        search_msg.style.display = "block"
+
+        let search_res = "";
+        if (data.length == 0) {
+            search_msg.innerHTML = `<h3> No results found </h3>`
+            console.log("No results");
+            search_res_table.style.display = "none";
+        }
+        else {
+            let msg = `Showing <strong>(${data.length})</strong> Result(s) for <strong> ${searchVal} ...</strong>`;
+            res_found_msg.innerHTML = msg;
+            console.log("results found")
+
+            data.forEach(complaint => {
+                let itemID = complaint.id;
+                "{% if user.is_staff %}"
+                let view_cmp = "view_complaint/attr/".replace('attr', itemID);
+
+                "{% else %}"
+                let view_cmp1 = "view_complaint_e/attr/".replace('attr', itemID);
+                "{% endif %}"
+                search_msg.style.display = "none";
+                search_res_table.style.display = "block";
+
+                const link = function () {
+                    document.location.href = view_cmp;
+                }
+                search_res += `
+                            <tr>
+                                <th scope="row"><span># </span> <span>${complaint.id}</span></th>
+                                <td>${complaint.customer_name}</td>
+                                <td> <span>${complaint.product_name}</span> - <span>${complaint.product_model}</span> </td>
+                                <td >${complaint.problem}</td>
+                                <td>${complaint.registred_date}</td>
+                                <td style = "text-align: center;"><span class="mx-2 status_badge st${complaint.complaint_status}" id="status_badge" style="font-size: .9rem;"></span></td>
+                                <td>
+                                    {% if user.is_staff %}
+                                    <a  href=${view_cmp}>
+                                        <div class="btn btn-primary rounded py-1">View</div>
+                                    </a>
+                                    
+                                    {% else %}
+                                    <a  href=${view_cmp1}>
+                                    <div class="btn btn-primary rounded py-1">View</div>
+                                    </a>
+                                    {% endif %}
+
+                                    </td>
+                                    </tr> `;
+            });
+            table_body.innerHTML = search_res;
+
+
+        }
+    }
+
+    let search_box = document.getElementById("search_box");
+
+    function reset_search() {
+        if (search_box.value.length == 0) {
+            console.log("cleared");
+            all_comlpaints_table.style.display = "block";
+            search_res_table.style.display = "none";
+        }
+    }
+
+    search_box.addEventListener('keyup', () => {
+        reset_search();
+    });
+
+    window.onkeydown = function (key) {
+        if (key.keyCode === 13 && search_box.value.length > 0) {
+            Search_cmp();
+            console.log("key pressed");
+        }
+        if (key.keyCode === "Escape") {
+            reset_search();
+        }
+    }
+
+
+
+
+    search_box.addEventListener('keyup', () => {
+        if (search_box.value.length == 0) {
+            console.log("cleared");
+            all_comlpaints_table.style.display = "block";
+            search_res_table.style.display = "none";
+        }
+
+    });
+
+    let search_btn = document.getElementById("search_btn");
+
+    search_btn.addEventListener('click', () => {
+        if (search_box.value.length > 0) {
+            Search_cmp();
+        }
+    })
+
+    function Search_cmp() {
+        console.log(search_box.value);
+        searchVal = search_box.value
+        url = "{% url 'search-complaint_global' %}"
+        // console.log(url);
+        fetch(url, {
+            body: JSON.stringify({ searchText: searchVal }),
+            method: "POST",
+        }).then((res) => res.json()).then((data) => {
+
+            console.log("data", data);
+            populate_res(data);
+        });
+    }
+</script>
+
+
+
+{% endblock body_content %}

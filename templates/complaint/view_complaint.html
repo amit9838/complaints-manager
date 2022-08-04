@@ -1,0 +1,292 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}View Compaint{% endblock title %}
+
+
+{% block body_content %}
+{% include 'home/partials/_message.html' %}
+<nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
+        <li class="breadcrumb-item active" aria-current="page">View Complaint</li>
+        </ol>
+        </nav>
+
+<div class="card flex-fill">
+        <!-- <div class="card-header">
+                <h3 class="card-title">Complaint</h3>
+        </div> -->
+        {% if user.is_staff %}
+
+
+        <div class="card-body">
+                <a href="{% url 'check_complaint_status' %}">Check Status</a>
+                <div class="titlebar row bg-light mb-1 w-100   rounded flex-wrap" >
+                     <span class="col-sm-5 d-flex align-items-center" >
+                             <h3 class="pl-2 my-2 px-2 text-secondary rounded" > Complaint ID #{{complaint.id}}</h3> 
+                             <span class="badge mx-2" id="status_badge" style="font-size: .9rem;">{{complaint.complaint_status}}</span>
+
+                     </span>
+                     <span class="col-sm-7 d-flex align-items-center justify-content-end" id="print_action">
+                                <div class="form-container" id="print_checkout">
+                                        <form action="{% url 'close_complaint' complaint.id %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit"  class="btn btn-success m-0" value="Close & Checkout">
+                                        </form>
+                                </div>
+                             <a class="text-right my-auto tn btn-sm rounded btn-secondary mx-2 py-0" href="{% url 'print_record' complaint.id %}" style="font-size:1.2rem;" title="print"><i class="fa-solid fa-print"></i></a>
+                     </span>
+                </div>
+
+
+                <style>
+                        .borderless td, .borderless th {
+                        border: none;
+                        margin: 0;
+                        padding: .1rem .5rem;
+                        }
+                </style>
+
+                <div class="complaint_details_container row justify-content-between px-1 text-dark" style="flex-wrap:wrap;">
+                        <div class="container-left col-sm-5 rounded px-2" style=" height: fit-content; min-height: 20rem; position: relative;">
+                                <h5 class="bg-light p-1 pl-2 rounded my-1">Customer Details</h5>
+                                <div class="contents px-2  py-2">
+                                        <table class=" borderless table-sm">
+                                                <tbody>
+                                                  <tr>
+                                                    <td class="text-secondary">Customer</td>
+                                                    <td>{{complaint.customer_name}}</td>
+                                                  </tr>
+                                                  <tr>
+                                                        <td class="text-secondary">Mobile</td>
+                                                        <td>{{complaint.customer_mob}}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td class="text-secondary">Email</td>
+                                                        <td>{{complaint.customer_email}}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td class="text-secondary">Address</td>
+                                                        <td>{{complaint.customer_address}}</td>
+                                                </tr>
+                                                  
+                                                </tbody>
+                                              </table>
+                                        
+                                </div>
+                                <!-- <hr class="my-0"> -->
+                                <div class="control_bar  d-flex bg-light  mt-2 py-2 align-items-center justify-content-around rounded" style=" border: 1px solid rgb(235, 234, 234); position: absolute; bottom:.5rem; left:.5rem;right:.5rem;"> 
+                                        <form  action = "{% url 'set_complaint_status' complaint.id %}" method = "post">
+                                                {% csrf_token %}
+                                                <label  class="text-secondary mb-0" for="">Current Status</label>
+                                                {{complaint_status_form}}
+                                                <input  class="btn btn-primary rounded btn-sm py-0 mt-1" type = "submit" value = 'Change'/>
+                                        </form>
+                                        <form action="{% url 'assign_engineer' complaint.id %}" method = "post">
+                                                {% csrf_token %}
+                                                <label class="text-secondary mb-0" for="">Assigned Engineer </label>
+                                                <select name="assign_engineer" class="form-control form-control-sm" id="id_assign_engineer">
+                                                <option value="-1">Assign Engineer</option>
+                                                {% for engineer in engineers %}
+                                                <option value="{{engineer.user.id}}">{{engineer.user.username}}</option>
+                                                {% endfor %}
+                                                <input  class="btn btn-primary rounded btn-sm ml-1 py-0 mt-1" type = "submit" value = 'Change'/>
+                                        </select>
+                                        </form>
+                                </div>
+                        </div>
+                        
+                        <div class="container-right col-sm-7 bg-white  px-2 ">
+                                <h5 class="bg-light rounded my-1 p-1 pl-2">Product Details</h5>
+                                <div class="contents px-2  py-2 ">
+
+                                        <table class=" borderless">
+                                                <tbody>
+                                                  <tr>
+                                                    <td class="text-secondary">Product</td>
+                                                    <td>{{complaint.product_name}}</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="text-secondary">Description</td>
+                                                    <td>{{complaint.product_description}}</td>
+                                                  </tr>
+                                                  {% comment %} <tr>
+                                                    <td class="text-secondary">Problem</td>
+                                                    <td>{{complaint.problem}}</td>
+                                                  </tr> {% endcomment %}
+                                                  <tr>
+                                                    <td class="text-secondary " >Registred By</td>
+                                                    <td>{{complaint.registred_by}}</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="text-secondary">Registred On</td>
+                                                    <td>{{complaint.registred_date}}</td>
+                                                  </tr>
+                                                  </table>
+                                                  <table class="borderless">
+                                                          {% if complaint.complaint_status != 0 %}
+                                                  
+                                                  {% if complaint.complaint_status != 1 %}
+                                                  <tr>
+                                                    <td class="text-secondary">Assigned To</td>
+                                                    <td>{{complaint.assigned_to}}</td>
+                                                </tr>
+                                                  <tr>
+                                                          <td class="text-secondary">Assigned Date</td>
+                                                    <td>{{complaint.assigned_date}}</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td class="text-secondary">Resolved Date</td>
+                                                    <td>{{complaint.resolved_date}}</td>
+                                                  </tr>
+                                                  {% endif %}
+                                                  {% endif %}
+                                                  
+                                                </tbody>
+                                        </table>
+                                        <hr  class="my-2">
+                                        {% comment %} <hr> {% endcomment %}
+                                              <div class="row mx-0">
+                                                <div class="col-sm-2">
+                                                    <strong class="mb-0">Problem</strong>
+                                                </div>
+                                                        <div class="col-sm-10 text-secondary">
+                                                                        {{complaint.problem}}
+                                                        </div>
+                                        </div>
+                                </div>
+        
+                        </div>
+                </div>
+        </div>
+
+
+        {% else %}
+<!-- Engineer View ----------------------------------->
+
+        <div class="card-body">
+                You dont have permission to view this page
+        </div>
+        {% endif %}
+
+
+        <div class="px-4">
+                {% if components %}
+        <div class="d-flex mt-3 justify-content-between align-items-center">
+                <span  class="pl-2" style="width: 18rem; ">Parts Used in Repairing</span>
+                <span class="ml-2" style="height:1px; width: 90rem; background-color: lightgrey;">
+                </span>
+        </div>
+        <div class="table-container px-2">
+
+                <table class="table table-sm">
+                <thead>
+                        <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th style = " width: 6rem;">Unit Price</th>
+                        <th style = " width: 8rem;">Quantity</th>
+                        <th style = " width: 8rem;">Action</th>
+                </thead>
+                
+                <tbody>
+                        {% for component in components %}
+                        <tr>
+                                <td>{{component.item_name}}</td>
+                                <td>{{component.item_description}}</td>
+                                <td>{{component.unit_price}}</td>
+                                <td>{{component.quantity}}</td>
+                                <td>
+                                <span>
+                                        <div class="btn btn-secondary btn-sm">Edit</div>
+                                        <div class="btn btn-danger btn-sm">Remove</div>
+                                </span>
+                                </td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+                </table>
+                </div>
+
+                </div>
+                {% endif %}
+
+                <div class="bottom-control mx-2 mb-3  mt-1  d-flex bg-light rounded  justify-content-center  p-0" >
+                        <a  class="btn text-primary" href="{% url 'add_component' complaint.id %}">
+                                <div class="" style="font-size:1rem ;">
+                                        <i class="fa-solid fa-plus"></i> Add Component
+                                </div>
+                        </a>
+                </div>
+</div>
+
+
+<script>
+        complaint_drp  = document.getElementById("id_complaint_status");
+        let cmp_status  = "{{complaint.complaint_status}}"
+        Array.from(complaint_drp.children).forEach(element => {
+                if(element.value == cmp_status){
+                        element.selected = true
+                }
+         });
+         
+        engg_drp  = document.getElementById("id_assign_engineer");
+        let engg_selected  = "{{complaint.assigned_to.id}}"
+        Array.from(engg_drp.children).forEach(element => {
+                if(element.value == engg_selected){
+                        element.selected = true
+                }
+         });
+
+         let status_badge = document.getElementById("status_badge");
+         let status = "{{complaint.complaint_status}}";
+         if(status==2){
+                status_badge.classList.add("bg-primary")
+                status_badge.innerHTML = "In Progress"
+         }
+         else if(status==3){
+                 status_badge.classList.add("bg-success")
+                 status_badge.innerHTML = "Repaired"
+                }
+                else if(status==4){
+                        status_badge.classList.add("bg-danger")
+                        status_badge.innerHTML = "Failed to Repair"
+                }
+                else if(status==5){
+                        status_badge.classList.add("bg-secondary")
+                        status_badge.innerHTML = "Repaired and Closed"
+                }
+                else if(status==6){
+                        status_badge.classList.add("bg-dark")
+                        status_badge.innerHTML = "Failed and Closed"
+                }
+                else{
+                        status_badge.classList.add("bg-warning")
+                        status_badge.innerHTML = "Registred"
+                }
+                
+                //  console.log(engg_selected)
+
+                let print_action = document.getElementById("print_action");
+                let print_checkout = document.getElementById("print_checkout")
+
+                if(cmp_status<3){
+                        print_action.style.visibility = "hidden";
+                }
+                else{
+                        print_action.style.visibility = "shown";
+                }
+
+                if(cmp_status<3 || cmp_status>4){
+                        print_checkout.style.visibility = "hidden";
+                }
+                else {
+                        print_checkout.style.visibility = "shown";
+                }
+
+                
+                
+</script>
+
+{% endblock body_content %}

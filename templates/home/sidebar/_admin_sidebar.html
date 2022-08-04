@@ -1,0 +1,65 @@
+<a class="" href={% url 'register_complaint' %}>
+  <div class="bg-light px-4 py-2 mx-2" style=" border-radius:.2rem; font-weight:600;">
+    <i class="fa-solid fa-plus"></i> <span class=""> New Complaint</span>
+  </div>
+</a>
+
+<ul class="sidebar-nav">
+  <li class="sidebar-header">
+    Pages
+  </li>
+
+  <li class="sidebar-item">
+    <a class="sidebar-link" href={% url 'dashboard' %}>
+      <i class="fa-solid fa-sliders"></i> <span class="">Dashboard</span>
+    </a>
+  </li>
+
+  <li class="sidebar-item">
+    <a class="sidebar-link" href={% url 'all_complaints' %}>
+      <i class="fa-solid fa-list-ul"></i> <span class="">All Complaints</span>
+    </a>
+  </li>
+
+  <li class="sidebar-item">
+    <a class="sidebar-link" href={% url 'closing_compaints' %}>
+      <i class="fa-solid fa-hourglass-end"></i> <span class="">Closing Complaints</span>
+    </a>
+  </li>
+  <li class="sidebar-item">
+    <a class="sidebar-link" href={% url 'closed_compaints' %}>
+      <i class="fa-solid fa-square-check"></i> <span class="">Closed Complaints</span>
+    </a>
+  </li>
+
+  <li class="sidebar-item">
+    <a class="sidebar-link" href="">
+      <i class="fa-solid fa-chart-pie"></i> <span class="">Analytics</span>
+    </a>
+  </li>
+
+
+
+
+  <li class="sidebar-header">
+    Settings
+  </li>
+
+  <li class="sidebar-item">
+    <a class="sidebar-link" href={% url 'profile' request.user.id %}>
+      <i class="fa-solid fa-user-gear"></i> <span class="align-middle">Profile</span>
+    </a>
+  </li>
+  <li class="sidebar-item">
+    <a class="sidebar-link" href="{% url 'list_staff' %}">
+      <i class="fa-solid fa-id-card"></i> <span class="">Staff</span>
+    </a>
+  </li>
+
+<!-- 
+  <li class="sidebar-item">
+    <a class="sidebar-link" href="">
+      <i class="align-middle" data-feather="map"></i> <span class="align-middle">Preferences</span>
+    </a>
+  </li> -->
+</ul>

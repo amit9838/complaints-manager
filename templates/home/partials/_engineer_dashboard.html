@@ -1,0 +1,202 @@
+<div class="engineer_dashboard">
+
+    <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1>
+
+    <div class="row">
+        <div class="col-xl-6 col-xxl-5 d-flex">
+            <div class="w-100">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Total Complaints</h5>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="stat text-secondary" style="font-size:1.2rem ;">
+                                            <i class="fa-solid fa-list-ul"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">1</h1>
+                                <div class="mb-0">
+                                    <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
+                                    <span class="text-muted">Since last week</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Complaints Today</h5>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="stat text-secondary" style="font-size:1.2rem ;">
+                                            <i class="fa-solid fa-calendar-day"></i>    
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">23</h1>
+                                <div class="mb-0">
+                                    <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 5.25% </span>
+                                    <span class="text-muted">Since last week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Pending Complaints</h5>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="stat text-danger" style="font-size:1.2rem ;">
+                                            <i class="fa-solid fa-exclamation"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">{{pending_complaints}}</h1>
+                                <div class="mb-0">
+                                    <span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
+                                    <span class="text-muted">Since last week</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col mt-0">
+                                        <h5 class="card-title">Orders</h5>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="stat text-primary">
+                                            <i class="align-middle" data-feather="shopping-cart"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 class="mt-1 mb-3">64</h1>
+                                <div class="mb-0">
+                                    <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -2.25% </span>
+                                    <span class="text-muted">Since last week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-xxl-7">
+            <div class="card py-0 my-0 flex-fill w-100">
+                <div class="card-header">
+
+                    <h5 class="card-title mb-0">Past 30 days</h5>
+                </div>
+                <div class="card-body py-3">
+                    <div class="chart chart-sm">
+                        <canvas id="myChart" width="400" height="130"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 2,
+                    tension:.2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+
+
+    <div class="card flex-fill px-2">
+        <div class="card-header">
+            <h2 class="card-title"> Complaints </h2>
+        </div>
+
+    <div class="card-body" style="overflow-x:scroll ;">
+
+        <table class="table table-sm table-striped" style="min-width:50rem;">
+            <thead>
+        <tr>
+            <th>Complaint ID</th>
+            <th>Product</th>
+            <th style=" width: 40%;">Problem</th>
+            <th>Assigned on</th>
+            <th width="100"  style="min-width:11rem; text-align: center;">Status</th>
+            <th>View</th>
+            
+        </tr>
+    </thead>
+    
+    
+    <tbody>
+        
+        {% for complaint in complaints_assigned %}
+        <tr>
+                <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
+
+            
+                <td><span>{{complaint.product_name}}</span> - <span>{{complaint.product_model}}</span></td>
+                <td>{{complaint.problem}}</td>
+                
+                <td>{{complaint.assigned_date}}</td>
+                <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge" style="font-size: .9rem;"></span></td>
+                <td><a href="{% url 'view_complaint_engg' complaint.id %}">
+                    <div class="btn btn-primary rounded py-1">View</div>
+                </a>
+            </td>
+            
+                </script>
+                </tr>
+                {% endfor %}
+            </tbody>    
+        </table>
+    </div>
+    </div>
+            
+
+</div>

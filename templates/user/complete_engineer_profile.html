@@ -1,0 +1,71 @@
+{% extends 'base_auth.html' %}
+
+{% block title %}Complete Profile{% endblock title %}
+
+{% block content %}
+
+<div class="card full-flex">
+
+    <div class="card-body">
+        <div class="container">
+            <h2 class="text-center bg-light rounded my-3 py-2">
+                Complete Your Profile
+            </h2>
+            <div class="row py-1">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Role</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    Engineer
+                </div>
+            </div>
+    
+            <div class="row py-1">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Username</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.username}}
+                </div>
+            </div>
+    
+    
+            <div class="row py-1">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.get_full_name}}
+                </div>
+            </div>
+    
+            <div class="row py-1">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    {{user.email}}
+                </div>
+            </div>
+                <hr>
+    
+            <form action="" method="post">
+                {% csrf_token %}
+                {{form}}
+                <div class="text-center w-100 mt-3">
+                    <button class="btn btn-info w-100 mt-2" type="submit" >Continue</button>                
+                </div>
+            </form>
+            <br>
+            <a class="btn btn-secondary  text-center w-100" href={% url 'dashboard' %} data-bs-toggle="dropdown">
+                <span class=" px-3">Skip</span>
+              </a>
+        </div>
+    </div>
+
+</div>
+
+
+
+  
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block sidebar_content %}
+
+{% endblock sidebar_content %}
+   
+
+{% block navbar_content %}
+
+{% endblock navbar_content %}
+
+
+
+{% block body_content %}
+    <div class="dashboard_container ">
+        {% include 'home/partials/_message.html' %}
+
+        {% if request.user.is_superuser %}
+            {% include 'home/partials/_admin_dashboard.html' %}
+
+
+        {% elif request.user.is_staff %}
+            {% include 'home/partials/_emp_dashboard.html' %}
+        
+        
+        {% else %}
+            {% include 'home/partials/_engineer_dashboard.html' %}
+        
+        {% endif %}
+        
+    </div>
+{% endblock body_content %}

@@ -1,0 +1,55 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}New Complaint{% endblock title %}
+
+{% block body_content %}
+<style>
+    .form-control {
+        /* margin-top: .5rem; */
+        margin-bottom: .5rem;
+    }
+</style>
+
+<div class="card">
+    {% include 'home/partials/_message.html' %}
+
+    <div class="card-header pb-0 my-0">
+        <h3 class="text-secondary bg-light px-2 py-1 btn-block rounded" > New Complaint </h3>
+        <!-- <hr class="my-1">     -->
+    </div>
+
+    <div class="card-body mt-0" >
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{complaint_register_form.customer_name.label_tag}}
+                    {{complaint_register_form.customer_name}}
+                    {{complaint_register_form.customer_mob.label_tag}}
+                    {{complaint_register_form.customer_mob}}
+                    {{complaint_register_form.customer_email.label_tag}}
+                    {{complaint_register_form.customer_email}}
+                    {{complaint_register_form.customer_address.label_tag}}
+                    {{complaint_register_form.customer_address}}
+                    
+                </div>
+                <div class="col-sm-6">
+                    {{complaint_register_form.product_name.label_tag}}
+                    {{complaint_register_form.product_name}}
+                    {{complaint_register_form.product_model.label_tag}}
+                    {{complaint_register_form.product_model}}
+                    {{complaint_register_form.product_description.label_tag}}
+                    {{complaint_register_form.product_description}}
+                    {{complaint_register_form.problem.label_tag}}
+                    {{complaint_register_form.problem}}
+                </div>
+            </div>
+            <!-- {{complaint_register_form}} -->
+            <div class="btn-container col-sm-2 float-right" style="min-width:12rem;">
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-plus"></i> Add Complaint</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock  %}

@@ -1,0 +1,23 @@
+{% extends 'base_auth.html' %}
+
+{% block content %}
+    <div class="card flex-fill">
+        <div class="card-header">
+            <h3 class="card-title">Check Status</h3>
+        </div>
+        <div class="card-body">
+            <h5>Enter Complaint ID to check status</h5>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="number" class="form-control" placeholder="Enter Complaint ID" name = "complaint_id">
+                <div class="my-2">
+                    <input type="submit" class="btn btn-primary" value="Get Status">
+                </div>
+
+                {{complaint_status}}
+
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

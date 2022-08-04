@@ -1,0 +1,42 @@
+{% extends 'base_auth.html' %}
+
+{% block title %}login{% endblock title %}
+
+{% block content %}
+
+<div class="text-center mt-4">
+    <h1 class="h2">Welcome back</h1>
+    <p class="lead">
+        Sign in to your account to continue
+    </p>
+</div>
+<div class="card w-75 mx-auto">
+    <div class="card-body mt-0 pt-0">
+        <div class="m-sm-4">
+            <div class="text-center text-secondary" style="font-size:5rem;">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <form action="" method="post">
+                {% csrf_token %}    
+                <div class="mb-3">
+                    <label class="form-label">Usernane</label>   
+                    <input type="text" class="form-control" placeholder="Username" name="username">              
+                  </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" name = "password" >
+                    <!-- <a href="index.html">Forgot password?</a> -->
+                </small>
+            </div>
+            
+            <div class="text-center w-100 mt-3">
+                    <input type = "submit" class = "btn btn-primary-sm btn-primary w-100 mt-3" value = "Sign In">                    <small>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
