@@ -181,7 +181,7 @@
                         <tr></td>
                         {% for item in components %}
                             <tr>
-                                <td>{{item.id}}</td>
+                                <td>{{forloop.counter}}</td>
                                 <td>{{item.item_name}} 
                                     {% if item.item_description %}
                                         <span class="text-secondary">- {{item.item_description}}</span></td>

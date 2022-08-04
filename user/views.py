@@ -127,22 +127,26 @@ def complete_engg_profile(request):
 
 @login_required
 def list_staff(request):
-    all_users = User.objects.all()
-    admins_id = [user.id for user in all_users if user.is_superuser]
-    admins = all_users.filter(id__in = admins_id)
+    if request.user.is_superuser:
+        all_users = User.objects.all()
+        admins_id = [user.id for user in all_users if user.is_superuser]
+        admins = all_users.filter(id__in = admins_id)
 
-    employees  = Employee.objects.all()
-    engineers = Engineer.objects.all()
+        employees  = Employee.objects.all()
+        engineers = Engineer.objects.all()
 
 
-    context = {
-        'admins':admins,
-        'employees':employees,
-        'engineers':engineers
-    }
-    # print(employees)
-    # print(engineers)
-    return render(request, 'user/staff.html',context)
+        context = {
+            'admins':admins,
+            'employees':employees,
+            'engineers':engineers
+        }
+        # print(employees)
+        # print(engineers)
+        return render(request, 'user/staff.html',context)
+    else:
+        return HttpResponse("You don't have permission to view this page!")
+
 
 
 class LoginView(View):

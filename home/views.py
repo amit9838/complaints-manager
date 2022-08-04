@@ -14,7 +14,7 @@ def home(request):
 def dashboard(request):
     if request.method == "GET":
         all_complaints = Complaint.objects.all()
-        recent_complaints = Complaint.objects.all().order_by('-id')[:5]
+        recent_complaints = Complaint.objects.all().order_by('-registred_date')[:5]
         tatal_complaints = Complaint.objects.all().count()
         pending_complaints = Complaint.objects.filter(complaint_status = 1).count()
         daily_complaints = Complaint.objects.values('registred_date').annotate(count=Count('id')).order_by('-registred_date')

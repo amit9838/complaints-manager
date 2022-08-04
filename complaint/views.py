@@ -73,6 +73,7 @@ def view_complaint_engg(request,pk):
     if request.method == 'POST':
         stat = request.POST['cmpStatus']        
         complaint.complaint_status = stat
+        complaint.resolved_date = datetime.datetime.now()
         complaint.save()
         messages.success(request, 'Status updated successfully.')
         return redirect('view_complaint_engg', pk)
@@ -87,6 +88,8 @@ def set_complaint_status(request,pk):
         if complaint_status_form.is_valid():
             status = complaint_status_form.cleaned_data.get('complaint_status')
             complaint.complaint_status = status
+            
+            # complaint.resolved_date = None
             complaint.save()
             messages.success(request, 'Status updated successfully.')
             return redirect('view_complaint', pk)
@@ -183,6 +186,12 @@ def add_component(request,pk):
                 return redirect('view_complaint_engg', pk)
         messages.error(request, 'Could not add add component! Plese provide valid input.')
         return render(request, 'complaint/add_component.html',context)
+
+
+@login_required
+def inProgress_complaints(request):
+    complaints = Complaint.objects.filter(complaint_status = 2)
+    return render(request, 'complaint/in_progress_complaints.html',{'in_progress_complains':complaints})
 
 @login_required
 def closing_complaints(request):

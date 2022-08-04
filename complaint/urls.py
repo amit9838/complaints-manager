@@ -7,7 +7,8 @@ from .views import Complaints_log_api, print_record
 
 urlpatterns = [
     path('', views.list_complaints, name="all_complaints"),
-    path('closing_complaints/', views.closing_complaints, name="closing_compaints"),
+    path('in_progress/', views.inProgress_complaints, name="in_progress_compaints"), 
+    path('closing_complaints/', views.closing_complaints, name="closing_compaints"), 
     path('closed_complaints/', views.closed_complaints, name="closed_compaints"),
     path('new_complaint', views.register_complaint, name="register_complaint"),
     path('unresolved_comlaints', views.unresolved_complaints, name="unresolved_complaints"),
