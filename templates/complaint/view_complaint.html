@@ -50,7 +50,7 @@
                                                 aria-labelledby="dropdownMenuButton">
                                                 <!-- <a class="dropdown-item" href="#">Print</a> -->
                                                 
-                                                <a class="dropdown-item" href="https://api.whatsapp.com/send?phone=919554107798&text=Hello  {{complaint.customer_name}}, %0AComplaint successfully registred.%0AComplaint id *{{complaint.id}}*.%0ATrack status at %20 https://www.google.com/ %20 %0A%0A*Thanks for visiting!*" target="_blank"><i class="fa-brands fa-whatsapp"></i> Share</a>
+                                                <a class="dropdown-item text-success" href="https://api.whatsapp.com/send?phone=919554107798&text=Hello  {{complaint.customer_name}}, %0AComplaint successfully registred.%0AComplaint id *{{complaint.id}}*.%0ATrack status at %20 https://www.google.com/ %20 %0A%0A*Thanks for visiting!*" target="_blank"><i class="fa-brands fa-whatsapp"></i> Share</a>
                                                 <div class="dropdown-item" id="print_action">
                                                         <a class="" href="{% url 'print_record' complaint.id %}"
                                                                 style="font-size:1.2remaads;" title="print"><i

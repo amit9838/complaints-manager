@@ -57,15 +57,22 @@ def update_complaint(request,pk):
         messages.error(request, 'Complaint not Updated! Please provide valid input.')
         return render(request, 'complaint/update_complaint.html',context) 
 
+from django.core.paginator import Paginator
 
 @login_required
 def list_complaints(request):
     if request.user.is_staff:
         all_complaints = Complaint.objects.all()
-        return render(request, 'complaint/list_complaints.html', {'all_complaints':all_complaints})
+        paginator = Paginator(all_complaints, 3)
+        page_number = request.GET.get('page')
+        page_obj = Paginator.get_page(paginator, page_number)
+        return render(request, 'complaint/list_complaints.html', {'all_complaints':all_complaints, 'page_obj':page_obj})
     else:
         all_complaints = Complaint.objects.filter(assigned_to = request.user).order_by('-registred_date')
-        return render(request, 'complaint/list_complaints.html', {'all_complaints':all_complaints})
+        paginator = Paginator(all_complaints, 3)
+        page_number = request.GET.get('page')
+        page_obj = Paginator.get_page(paginator, page_number)
+        return render(request, 'complaint/list_complaints.html', {'all_complaints':all_complaints, 'page_obj':page_obj})
 
 @login_required
 def view_complaint(request,pk):
@@ -272,7 +279,10 @@ def closed_complaints(request):
     closed_complaints1 = Complaint.objects.filter(complaint_status=5)
     closed_complaints2 = Complaint.objects.filter(complaint_status = 6)
     closed_complaints = closed_complaints1 | closed_complaints2
-    return render(request, 'complaint/closed_complaints.html', {'closed_complaints':closed_complaints})
+    paginator = Paginator(closed_complaints, 3)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    return render(request, 'complaint/closed_complaints.html', {'closed_complaints':closed_complaints,'page_obj':page_obj})
 
 # Engineer ---------------------------------
 
@@ -293,7 +303,10 @@ def resolved_complaints(request):
     resolved_complaints3 = Complaint.objects.filter(complaint_status = 5, assigned_to = user)
     resolved_complaints4 = Complaint.objects.filter(complaint_status = 6, assigned_to = user)
     resolved_complaints = resolved_complaints1 | resolved_complaints2 |resolved_complaints3 |resolved_complaints4
-    return render(request, 'complaint/resolved_complaints_e.html', {'resolved_complaints':resolved_complaints})
+    paginator = Paginator(resolved_complaints, 3)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    return render(request, 'complaint/resolved_complaints_e.html', {'resolved_complaints':resolved_complaints, 'page_obj':page_obj})
 
 
 @login_required
