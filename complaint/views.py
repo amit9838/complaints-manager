@@ -373,7 +373,7 @@ def check_complaint_status(request):
                     'type':stat_type
                 }
             elif(stat==2):
-                stat_msg = "Hurrey! Service Initiatetd"
+                stat_msg = "Hurrey! Service Initiated."
                 stat_type = "info"
                 context = {
                     'complaint':complaint,
