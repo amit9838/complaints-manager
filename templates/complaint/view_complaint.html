@@ -14,13 +14,8 @@
 </nav>
 
 <div class="card flex-fill">
-        <!-- <div class="card-header">
-                <h3 class="card-title">Complaint</h3>
-        </div> -->
+
         {% if user.is_staff %}
-
-
-        <!-- <a class="btn btn-primary btn-sm mb-3" href="{% url 'check_complaint_status' %}">Check Status</a> -->
         <div class="card-body">
                 <div class="titlebar row bg-light mb-1 w-100 d-flex justify-content-between  rounded mx-auto">
                         <span class="col-sm-8 d-flex align-items-center">
@@ -40,7 +35,6 @@
                                                 </form>
                                         </div>
                                 </div>
-
                                 <div class="btn-group">
                                         <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,23 +44,49 @@
                                                 aria-labelledby="dropdownMenuButton">
                                                 <!-- <a class="dropdown-item" href="#">Print</a> -->
                                                 
-                                                <a class="dropdown-item text-success" 
-                                                href="https://web.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
-                                                %0AHello  *{{complaint.customer_name}}*, 
-                                                %0AYour Complaint has been registered successfully.
-                                                %0A%0A*Details*
-                                                %0A--------------------------------------------------------------------
-                                                %0A*Complaint id :* {{complaint.id}}.
-                                                %0A*Name :* {{complaint.customer_name}}.
-                                                %0A*Email :* {{complaint.customer_email}}.
-                                                %0A*Model :* {{complaint.product_name}}{{complaint.product_model}}.
-                                                %0A*Problem :* {{complaint.problem}}.
-                                                %0A--------------------------------------------------------------------
-                                                %0A%0A Track status at %20 https://www.google.com/ %20 
-                                                %0A%0A*Thanks for visiting!*"
+                                                <a class="dropdown-item text-success" id="share_on_wa"
                                                 target="_blank">
                                                 <i class="fa-brands fa-whatsapp"></i> Share</a>
                                                 
+                                                <script>
+                                                        let btn_item = document.getElementById("share_on_wa");
+                                                        // device detection
+                                                        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                                                                btn_item.href = `
+                                                                https://api.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
+                                                                %0AHello  *{{complaint.customer_name}}*, 
+                                                                %0AYour Complaint has been registered successfully.
+                                                                %0A%0A*Details*
+                                                                %0A--------------------------------------------------------------------
+                                                                %0A*Complaint id :* {{complaint.id}}.
+                                                                %0A*Name :* {{complaint.customer_name}}.
+                                                                %0A*Email :* {{complaint.customer_email}}.
+                                                                %0A*Model :* {{complaint.product_name}}{{complaint.product_model}}.
+                                                                %0A*Problem :* {{complaint.problem}}.
+                                                                %0A--------------------------------------------------------------------
+                                                                %0A%0A Track status at %20 https://www.google.com/ %20 
+                                                                %0A%0A*Thanks for visiting!*
+                                                               `
+                                                        }
+                                                        else{
+                                                               btn_item.href = `
+                                                                https://web.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
+                                                                %0AHello  *{{complaint.customer_name}}*, 
+                                                                %0AYour Complaint has been registered successfully.
+                                                                %0A%0A*Details*
+                                                                %0A--------------------------------------------------------------------
+                                                                %0A*Complaint id :* {{complaint.id}}.
+                                                                %0A*Name :* {{complaint.customer_name}}.
+                                                                %0A*Email :* {{complaint.customer_email}}.
+                                                                %0A*Model :* {{complaint.product_name}}{{complaint.product_model}}.
+                                                                %0A*Problem :* {{complaint.problem}}.
+                                                                %0A--------------------------------------------------------------------
+                                                                %0A%0A Track status at %20 https://www.google.com/ %20 
+                                                                %0A%0A*Thanks for visiting!*
+                                                               `
+                                                        }
+                                                </script>
+
                                                 <div class="dropdown-item" id="print_action">
                                                         <a class="" href="{% url 'print_record' complaint.id %}"
                                                                 style="font-size:1.2remaads;" title="print"><i
