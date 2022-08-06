@@ -50,7 +50,23 @@
                                                 aria-labelledby="dropdownMenuButton">
                                                 <!-- <a class="dropdown-item" href="#">Print</a> -->
                                                 
-                                                <a class="dropdown-item text-success" href="https://api.whatsapp.com/send?phone=919554107798&text=Hello  {{complaint.customer_name}}, %0AComplaint successfully registred.%0AComplaint id *{{complaint.id}}*.%0ATrack status at %20 https://www.google.com/ %20 %0A%0A*Thanks for visiting!*" target="_blank"><i class="fa-brands fa-whatsapp"></i> Share</a>
+                                                <a class="dropdown-item text-success" 
+                                                href="https://web.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
+                                                %0AHello  *{{complaint.customer_name}}*, 
+                                                %0AYour Complaint has been registered successfully.
+                                                %0A%0A*Details*
+                                                %0A--------------------------------------------------------------------
+                                                %0A*Complaint id :* {{complaint.id}}.
+                                                %0A*Name :* {{complaint.customer_name}}.
+                                                %0A*Email :* {{complaint.customer_email}}.
+                                                %0A*Model :* {{complaint.product_name}}{{complaint.product_model}}.
+                                                %0A*Problem :* {{complaint.problem}}.
+                                                %0A--------------------------------------------------------------------
+                                                %0A%0A Track status at %20 https://www.google.com/ %20 
+                                                %0A%0A*Thanks for visiting!*"
+                                                target="_blank">
+                                                <i class="fa-brands fa-whatsapp"></i> Share</a>
+                                                
                                                 <div class="dropdown-item" id="print_action">
                                                         <a class="" href="{% url 'print_record' complaint.id %}"
                                                                 style="font-size:1.2remaads;" title="print"><i
@@ -60,13 +76,15 @@
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" style=""
                                                         href="{% url 'update_complaint' complaint.id %}"><i
-                                                                class="fa-solid fa-pencil"></i> Edit</a>
+                                                                class="fa-solid fa-pencil"></i> Update</a>
+                                                {% if request.user.is_superuser %}
                                                 <form action="{% url 'delete_complaint' complaint.id %}" method="post">
                                                         {% csrf_token %}
                                                         <button type="submit" class="dropdown-item text-danger m-0"> <i
-                                                                        class="fa-solid fa-trash-can"></i>
+                                                                class="fa-solid fa-trash-can"></i>
                                                                 Delete</button>
-                                                </form>
+                                                        </form>
+                                                {% endif %}
                                         </div>
                                 </div>
 

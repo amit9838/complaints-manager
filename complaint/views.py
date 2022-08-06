@@ -4,60 +4,70 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from django.core.paginator import Paginator
 from user.models import *
 import json
 
 
 @login_required
 def register_complaint(request):
-    form  = ComplaintRegisterForm()
-    context = {
-            
-            'complaint_register_form':form
-        }
-    if request.method == "GET":
-        return render(request, 'complaint/new_complaint.html',context) 
-    if request.method == "POST":
-        form = ComplaintRegisterForm(request.POST)
-        if form.is_valid():
-            formdata = form.save(commit=False)
-            formdata.set_registred_by(request.user)
-            formdata.complaint_status = 1;
-            formdata.save()
-            messages.success(request, 'Complaint has been successfully registred.')
-            return redirect('dashboard')
+    if(request.user.is_staff):
+        form  = ComplaintRegisterForm()
+        context = {
+                
+                'complaint_register_form':form
+            }
+        if request.method == "GET":
+            return render(request, 'complaint/new_complaint.html',context) 
+        if request.method == "POST":
+            form = ComplaintRegisterForm(request.POST)
+            if form.is_valid():
+                formdata = form.save(commit=False)
+                formdata.set_registred_by(request.user)
+                formdata.complaint_status = 1;
+                formdata.save()
+                messages.success(request, 'Complaint has been successfully registred.')
+                return redirect('dashboard')
 
-        messages.error(request, 'Complaint not registred! Please provide valid input.')
-        return render(request, 'complaint/new_complaint.html',context) 
+            messages.error(request, 'Complaint not registred! Please provide valid input.')
+            return render(request, 'complaint/new_complaint.html',context)
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
 @login_required
 def update_complaint(request,pk):
-    complaint = Complaint.objects.get(id=pk)
-    registred_by = complaint.registred_by
-    stat = complaint.complaint_status
-    form  = ComplaintRegisterForm(instance=complaint)
-    context = {
-            
-            'complaint_register_form':form,
-            'complaint':complaint
-        }
-    if request.method == "GET":
-        return render(request, 'complaint/update_complaint.html',context) 
-    if request.method == "POST":
-        form = ComplaintRegisterForm(request.POST, instance=complaint)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Complaint has been successfully updated.')
-            if request.user.is_superuser:
-                return redirect('view_complaint', complaint.id)
-            else:
-                return redirect('view_complaint_engg', complaint.id)
-        
-        messages.error(request, 'Complaint not Updated! Please provide valid input.')
-        return render(request, 'complaint/update_complaint.html',context) 
+    if(request.user.is_staff):
+        try:
+            complaint = Complaint.objects.get(id=pk)
+            # registred_by = complaint.registred_by
+            # stat = complaint.complaint_status
+            form  = ComplaintRegisterForm(instance=complaint)
+            context = {
+                    
+                    'complaint_register_form':form,
+                    'complaint':complaint
+                }
+            if request.method == "GET":
+                return render(request, 'complaint/update_complaint.html',context) 
+            if request.method == "POST":
+                form = ComplaintRegisterForm(request.POST, instance=complaint)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Complaint has been successfully updated.')
+                    if request.user.is_superuser:
+                        return redirect('view_complaint', complaint.id)
+                    else:
+                        return redirect('view_complaint_engg', complaint.id)
+                
+                messages.error(request, 'Complaint not Updated! Please provide valid input.')
+                return render(request, 'complaint/update_complaint.html',context)
+        except Complaint.DoesNotExist:
+            return redirect('all_complaints')
 
-from django.core.paginator import Paginator
+
+    else:
+        return HttpResponse("You dont't have permission to access this page")
+
 
 @login_required
 def list_complaints(request):
@@ -76,23 +86,26 @@ def list_complaints(request):
 
 @login_required
 def view_complaint(request,pk):
-    try:
-        complaint = Complaint.objects.get(id = pk)
-        component_list = Item.objects.filter(complaint = complaint)
-        # print(complaint.complaint_status)
-        # print(component_list)
-        complaint_status_form = ChangeComplaintStatusForm()
-        engineers = Engineer.objects.all()
-        # print(engineers)
-        context = {
-            'components':component_list,
-            'complaint':complaint,
-            'complaint_status_form':complaint_status_form,
-            'engineers' : engineers,
-        }
-        return render(request, 'complaint/view_complaint.html', context)
-    except Complaint.DoesNotExist:
-        return redirect('all_complaints')
+    if(request.user.is_staff):
+        try:
+            complaint = Complaint.objects.get(id = pk)
+            component_list = Item.objects.filter(complaint = complaint)
+            # print(complaint.complaint_status)
+            # print(component_list)
+            complaint_status_form = ChangeComplaintStatusForm()
+            engineers = Engineer.objects.all()
+            # print(engineers)
+            context = {
+                'components':component_list,
+                'complaint':complaint,
+                'complaint_status_form':complaint_status_form,
+                'engineers' : engineers,
+            }
+            return render(request, 'complaint/view_complaint.html', context)
+        except Complaint.DoesNotExist:
+            return redirect('all_complaints')
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
 @login_required        
 def view_complaint_engg(request,pk):
@@ -117,7 +130,6 @@ def view_complaint_engg(request,pk):
             return redirect('view_complaint_engg', pk)
     except Complaint.DoesNotExist:
         return redirect('all_complaints')
-
 
 @login_required
 def set_complaint_status(request,pk):
@@ -269,20 +281,26 @@ def inProgress_complaints(request):
 
 @login_required
 def closing_complaints(request):
-    closing_complaints1 = Complaint.objects.filter(complaint_status=3)
-    closing_complaints2 = Complaint.objects.filter(complaint_status = 4)
-    closing_complaints = closing_complaints1 | closing_complaints2
-    return render(request, 'complaint/closing_complaints.html', {'closing_complaints':closing_complaints})
+    if(request.user.is_staff):
+        closing_complaints1 = Complaint.objects.filter(complaint_status=3)
+        closing_complaints2 = Complaint.objects.filter(complaint_status = 4)
+        closing_complaints = closing_complaints1 | closing_complaints2
+        return render(request, 'complaint/closing_complaints.html', {'closing_complaints':closing_complaints})
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
 @login_required
 def closed_complaints(request):
-    closed_complaints1 = Complaint.objects.filter(complaint_status=5)
-    closed_complaints2 = Complaint.objects.filter(complaint_status = 6)
-    closed_complaints = closed_complaints1 | closed_complaints2
-    paginator = Paginator(closed_complaints, 3)
-    page_number = request.GET.get('page')
-    page_obj = Paginator.get_page(paginator, page_number)
-    return render(request, 'complaint/closed_complaints.html', {'closed_complaints':closed_complaints,'page_obj':page_obj})
+    if(request.user.is_staff):
+        closed_complaints1 = Complaint.objects.filter(complaint_status=5)
+        closed_complaints2 = Complaint.objects.filter(complaint_status = 6)
+        closed_complaints = closed_complaints1 | closed_complaints2
+        paginator = Paginator(closed_complaints, 3)
+        page_number = request.GET.get('page')
+        page_obj = Paginator.get_page(paginator, page_number)
+        return render(request, 'complaint/closed_complaints.html', {'closed_complaints':closed_complaints,'page_obj':page_obj})
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
 # Engineer ---------------------------------
 
@@ -292,7 +310,7 @@ def unresolved_complaints(request):
     unresolved_complaints1 = Complaint.objects.filter(complaint_status = 2, assigned_to = user)
 
     unresolved_complaints = unresolved_complaints1
-    print(unresolved_complaints)
+    # print(unresolved_complaints)
     return render(request, 'complaint/unresolved_complaints_e.html', {'unresolved_complaints':unresolved_complaints})
 
 
@@ -311,56 +329,62 @@ def resolved_complaints(request):
 
 @login_required
 def close_complaint(request,pk):
-    print("Status updated")
-    if request.method == "POST":
-        complaint = Complaint.objects.get(id=pk)
-        
-        if complaint.complaint_status == 3:
-            complaint.resolved_date = datetime.datetime.now()
-            complaint.complaint_status = 5;
-            print(complaint.complaint_status)
-            complaint.save()
-            # return HttpResponse("Status changed")
-            return redirect('print_record', pk)
-        
-        elif complaint.complaint_status == 4:
-            complaint.resolved_date = datetime.datetime.now()
-            complaint.complaint_status = 6;
-            complaint.save()
-            print(complaint.complaint_status)
-            # return HttpResponse("Status changed")
+    # print("Status updated")
+    if(request.user.is_staff):
+        if request.method == "POST":
+            complaint = Complaint.objects.get(id=pk)
+            
+            if complaint.complaint_status == 3:
+                complaint.resolved_date = datetime.datetime.now()
+                complaint.complaint_status = 5;
+                # print(complaint.complaint_status)
+                complaint.save()
+                # return HttpResponse("Status changed")
+                return redirect('print_record', pk)
+            
+            elif complaint.complaint_status == 4:
+                complaint.resolved_date = datetime.datetime.now()
+                complaint.complaint_status = 6;
+                complaint.save()
+                # print(complaint.complaint_status)
+                # return HttpResponse("Status changed")
+                return redirect('print_record', pk)
             return redirect('print_record', pk)
         return redirect('print_record', pk)
-    return redirect('print_record', pk)
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
         
 
 @login_required
 def print_record(request,pk):
-    complaint = Complaint.objects.get(id=pk)
-    complaint.resolved_date = datetime.datetime.today
+    if(request.user.is_staff):
+        complaint = Complaint.objects.get(id=pk)
+        complaint.resolved_date = datetime.datetime.today
 
-    components = Item.objects.filter(complaint = complaint)
-    subTotal = 0
-    for item in components:
-        item.total = item.unit_price * item.quantity
-        subTotal = subTotal + item.total
-    # print(components)
+        components = Item.objects.filter(complaint = complaint)
+        subTotal = 0
+        for item in components:
+            item.total = item.unit_price * item.quantity
+            subTotal = subTotal + item.total
+        # print(components)
 
-    tax_percent = 18
-    tax_amount = (subTotal/100)*tax_percent
-    total_amount = subTotal+tax_amount
+        tax_percent = 18
+        tax_amount = (subTotal/100)*tax_percent
+        total_amount = subTotal+tax_amount
 
-    context = {
-        'complaint':complaint,
-        'components':components,
-        # 'sub_total':subTotal,
-        # 'tax_percent':tax_percent,
-        # 'tax_amount':round(tax_amount,2),
-        'total_amount':round(subTotal,2),
-    }
+        context = {
+            'complaint':complaint,
+            'components':components,
+            # 'sub_total':subTotal,
+            # 'tax_percent':tax_percent,
+            # 'tax_amount':round(tax_amount,2),
+            'total_amount':round(subTotal,2),
+        }
 
-    return render(request, 'home/print_record.html',context)
+        return render(request, 'home/print_record.html',context)
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
 
 
@@ -426,18 +450,22 @@ def check_complaint_status(request):
 
 
 def deleteComplaint(request,pk):
-    if request.method == 'POST':
-        complaint = Complaint.objects.get(id=pk)
-        c_id = complaint.id
-        complaint.delete()
-        messages.success(request, f'Complaint with #id {c_id} deleted successfully')
-        return redirect('all_complaints')
+    if(request.user.is_staff):
+        if request.method == 'POST':
+            complaint = Complaint.objects.get(id=pk)
+            c_id = complaint.id
+            complaint.delete()
+            print("deleting complaint...")
+            messages.success(request, f'Complaint with #id {c_id} deleted successfully')
+            return redirect('all_complaints')
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
 def deleteComponent(request,pk):
     if request.method == 'POST':
         item = Item.objects.get(id = pk)
         complaint = item.complaint
-        print("deleting...")
+        print("deleting component...")
         item.delete()
         messages.success(request, 'Item removed successfully ')
         if request.user.is_superuser:
@@ -452,12 +480,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count
 # from django.contrib.auth.models import 
-
+# For Graph
 class Complaints_log_api(APIView):
     def get(self,request,format=None):
         complaints_reg = Complaint.objects.values('registred_date').annotate(count=Count('id'))[:30]
         complaints_rep = Complaint.objects.values('resolved_date').annotate(count=Count('id'))[0:30]
-        print(complaints_rep)
+        # print(complaints_rep)
         data = {
             'registred':complaints_reg,
             'resolved':complaints_rep
