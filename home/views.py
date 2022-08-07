@@ -70,4 +70,16 @@ def dashboard(request):
 
 
 def analytics(request):
-    pass
+    if request.method == 'GET':
+        pass
+    
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.db.models import Count
+
+class Anylitics_API(APIView):
+    def get(self,request,format=None):
+        pass
+
