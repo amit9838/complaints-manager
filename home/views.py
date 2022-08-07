@@ -2,7 +2,7 @@ from itertools import count
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from complaint.models import Complaint
+from complaint.models import Complaint ,Item
 from user.models import *
 from django. contrib.auth. decorators import login_required
 from django.db.models import Count
@@ -81,5 +81,13 @@ from django.db.models import Count
 
 class Anylitics_API(APIView):
     def get(self,request,format=None):
-        pass
-
+        if(request.user_is_superuser):
+            items = Item.objects.all()
+            total_earning = 0
+            for item in items:
+                total_earning = total_earning + item.unit_price + item.quantity
+                
+            data = {
+                'total_earning' : total_earning 
+            }
+            return Response(data)
