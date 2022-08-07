@@ -67,3 +67,7 @@ def dashboard(request):
                 "pending_complaints":pending_complaints
             }
         return render(request, 'home/dashboard.html', context)
+
+
+def analytics(request):
+    pass
