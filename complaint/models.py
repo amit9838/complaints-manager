@@ -40,13 +40,20 @@ class Complaint(models.Model):
     product_model = models.CharField(max_length=30)
     product_description = models.CharField(max_length=30)
     problem = models.CharField(max_length=3000)
-    registred_date = models.DateField(default = datetime.datetime.now)
     
     # Relationship 
-    registred_by = models.ForeignKey(User,db_column="employee", blank=True,null=True,on_delete=models.SET_NULL,related_name = "registred_by" ,verbose_name = "Registred By")
+    registred_by = models.ForeignKey(User,db_column="registred_by", blank=True,null=True,on_delete=models.SET_NULL,related_name = "registred_by" ,verbose_name = "Registred By")
+    registred_date = models.DateField(default = datetime.datetime.now)
+
     assigned_to = models.ForeignKey(User, db_column="engineer",blank=True,null=True,on_delete=models.SET_NULL,related_name = "assigned_to" ,verbose_name = "Assigned To")
-    resolved_by = models.ForeignKey(User, db_column="engineer",blank=True,null=True,on_delete=models.SET_NULL,related_name = "resolved_by" ,verbose_name = "Resolved_By")
+    assigned_by = models.ForeignKey(User, db_column="assigned_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "assigned_by" ,verbose_name = "Assigned By")
     assigned_date = models.DateField(null=True, blank=True)
+    
+    updated_by = models.ForeignKey(User, db_column="updated_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "updated_by" ,verbose_name = "Updated By")
+    updated_date = models.DateField(null=True, blank=True)
+    
+
+    resolved_by = models.ForeignKey(User, db_column="engineer",blank=True,null=True,on_delete=models.SET_NULL,related_name = "resolved_by" ,verbose_name = "Resolved_By")
     resolved_date = models.DateField(null=True, blank=True)
 
     
