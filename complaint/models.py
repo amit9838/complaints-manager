@@ -26,6 +26,7 @@ STATUS_CHOICES = (
     (6,"Failed and Closed"), # Fail and Closed
 )
 
+
 # Create your models here.
 class Complaint(models.Model):
     # Customer Info
@@ -35,46 +36,35 @@ class Complaint(models.Model):
     customer_address = models.CharField(max_length=255)
     complaint_status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
     
-    # Product Info
-    product_name = models.CharField(max_length=255)
-    product_model = models.CharField(max_length=30)
-    product_description = models.CharField(max_length=30)
-    problem = models.CharField(max_length=3000)
-    
     # Relationship 
     registred_by = models.ForeignKey(User,db_column="registred_by", blank=True,null=True,on_delete=models.SET_NULL,related_name = "registred_by" ,verbose_name = "Registred By")
     registred_date = models.DateField(default = datetime.datetime.now)
 
-    assigned_to = models.ForeignKey(User, db_column="engineer",blank=True,null=True,on_delete=models.SET_NULL,related_name = "assigned_to" ,verbose_name = "Assigned To")
+    assigned_to = models.ForeignKey(User, db_column="assigned_to",blank=True,null=True,on_delete=models.SET_NULL,related_name = "assigned_to" ,verbose_name = "Assigned To")
     assigned_by = models.ForeignKey(User, db_column="assigned_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "assigned_by" ,verbose_name = "Assigned By")
     assigned_date = models.DateField(null=True, blank=True)
     
     updated_by = models.ForeignKey(User, db_column="updated_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "updated_by" ,verbose_name = "Updated By")
     updated_date = models.DateField(null=True, blank=True)
     
-
-    resolved_by = models.ForeignKey(User, db_column="engineer",blank=True,null=True,on_delete=models.SET_NULL,related_name = "resolved_by" ,verbose_name = "Resolved_By")
+    resolved_by = models.ForeignKey(User, db_column="resolved_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "resolved_by" ,verbose_name = "Resolved_By")
     resolved_date = models.DateField(null=True, blank=True)
 
-    
+    closed_by = models.ForeignKey(User, db_column="closed_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "closed_by" ,verbose_name = "Closed_By")
+    closed_date = models.DateField(null=True, blank=True)
 
-    def add_component(self,new_item):
-        return self.components_used.add(new_item)
 
-    def set_registred_by(self, user):
-        self.registred_by = user
-        return self.registred_by
+    # Product Info
+    # complaint = models.ForeignKey("complaint.Complaint", on_delete=models.CASCADE)
+    category = models.CharField(max_length=256,null=True, blank=True) # Select category   
+    brand = models.CharField(max_length=256,null=True, blank=True)
+    model_no = models.CharField(max_length=256,null=True, blank=True)
+    serial_no = models.CharField(max_length=256, null=True,  blank=True)
+    pre_repair_checklist = models.JSONField(max_length=5000,null=True, blank=True) 
+    physical_condition = models.CharField(max_length=2048 ,null=True, blank=True)
+    problem = models.CharField(max_length=5000)
 
-    def resolved_by(self, user):
-        return self.resolved_by.add(user)
-
-    def set_resolved_date(self):
-        self.set_resolved_date.datetime.datetime.now()
-
-    def set_status(self, status):
-        self.complaint_status = status
-        return self.complaint_status
 
     def __str__(self):
-        return self.product_name + "-" + self.product_model + "("+ self.customer_name + ")"
+        return self.categoty + "-" + self.brand + "("+ self.customer_name + ")"
         

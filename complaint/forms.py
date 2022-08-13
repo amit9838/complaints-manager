@@ -9,48 +9,57 @@ class ComplaintRegisterForm(ModelForm):
 
     customer_name = forms.CharField(
         label="Customer Name",
-        widget=forms.TextInput(attrs = {'class':'form-control','type':'text','placeholder':''})
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':''})
     )
     customer_mob = forms.CharField(
         label="Mobile Number",
-        widget=forms.TextInput(attrs = {'class':'form-control','type':'Number','placeholder':''})
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'Number','placeholder':''})
     )
     customer_email = forms.EmailField(
         label="Email",
-        widget=forms.TextInput(attrs = {'class':'form-control','type':'email','placeholder':''})
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'email','placeholder':''})
     )
 
     customer_address = forms.CharField(
         label="Address",
-        widget=forms.TextInput(attrs = {'class':'form-control','type':'text','placeholder':''})
+        widget=forms.Textarea(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':'' ,'rows':'3'})
     )
-
-    product_name = forms.CharField(
-        label="Product Name",
-        widget=forms.TextInput(attrs = {'class':'form-control','type':'text','placeholder':''})
-    )
-
-    product_model = forms.CharField(
-        label="Product Model",
-        widget=forms.TextInput(attrs = {'class':'form-control','type':'text','placeholder':''})
-    )
-
-    product_description = forms.CharField(
-        label="Product Description",
-        widget=forms.TextInput(attrs = {'class':'form-control','type':'text','placeholder':''})
-    )
-    problem = forms.CharField(
-        label="Problem",
-        widget=forms.Textarea(attrs = {'class':'form-control','type':'text','placeholder':''})
-    )
-
-
 
     class Meta:
         model = Complaint
-        fields = ['customer_name','customer_mob','customer_email', 'customer_address', 'product_name', 'product_model', 'product_description', 'problem']
+        fields = ['customer_name','customer_mob','customer_email', 'customer_address']
 
 
+
+class ComplaintProductForm(ModelForm):
+    brand = forms.CharField(
+        label="Brand",
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':''})
+    )
+
+    model_no = forms.CharField(
+        label="Model",
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':''})
+    )
+
+    serial_no = forms.CharField(
+        label="Serial No.",
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':''})
+    )
+    
+    physical_condition = forms.CharField(
+        label="Physical Conadition",
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':''})
+    )
+
+    problem = forms.CharField(
+        label="Problem",
+        widget=forms.Textarea(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':' ','rows':'5'})
+    )
+
+    class Meta:
+        model = Complaint
+        fields = ['brand','model_no','serial_no', 'physical_condition', 'problem']
 
 
 class AddComponentForm(ModelForm):
@@ -97,6 +106,4 @@ class ChangeComplaintStatusForm(ModelForm):
     class Meta:
         model = Complaint
         fields = ['complaint_status']
-
-
 

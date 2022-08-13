@@ -170,10 +170,10 @@ class LoginView(View):
                 messages.success(request,f'Welcome {user.first_name}! Great to see you again')
                 return redirect('dashboard')
                     
-            messages.success('Invalid credentials! please try again.')
+            messages.error(request,'Invalid credentials! please try again.')
             return render(request,'user/login.html')
 
-        messages.success('Invalid credentials! please try again.')
+        messages.error(request,'Invalid credentials! please try again.')
         return render(request,'user/login.html')
 
 

@@ -14,39 +14,155 @@
     {% include 'home/partials/_message.html' %}
 
     <div class="card-header pb-0 my-0">
-        <h3 class="text-secondary bg-light px-2 py-1 btn-block rounded" > New Complaint </h3>
+        <h3 class="text-secondary  px-2 py-1 " > New Complaint </h3>
         <!-- <hr class="my-1">     -->
     </div>
 
-    <div class="card-body mt-0" >
+    <div class="card-body  mt-0 pb-2" >
         <form action="" method="post">
             {% csrf_token %}
             <div class="row">
-                <div class="col-sm-6">
-                    {{complaint_register_form.customer_name.label_tag}}
-                    {{complaint_register_form.customer_name}}
-                    {{complaint_register_form.customer_mob.label_tag}}
-                    {{complaint_register_form.customer_mob}}
-                    {{complaint_register_form.customer_email.label_tag}}
-                    {{complaint_register_form.customer_email}}
-                    {{complaint_register_form.customer_address.label_tag}}
-                    {{complaint_register_form.customer_address}}
-                    
+                <div class="col-sm-4 border-1 px-1" >
+                    <div class="border rounded">
+                        <h4 class = "text-secondary bg-light py-2 px-1">Customer Info</h4>
+                        <div class="form-container px-3 pb-2 bg-white w-100">
+                            {{complaint_register_form.customer_name.label_tag}}
+                            {{complaint_register_form.customer_name}}
+                            {{complaint_register_form.customer_mob.label_tag}}
+                            {{complaint_register_form.customer_mob}}
+                            {{complaint_register_form.customer_email.label_tag}}
+                            {{complaint_register_form.customer_email}}
+                            {{complaint_register_form.customer_address.label_tag}}
+                            {{complaint_register_form.customer_address}}
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-6">
-                    {{complaint_register_form.product_name.label_tag}}
-                    {{complaint_register_form.product_name}}
-                    {{complaint_register_form.product_model.label_tag}}
-                    {{complaint_register_form.product_model}}
-                    {{complaint_register_form.product_description.label_tag}}
-                    {{complaint_register_form.product_description}}
-                    {{complaint_register_form.problem.label_tag}}
-                    {{complaint_register_form.problem}}
+
+
+                <div class="col-sm-5 border-1 px-1" >
+                    <div class="border rounded">
+                        <h4 class = "text-secondary bg-light py-2 px-1">Product Info</h4>
+                        <div class="form-container px-3 pb-2 bg-white w-100">
+                            <label for="category">Category</label>
+                            <select name="category" id="" class="form-control form-control-sm w-50">
+                                <option value="none" selected>Select Product</option>
+                                <option value="laptop">Laptop</option>
+                                <option value="printer">Printer</option>
+                                <option value="cpu">CPU</option>
+                                <option value="other">Other</option>
+                            </select>
+                            {{complaint_product_form.brand.label_tag}}
+                            {{complaint_product_form.brand}}
+                            {{complaint_product_form.model_no.label_tag}}
+                            {{complaint_product_form.model_no}}
+                            {{complaint_product_form.serial_no.label_tag}}
+                            {{complaint_product_form.serial_no}}
+                            {{complaint_product_form.physical_condition.label_tag}}
+                            {{complaint_product_form.physical_condition}}
+                            {{complaint_product_form.problem.label_tag}}
+                            {{complaint_product_form.problem}}
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="col-sm-3 border-1 px-1" >
+                    <div class="border rounded">
+                        <h4 class = "text-secondary bg-light py-2 px-1">Pre Repair Checklist</h4>
+                        <div class="form-container px-2 pb-2 bg-white w-100">
+                            <div class="arrtibute-container" id="attribute_container">
+                                <div class="display border my-2 px-3">
+                                    <label for="" class="font-weight-bold mb-2">Display</label>
+                                    <br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="display_opt" id="disp_working" value="working">
+                                        <label class="form-check-label" for="display_opt">Working</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="display_opt" id="disp_notworking" value="not_working">
+                                        <label class="form-check-label" for="display_opt">Not Working</label>
+                                    </div>
+                                </div>
+
+                                <div class="graphics border my-2 px-3">
+                                    <label for="" class="font-weight-bold mb-2">Graphics</label>
+                                    <br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="graphics_option" id="graphics_working" value="working">
+                                        <label class="form-check-label" for="inlineRadio1">Working</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="graphics_option" id="graphics_notworking" value="not_working">
+                                        <label class="form-check-label" for="inlineRadio2">Not Working</label>
+                                    </div>
+                                </div>
+                           
+                                <div class=" border d-flex align-items-center">
+                                    <div class="two-checlist col-5">
+                                        <label for="" class="font-weight-bold mb-2">RAM</label>
+                                        <br>
+                                        <input type="text" class="form-control form-control-sm w-100" name = "ram">
+                                    </div>
+                                    <div class="two-checlist col-5">
+                                        <label for="" class="font-weight-bold mb-2">Processor</label>
+                                        <br>
+                                        <input type="text" class="form-control form-control-sm w-100" name = "processor">
+                                    </div>
+                                </div>
+
+                                <div class="storage border px-3 my-2">
+                                    <label for="" class="font-weight-bold mb-2">Storage</label>
+                                        <br>
+                                        <input type="text" class="form-control form-control-sm w-75 mb-0" name="storage"> 
+                                        <label  class="pb-1 text-secondary" >SSD/HDD/M.2/Optane</label  >
+                                </div>
+                            </div>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="more_attr btn btn-primary btn-sm w-100 rounded" data-toggle="modal" data-target="#exampleModal">
+                                    + Add Attribute
+                                </button>
+                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">New Attribute</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <form>
+                                                <div class="form-row">
+                                                  <div class="form-group col-md-6">
+                                                    <label for="attr_key">Name</label>
+                                                    <input type="key" class="form-control" id="attr_key" placeholder="Key">
+                                                  </div>
+                                                  <div class="form-group col-md-6">
+                                                    <label for="attr_val">Property</label>
+                                                    <input type="value" class="form-control" id="attr_val" placeholder="Value">
+                                                  </div>
+                                                </div>
+                                              </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary">Add Attribute</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- {{complaint_register_form}} -->
-            <div class="btn-container col-sm-2 float-right" style="min-width:12rem;">
-                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-plus"></i> Add Complaint</button>
+            <div class="submit-btn border-top mt-4 py-0">
+
+                <div class="btn-container col-sm-2 float-right mt-2 mr-0 pr-0" style="min-width:10rem;">
+                    <button type="submit" class="btn btn-primary btn-block"> Submit</button>
+                </div>
             </div>
         </form>
     </div>

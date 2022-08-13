@@ -12,17 +12,19 @@ import json
 @login_required
 def register_complaint(request):
     if(request.user.is_staff):
-        form  = ComplaintRegisterForm()
+        form_cmp  = ComplaintRegisterForm()
+        form_product = ComplaintProductForm()
         context = {
                 
-                'complaint_register_form':form
+                'complaint_register_form':form_cmp,
+                'complaint_product_form':form_product
             }
         if request.method == "GET":
             return render(request, 'complaint/new_complaint.html',context) 
         if request.method == "POST":
-            form = ComplaintRegisterForm(request.POST)
-            if form.is_valid():
-                formdata = form.save(commit=False)
+            form_cmp = ComplaintRegisterForm(request.POST)
+            if form_cmp.is_valid():
+                formdata = form_cmp.save(commit=False)
                 formdata.set_registred_by(request.user)
                 formdata.complaint_status = 1;
                 formdata.save()
