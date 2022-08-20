@@ -9,6 +9,7 @@ from user.models import *
 import json
 
 
+# Requires Customer data to crate complaint id 
 @login_required
 def register_complaint(request):
     if(request.user.is_staff):
@@ -25,16 +26,67 @@ def register_complaint(request):
             form_cmp = ComplaintRegisterForm(request.POST)
             if form_cmp.is_valid():
                 formdata = form_cmp.save(commit=False)
-                formdata.set_registred_by(request.user)
+                formdata.registred_by = request.user
                 formdata.complaint_status = 1;
-                formdata.save()
+                new_obj =  formdata.save()
+                obj = form_cmp.instance
                 messages.success(request, 'Complaint has been successfully registred.')
-                return redirect('dashboard')
+                return redirect('add_checklist',obj.id)
 
             messages.error(request, 'Complaint not registred! Please provide valid input.')
             return render(request, 'complaint/new_complaint.html',context)
     else:
         return HttpResponse("You dont't have permission to access this page")
+
+
+# Using above complaint id to attach product checklist of  the the product.
+def add_checklist(request, pk):
+    complaint = Complaint.objects.get(id=pk)
+    if request.method == 'GET':
+        check_list = CheckList.objects.filter(complaint = complaint)
+        print(check_list)
+        return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
+
+    if request.method == 'POST':
+        key = request.POST['key']
+        val = request.POST['val']
+        obj = CheckList(complaint = complaint, c_list_key = key, c_list_val = val)
+        print("adding to list...")
+        if obj:
+            obj.save()
+            print("Added successfully..")
+            messages.success(request, 'Checklist Updated')
+            return redirect('add_checklist',pk)
+        messages.error(request, 'Could not add!')
+
+def update_checklist(request, pk_cmp,pk_chk):
+    complaint = Complaint.objects.get(id=pk_cmp)
+    if request.method == 'GET':
+        check_list = CheckList.objects.filter(complaint = complaint)
+        # print(check_list)
+        return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
+
+    if request.method == 'POST':
+        key = request.POST['key']
+        val = request.POST['val']
+        check_list_mod = CheckList.objects.get(id = pk_chk)
+        if(key and val):
+            check_list_mod.c_list_key = key
+            check_list_mod.c_list_val = val   
+            check_list_mod.save()     
+            print("Updated successfully..")
+            messages.success(request, 'Checklist Updated')
+            return redirect('add_checklist',pk_cmp)
+        messages.error(request, 'Could not add!')
+
+
+def delete_checklist(request, pk_cmp,pk_chk):
+    list_item = CheckList.objects.get(id=pk_chk)
+    list_item.delete()
+    print("Checklist item deleted successfully..")
+    messages.error(request, 'Checklist item deleted successfully')
+    return redirect('add_checklist',pk_cmp)
+
 
 @login_required
 def update_complaint(request,pk):

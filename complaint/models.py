@@ -60,7 +60,7 @@ class Complaint(models.Model):
     brand = models.CharField(max_length=256,null=True, blank=True)
     model_no = models.CharField(max_length=256,null=True, blank=True)
     serial_no = models.CharField(max_length=256, null=True,  blank=True)
-    pre_repair_checklist = models.JSONField(max_length=5000,null=True, blank=True) 
+    # pre_repair_checklist = models.JSONField(max_length=5000,null=True, blank=True) 
     physical_condition = models.CharField(max_length=2048 ,null=True, blank=True)
     problem = models.CharField(max_length=5000)
 
@@ -68,3 +68,12 @@ class Complaint(models.Model):
     def __str__(self):
         return self.categoty + "-" + self.brand + "("+ self.customer_name + ")"
         
+
+
+class CheckList(models.Model):
+    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE)
+    c_list_key = models.CharField(max_length=255)
+    c_list_val = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.complaint.customer_name +"-"+ self.c_list_key
