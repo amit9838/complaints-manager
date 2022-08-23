@@ -14,25 +14,24 @@ import json
 def register_complaint(request):
     if(request.user.is_staff):
         form_cmp  = ComplaintRegisterForm()
-        form_product = ComplaintProductForm()
         context = {
                 
                 'complaint_register_form':form_cmp,
-                'complaint_product_form':form_product
             }
         if request.method == "GET":
             return render(request, 'complaint/new_complaint.html',context) 
         if request.method == "POST":
             form_cmp = ComplaintRegisterForm(request.POST)
+            cat = request.POST['category']
             if form_cmp.is_valid():
                 formdata = form_cmp.save(commit=False)
                 formdata.registred_by = request.user
                 formdata.complaint_status = 1;
-                new_obj =  formdata.save()
+                formdata.category = cat
+                formdata.save()
                 obj = form_cmp.instance
                 messages.success(request, 'Complaint has been successfully registred.')
                 return redirect('add_checklist',obj.id)
-
             messages.error(request, 'Complaint not registred! Please provide valid input.')
             return render(request, 'complaint/new_complaint.html',context)
     else:
@@ -44,7 +43,7 @@ def add_checklist(request, pk):
     complaint = Complaint.objects.get(id=pk)
     if request.method == 'GET':
         check_list = CheckList.objects.filter(complaint = complaint)
-        print(check_list)
+        # print(complaint.get_fields())
         return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
 
     if request.method == 'POST':
@@ -62,7 +61,7 @@ def add_checklist(request, pk):
 def update_checklist(request, pk_cmp,pk_chk):
     complaint = Complaint.objects.get(id=pk_cmp)
     if request.method == 'GET':
-        check_list = CheckList.objects.filter(complaint = complaint)
+        check_list= CheckList.objects.get(id = pk_chk)
         # print(check_list)
         return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
 
@@ -93,8 +92,6 @@ def update_complaint(request,pk):
     if(request.user.is_staff):
         try:
             complaint = Complaint.objects.get(id=pk)
-            # registred_by = complaint.registred_by
-            # stat = complaint.complaint_status
             form  = ComplaintRegisterForm(instance=complaint)
             context = {
                     

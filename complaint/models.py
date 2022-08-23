@@ -55,18 +55,16 @@ class Complaint(models.Model):
 
 
     # Product Info
-    # complaint = models.ForeignKey("complaint.Complaint", on_delete=models.CASCADE)
     category = models.CharField(max_length=256,null=True, blank=True) # Select category   
     brand = models.CharField(max_length=256,null=True, blank=True)
     model_no = models.CharField(max_length=256,null=True, blank=True)
     serial_no = models.CharField(max_length=256, null=True,  blank=True)
-    # pre_repair_checklist = models.JSONField(max_length=5000,null=True, blank=True) 
     physical_condition = models.CharField(max_length=2048 ,null=True, blank=True)
     problem = models.CharField(max_length=5000)
 
 
-    def __str__(self):
-        return self.categoty + "-" + self.brand + "("+ self.customer_name + ")"
+    # def __str__(self):
+    #     return self.category + "-" + self.brand + "("+ self.customer_name + ")"
         
 
 

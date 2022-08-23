@@ -25,13 +25,6 @@ class ComplaintRegisterForm(ModelForm):
         widget=forms.Textarea(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':'' ,'rows':'3'})
     )
 
-    class Meta:
-        model = Complaint
-        fields = ['customer_name','customer_mob','customer_email', 'customer_address']
-
-
-
-class ComplaintProductForm(ModelForm):
     brand = forms.CharField(
         label="Brand",
         widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':''})
@@ -56,10 +49,10 @@ class ComplaintProductForm(ModelForm):
         label="Problem",
         widget=forms.Textarea(attrs = {'class':'form-control form-control-sm','type':'text','placeholder':' ','rows':'5'})
     )
-
     class Meta:
         model = Complaint
-        fields = ['brand','model_no','serial_no', 'physical_condition', 'problem']
+        fields = ['customer_name','customer_mob','customer_email', 'customer_address','brand','model_no','serial_no', 'physical_condition', 'problem']
+
 
 
 class AddComponentForm(ModelForm):
