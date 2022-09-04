@@ -7,5 +7,6 @@ urlpatterns = [
     path('user/',include('user.urls')),
     path('',include('home.urls')),
     path('user/',include('user.urls')),
+    path('store/',include('store.urls')),
     path('complaint/',include('complaint.urls')),
 ]

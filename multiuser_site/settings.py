@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'home',
     'user',
     'complaint',
+    'store',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
