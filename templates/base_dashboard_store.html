@@ -23,102 +23,19 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 
-	<style>
-		.st1::after{
-			content: "Registred";
-			padding: .1rem .3rem;
-			color: white;
-			border-radius: .2rem;
-			background-color: orange;
-		}
-		.st2::after{
-			content: "In Progress";
-			padding: .1rem .3rem;
-			color: white;
-			border-radius: .2rem;
-			background-color: rgb(0, 90, 142);
-		}
-	
-		.st3::after{
-			content: "Repaired";
-			padding: .1rem .3rem;
-			color: white;
-			border-radius: .2rem;
-			background-color: green;
-		}
-	
-		.st4::after{
-			content: "Failed";
-			padding: .1rem .3rem;
-			color: white;
-			border-radius: .2rem;
-			background-color: rgb(186, 14, 14);
-		}
-		.st5::after{
-			content: "Repaired & Closed";
-			padding: .1rem .3rem;
-			color: white;
-			border-radius: .2rem;
-			background-color: rgb(19, 86, 73);
-		}
-	
-		.st6::after{
-			content: "Failed & Closed";
-			padding: .1rem .3rem;
-			color: white;
-			border-radius: .2rem;
-			background-color: rgb(63, 10, 10);
-		}
-	
-
-		label {
-			margin-bottom:0rem;
-			font-size:.8rem;
-		}
-
-
-	
-	</style>
-	
 </head>
 
 <body>
 	<div class="wrapper">
 
 		<!-- --------------------------- -->
-		<nav id="sidebar" class="sidebar js-sidebar"  style="overflow-y: scroll;">
+		<nav id="sidebar" class="sidebar js-sidebar "  style="overflow-y: scroll;">
 			<div class="sidebar-content js-simplebar" >
-
 				<!-- Sideabr -------------------------------------------->
-
-					
 				<a class="sidebar-brand" href="">
-					{% if request.user.is_superuser %}
-					<span class="align-middle"> Admin Dashboard	</span>
-
-					{% elif request.user.is_staff %}
-					<span class="align-middle">Dashboard</span>
-					
-					
-					{% else %}
-					<span class="align-middle">Engineer Dashboard</span>
-				{% endif %}
+					<span class="align-middle"> Inventory</span>
 				</a>
-
-				{% if request.user.is_superuser %}
-				{% include 'home/sidebar/_admin_sidebar.html' %}
-
-
-				{% elif request.user.is_staff %}
-				{% include 'home/sidebar/_emp_sidebar.html' %}
-
-
-				{% else %}
-				{% include 'home/sidebar/_engg_sidebar.html' %}
-
-				{% endif %}
-
-				
+				{% include 'store/partials/_store_sidebar.html' %}
 <!-- ------------------------------- -->
 			</div>
 		</nav>
@@ -165,24 +82,11 @@
 								</div>
 								  
 								{% else %}
-								  <!-- <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-									<i class="align-middle" data-feather="settings"></i>
-									</a>
-									<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-									<img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Welcome," /> <span class="text-dark">{{request.user.username}}</span>
-								  </a> -->
-	
 								  <div class="dropdown-menu dropdown-menu-end">
 								  	<a class="dropdown-item w-100" href="#">Log In</a>
 								  </div>
-
-
 							{% endif %}
 						</li>
-
-
-
-
 					</ul>
 				</div>
 			</nav>

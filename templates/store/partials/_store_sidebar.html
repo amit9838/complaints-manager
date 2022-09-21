@@ -1,0 +1,63 @@
+<style>
+  .sidebar-link, .sidebar-content {
+    background-color: #393E46 !important ;
+    color: rgba(240, 248, 255, 0.928) !important;
+  }
+</style>
+
+<a class="" href={% url 'register_complaint' %}>
+    <div class="text-info px-4 py-2 mx-2" style="background-color:rgb(255, 255, 255); border-radius:.2rem; font-weight:600;">
+      <i class="fa-solid fa-plus"></i> <span class=""> Add Product</span>
+    </div>
+  </a>
+  
+  <ul class="sidebar-nav ">
+    <li class="sidebar-header">
+      Pages
+    </li>
+  
+    <li class="sidebar-item ">
+      <a class="sidebar-link" href={% url 'store' %}>
+        <i class="fa-solid fa-sliders"></i> <span class="">Dashboard</span>
+      </a>
+    </li>
+  
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="{% url 'all_products' %}">
+        <i class="fa-solid fa-list-ul"></i> <span class="">All Products</span>
+      </a>
+    </li>
+    
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="#">
+        <i class="fa-solid fa-hourglass"></i> <span class="">Low Stock</span>
+      </a>
+    </li>
+    
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="#">
+        <i class="fa-solid fa-square-xmark"></i> <span class="">Zero Stock</span>
+      </a>
+    </li>
+  
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="">
+        <i class="fa-solid fa-chart-pie"></i> <span class="">Analytics</span>
+      </a>
+    </li>
+  
+  
+  
+    <li class="sidebar-item">
+      <a class="sidebar-link" href="">
+        <i class="align-middle" data-feather="map"></i> <span class="align-middle">Preferences</span>
+      </a>
+    </li>
+  </ul>
+
+
+<a class=" mb-2"href="{%url 'dashboard' %}">
+  <div class=" px-4 py-2 mx-2 bg-info" style=" border-radius:.2rem; font-weight:600;">
+    <i class="fa-solid fa-arrow-left text-light"></i><span class="text-light">&nbsp; Go to Dashboard</span>
+  </div>
+</a>

@@ -109,9 +109,8 @@
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
 
     <script>
 
@@ -119,8 +118,6 @@
         let reg_count = [];
         let rep_dates = [];
         let rep_count = [];
-
-
         // Creating array from fetched data
 
         function create_lists(data) {
@@ -189,13 +186,20 @@
                     scales: {
                         y: {
                             beginAtZero: true
+                        },
+                        grid:{
+                            display:false
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false,
+        
                         }
                     },
                     responsive: true,
                     maintainAspectRatio: false
                 }
-
-
             });
         }
 

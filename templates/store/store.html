@@ -1,21 +1,245 @@
-{% extends 'base_dashboard.html' %}
-
-
-
+{% extends 'base_dashboard_store.html' %}
+{% block title %}Store{% endblock title %}
 {% block body_content %}
 
-<div class="card flex-fill w-sm-50 mx-auto">
-    <div class="card-header mb-0 pb-0">
-        <h3 class="card-titlse text-center bg-light py-2 rounded text-dark"> Store </h3>
-        
-    </div>
+{% include 'home/partials/_message.html' %}
+<div class="row mx-1">
+    <div class="row col-sm-7">
 
-    <div class="card-body">
-        {% include 'home/partials/_message.html' %}
-        
-            Store items will be available soon....
+        <div class="col-sm-3 card flex-fill w-sm-50 mx-1 mb-1">
+            <div class="card-header m-0 p-0 px-1 mt-2">
+                <h3 class="card-title bg-light p-1 px-2 rounded"> PRODUCT DETAILS </h3>
+            </div>
+            <div class="card-body pt-1">
+                <table>
+                    <tbody>
+                        <tr class="text-danger">
+                            <td width="180">Zero Stock</td>
+                            <th><span class="">{{low_stock}}</span></th>
+                        </tr>
+                        <tr class="text-warning">
+                            <td width="180">Low Stock</td>
+                            <th><span class="">{{low_stock}}</span></th>
+                        </tr>
+                        <tr class="text-success">
+                            <td width="180">Mock Stock</td>
+                            <th><span class="">{{low_stock}}</span></th>
+                        </tr>
+                        <tr class="">
+                            <td width="180">All Item Group</td>
+                            <th><span class="">{{all_items_group}}</span></th>
+                        </tr>
 
+                        <tr class="">
+                            <td width="180">All Products</td>
+                            <th><span class="">{{products_count}}</span></th>
+                        </tr>
+                        <tr class="text-primary" style="border-top:1px solid rgb(241, 241, 241) ;">
+                            <td width="180">Total Value</td>
+                            <th><span class="">{{total_value}}(INR)</span></th>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-3 card flex-fill w-sm-50 mx-1 mb-1">
+            <div class="card-header m-0 p-0 px-1 mt-2">
+                <h3 class="card-title bg-light p-1 px-2 rounded"> SALES(INR) </h3>
+            </div>
+            <div class="card-body pt-1">
+                <table>
+                    <tbody>
+                        <tr class="">
+                            <td width="180">Today</td>
+                            <th><span class="">3</span></th>
+                        </tr>
+                        <tr class="">
+                            <td width="180">Yesterday</td>
+                            <th><span class="">6</span></th>
+                        </tr>
+                        <tr class="">
+                            <td width="180">This Week</td>
+                            <th><span class="">51</span></th>
+                        </tr>
+                        <tr class="">
+                            <td width="180">This Month</td>
+                            <th><span class="">200</span></th>
+                        </tr>
+                        <tr class="">
+                            <td width="180">Overall</td>
+                            <th><span class="">3558</span></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-6 card flex-fill w-sm-50 mx-1 ">
+            <div class="row card-body p-2">
+                <div class="col-sm-5 left-box bg-light p-2 m-1 rounded" style=" height:8rem">
+                    <span class="text-success"><i class="fa-solid fa-arrow-up"></i></span>
+                    <span>Top Sold</span> 
+                    <br>
+                    <h4 class="m-1 pl-2 text-secondary">DELL Keypad AC-43AT</h4>
+                    <div class="body">
+                        <span class="ml-1 pl-1 text-success" style="font-size: 2rem; font-weight: 800;">132</span>
+                    </div>
+                    <h6 class="text-secondary mt-0 pl-2">This Week</h6>
+                </div>
+                <div class="col-sm-6 left-box bg-light p-2 m-1 rounded" style="height:8rem">
+                    <span class="text-danger"><i class="fa-solid fa-arrow-down"></i></span>
+                    <span>Least Sold</span> 
+                    <br>
+                    <h4 class="m-1 pl-2 text-secondary">HP Display 14' XT-93 </h4>
+                    <div class="body">
+                        <span class="ml-1 pl-1 text-danger" style="font-size: 2rem; font-weight: 800;">14</span>
+                    </div>
+                    <h6 class="text-secondary mt-0 pl-2">This Week</h6>
+                </div>
+
+
+            </div>
+        </div>
+        </div>
+
+
+
+    <div class="col-sm-5 card flex-fill w-sm-50 mx-1" style="height: 20rekm;">
+        <div class="card-header m-0 p-0 px-1 mt-2">
+            <h3 class="card-title bg-light p-1 px-2 rounded"> Categories ({{category_cnt}})</h3>
+        </div>
+        <div class="card-body pt-1" >
+            <div class="chart chart-sm" >
+                <canvas id="product_cat" width="40vw" height="13vh"></canvas>
+            </div>
+        </div>
     </div>
 </div>
 
-{% endblock  %}
+
+<div class="card flex-fill w-sm-50 mx-1">
+    <div class="card-header m-0 p-0 px-1 mt-2">
+        <h3 class="card-title p-1 px-2 rounded">Recently Added </h3>
+    </div>
+    <div class="card-body pt-1" style="overflow-x:scroll ;">
+        <table class="table table-stripped table-sm" style="min-width:30rem ;">
+            <thead>
+                <th>SN</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </thead>
+            <tbody>
+                {% for item in product %}
+                <tr class="">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{item.name}}-{{item.brand}}</td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.unit_price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('product_cat').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Keypad',
+                'Display',
+                'Storage'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4,
+
+
+            }]
+        },
+        options: {
+            scales: {
+                grid: {
+                    display: false
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'right'
+
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+
+        }
+    });
+
+
+
+    
+const ctx2 = document.getElementById('recents').getContext('2d');
+const myChart2= new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+                tension:0.1,
+                borderWidth:2,
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            },
+        },
+        plugins: {
+            legend: {
+                display: false,
+
+            }
+        },
+        responsive:true,
+        maintainAspectRatio:true
+
+    }
+});
+
+
+</script>
+
+{% endblock %}
