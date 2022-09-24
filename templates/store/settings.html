@@ -1,0 +1,128 @@
+{% extends 'base_dashboard_store.html' %}
+
+{% block title %}Settings{% endblock title %}
+
+{% block navbar_content %}
+
+{% endblock navbar_content %}
+
+
+{% block body_content %}
+
+{% include 'home/partials/_message.html' %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{% url 'store' %}">Store</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Settings</li>
+    </ol>
+</nav>
+
+<div class="card flex-fill px-2">
+    <div class="card-header m-0 p-0 px-1 mt-2 ">
+        <h3 class="card-title p-1 px-2 rounded">Settings</h3>
+    </div>
+    <div class="card-body pt-1" style="overflow-x:scroll ;">
+        <div class="category bg-light w-25 px-2 pb-2 rounded">
+            <h5 class="text-secondary px-2 pt-2 mb-0">Add Category</h5>
+            <div class="form">
+                <form action={% url 'add_category' %} class=" d-flex py-1 justify-content-between" method="post">
+                    {% csrf_token %}
+                    <input class="form-control form-control-sm mx-2" placeholder="eg. printer" type="text"
+                        name="cat_name">
+                    <button class="btn btn-info btn-sm mx-2 rounded" type="submit">Add</button>
+                </form>
+            </div>
+        </hr>
+        <hr class="m-0 p-0 mt-2 mx-2" >
+        <h6 class="text-secondary mt-2 ml-2 ">Available Categories</h6>
+            <div class="list-categories rounded bg-white m-2" style="height:20rem; overflow-y:scroll ;">
+                <table class="table table-sm">
+                    {% for item in categories %}
+                    <tr>
+                        <td width="180">{{item.name}}</td>
+                        <td>
+                            <span class="">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-light text-info btn-sm rounded" data-toggle="modal"
+                                    data-target="#update{{item.id}}">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="update{{item.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                    Update Category
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 class="ml-2 text-secondary">
+                                                    Enter new category.
+                                                </h5>
+                                                <form action={% url 'update_category' item.id %}
+                                                    class=" d-flex py-1 justify-content-between" method="post">
+                                                    {% csrf_token %}
+                                                    <input class="form-control form-control-sm mx-2" type="text"
+                                                        name="cat_name" value="{{item.name}}">
+                                                    <input type="submit" class="btn btn-success rounded" value="Update">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-light text-danger btn-sm rounded" data-toggle="modal"
+                                    data-target="#delete{{item.id}}">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="delete{{item.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                    Delete Category
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                               Are you sure want to delete '<b>{{item.name}}</b>' category?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <form action={% url 'delete_category' item.id %}
+                                                class=" d-flex py-1 justify-content-between" method="post">
+                                                {% csrf_token %}
+                                                <input type="submit" class="btn btn-danger rounded" value="Delete">
+                                            </form>                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

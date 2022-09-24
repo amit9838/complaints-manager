@@ -43,15 +43,14 @@
                                         <div class="dropdown-menu dropdown-menu-right" style="margin-top:.2rem;"
                                                 aria-labelledby="dropdownMenuButton">
                                                 <!-- <a class="dropdown-item" href="#">Print</a> -->
-                                                
-                                                <a class="dropdown-item text-success" id="share_on_wa"
-                                                target="_blank">
-                                                <i class="fa-brands fa-whatsapp"></i> Share</a>
-                                                
+
+                                                <a class="dropdown-item text-success" id="share_on_wa" target="_blank">
+                                                        <i class="fa-brands fa-whatsapp"></i> Share</a>
+
                                                 <script>
                                                         let btn_item = document.getElementById("share_on_wa");
                                                         // device detection
-                                                        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                                                        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                                                                 btn_item.href = `
                                                                 https://api.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
                                                                 %0AHello  *{{complaint.customer_name}}*, 
@@ -68,8 +67,8 @@
                                                                 %0A%0A*Thanks for visiting!*
                                                                `
                                                         }
-                                                        else{
-                                                               btn_item.href = `
+                                                        else {
+                                                                btn_item.href = `
                                                                 https://web.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
                                                                 %0AHello  *{{complaint.customer_name}}*, 
                                                                 %0AYour Complaint has been registered successfully.
@@ -101,9 +100,8 @@
                                                 <form action="{% url 'delete_complaint' complaint.id %}" method="post">
                                                         {% csrf_token %}
                                                         <button type="submit" class="dropdown-item text-danger m-0"> <i
-                                                                class="fa-solid fa-trash-can"></i>
-                                                                Delete</button>
-                                                        </form>
+                                                                        class="fa-solid fa-trash-can"></i>Delete</button>
+                                                </form>
                                                 {% endif %}
                                         </div>
                                 </div>
@@ -163,7 +161,8 @@
                                         <form action="{% url 'assign_engineer' complaint.id %}" method="post">
                                                 {% csrf_token %}
                                                 <label class="text-secondary mb-0" for="">Assigned Engineer </label>
-                                                <select name="assign_engineer" class="form-control form-control-sm rounded"
+                                                <select name="assign_engineer"
+                                                        class="form-control form-control-sm rounded"
                                                         id="id_assign_engineer">
                                                         <option value="-1">Assign Engineer</option>
                                                         {% for engineer in engineers %}
@@ -240,7 +239,7 @@
 
                         </div>
                 </div>
-                <a href = "{% url 'add_checklist' complaint.id %}" class= "btn btn-primary">Checklist</a>
+                <a href="{% url 'add_checklist' complaint.id %}" class="btn btn-primary">Checklist</a>
         </div>
 
 
@@ -287,7 +286,8 @@
 
 
                                                                 <!-- Button trigger modal -->
-                                                                <button type="button" class="btn btn-danger btn-sm rounded"
+                                                                <button type="button"
+                                                                        class="btn btn-danger btn-sm rounded"
                                                                         data-toggle="modal" data-target="#exampleModal">
                                                                         Remove
                                                                 </button>
@@ -302,7 +302,9 @@
                                                                                         <div class="modal-header">
                                                                                                 <h5 class="modal-title"
                                                                                                         id="exampleModalLabel">
-                                                                                                        Are you sure want to remove?</h5>
+                                                                                                        Are you sure
+                                                                                                        want to remove?
+                                                                                                </h5>
                                                                                                 <button type="button"
                                                                                                         class="close"
                                                                                                         data-dismiss="modal"
@@ -312,14 +314,15 @@
                                                                                                 </button>
                                                                                         </div>
                                                                                         <div class="modal-body">
-                                                                                                Item can not be recovred once deleted!
+                                                                                                Item can not be recovred
+                                                                                                once deleted!
                                                                                         </div>
                                                                                         <div class="modal-footer">
                                                                                                 <button type="button"
                                                                                                         class="btn btn-secondary"
                                                                                                         data-dismiss="modal">Close</button>
-                                                                                                                                        
-                                                                                                        <form action="{% url 'delete_component' component.id %}"
+
+                                                                                                <form action="{% url 'delete_component' component.id %}"
                                                                                                         method="post">
                                                                                                         {% csrf_token %}
                                                                                                         <input type="submit"

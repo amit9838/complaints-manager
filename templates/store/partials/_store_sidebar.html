@@ -5,7 +5,7 @@
   }
 </style>
 
-<a class="" href={% url 'register_complaint' %}>
+<a class="" href={% url 'new_product' %}>
     <div class="text-info px-4 py-2 mx-2" style="background-color:rgb(255, 255, 255); border-radius:.2rem; font-weight:600;">
       <i class="fa-solid fa-plus"></i> <span class=""> Add Product</span>
     </div>
@@ -46,13 +46,16 @@
       </a>
     </li>
   
-  
-  
+    <li class="sidebar-header">
+      Preferences
+    </li>
+
     <li class="sidebar-item">
-      <a class="sidebar-link" href="">
-        <i class="align-middle" data-feather="map"></i> <span class="align-middle">Preferences</span>
+      <a class="sidebar-link" href="{% url 'settings' %}">
+        <i class="fa-solid fa-gear"></i> <span class="">Settings</span>
       </a>
     </li>
+  
   </ul>
 
 
