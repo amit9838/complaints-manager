@@ -2,15 +2,14 @@ from datetime import datetime
 from django.shortcuts import render,redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from store.forms import NewProductFrom
+from django.core.paginator import Paginator
 from .models import *
 from django.db.models import Count
 from django.contrib import messages
 import json
 
 
-
-# Create your views here.
-
+# Store Page (Start) ---------------------------------------------
 def store(request):
     user = request.user
     if(not user.is_superuser):
@@ -43,19 +42,27 @@ def store(request):
         'total_value':total_value,
         'category_cnt':category_cnt.count(),
         'cat_list':cat_list_json
-
     }
     return render(request, 'store/store.html',context)
+# Store Page (end) ---------------------------------------------
 
-
+# View All Products -------------------------------------------------
 def all_products(request):
-    product = Product.objects.all()
     user = request.user
     if(not user.is_superuser):
         return  HttpResponse("You can't access this page")
-    return render(request, 'store/all_products.html',{'product':product})
+    all_product = Product.objects.all()
+    paginator = Paginator(all_product,50)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    context = {
+        'product':all_product,
+        'page_obj':page_obj
+    }
+    return render(request, 'store/all_products.html',context)
 
 
+# Register New Product -------------------------------------------------
 def new_product(request):
     # product = Product.objects.all()
     user = request.user
@@ -96,7 +103,7 @@ def new_product(request):
             return render(request, 'store/new_product.html',context)
 
 
-
+# Settings Page (start) ----------------------------------------
 def settings(request):
     user = request.user
     if(not user.is_superuser):
@@ -144,3 +151,4 @@ def delete_category(request,pk):
         cat.delete()
         return redirect('settings')
     return redirect('settings')
+# Settings page (end) -------------------------------------------

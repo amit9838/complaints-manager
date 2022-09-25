@@ -9,7 +9,7 @@ from user.models import *
 import json
 
 
-# Requires Customer data to crate complaint id 
+# Register new Complaint ------------------------------------------
 @login_required
 def register_complaint(request):
     if(request.user.is_staff):
@@ -38,7 +38,40 @@ def register_complaint(request):
         return HttpResponse("You dont't have permission to access this page")
 
 
+@login_required
+def update_complaint(request,pk):
+    if(request.user.is_staff):
+        try:
+            complaint = Complaint.objects.get(id=pk)
+            form  = ComplaintRegisterForm(instance=complaint)
+            context = {
+                    
+                    'complaint_register_form':form,
+                    'complaint':complaint
+                }
+            if request.method == "GET":
+                return render(request, 'complaint/update_complaint.html',context) 
+            if request.method == "POST":
+                form = ComplaintRegisterForm(request.POST, instance=complaint)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Complaint has been successfully updated.')
+                    if request.user.is_superuser:
+                        return redirect('view_complaint', complaint.id)
+                    else:
+                        return redirect('view_complaint_engg', complaint.id)
+                
+                messages.error(request, 'Complaint not Updated! Please provide valid input.')
+                return render(request, 'complaint/update_complaint.html',context)
+        except Complaint.DoesNotExist:
+            return redirect('all_complaints')
+
+
+    else:
+        return HttpResponse("You dont't have permission to access this page")
+
 # Using above complaint id to attach product checklist of  the the product.
+# Add Check List --------------------------------------------------------
 def add_checklist(request, pk):
     complaint = Complaint.objects.get(id=pk)
     if request.method == 'GET':
@@ -87,44 +120,24 @@ def delete_checklist(request, pk_cmp,pk_chk):
     return redirect('add_checklist',pk_cmp)
 
 
-@login_required
-def update_complaint(request,pk):
+def deleteComplaint(request,pk):
     if(request.user.is_staff):
-        try:
+        if request.method == 'POST':
             complaint = Complaint.objects.get(id=pk)
-            form  = ComplaintRegisterForm(instance=complaint)
-            context = {
-                    
-                    'complaint_register_form':form,
-                    'complaint':complaint
-                }
-            if request.method == "GET":
-                return render(request, 'complaint/update_complaint.html',context) 
-            if request.method == "POST":
-                form = ComplaintRegisterForm(request.POST, instance=complaint)
-                if form.is_valid():
-                    form.save()
-                    messages.success(request, 'Complaint has been successfully updated.')
-                    if request.user.is_superuser:
-                        return redirect('view_complaint', complaint.id)
-                    else:
-                        return redirect('view_complaint_engg', complaint.id)
-                
-                messages.error(request, 'Complaint not Updated! Please provide valid input.')
-                return render(request, 'complaint/update_complaint.html',context)
-        except Complaint.DoesNotExist:
+            c_id = complaint.id
+            complaint.delete()
+            print("deleting complaint...")
+            messages.success(request, f'Complaint with #id {c_id} deleted successfully')
             return redirect('all_complaints')
-
-
     else:
         return HttpResponse("You dont't have permission to access this page")
 
-
+# List Complaints-----------------------------------------------------------------
 @login_required
 def list_complaints(request):
     if request.user.is_staff:
         all_complaints = Complaint.objects.all()
-        paginator = Paginator(all_complaints, 3)
+        paginator = Paginator(all_complaints, 50)
         page_number = request.GET.get('page')
         page_obj = Paginator.get_page(paginator, page_number)
         return render(request, 'complaint/list_complaints.html', {'all_complaints':all_complaints, 'page_obj':page_obj})
@@ -135,14 +148,71 @@ def list_complaints(request):
         page_obj = Paginator.get_page(paginator, page_number)
         return render(request, 'complaint/list_complaints.html', {'all_complaints':all_complaints, 'page_obj':page_obj})
 
+
+@login_required
+def inProgress_complaints(request):
+    complaints = Complaint.objects.filter(complaint_status = 2)
+    return render(request, 'complaint/in_progress_complaints.html',{'in_progress_complains':complaints})
+
+@login_required
+def closing_complaints(request):
+    if(request.user.is_staff):
+        closing_complaints1 = Complaint.objects.filter(complaint_status=3)
+        closing_complaints2 = Complaint.objects.filter(complaint_status = 4)
+        closing_complaints = closing_complaints1 | closing_complaints2
+        return render(request, 'complaint/closing_complaints.html', {'closing_complaints':closing_complaints})
+    else:
+        return HttpResponse("You dont't have permission to access this page")
+
+@login_required
+def closed_complaints(request):
+    if(request.user.is_staff):
+        closed_complaints1 = Complaint.objects.filter(complaint_status=5)
+        closed_complaints2 = Complaint.objects.filter(complaint_status = 6)
+        closed_complaints = closed_complaints1 | closed_complaints2
+        paginator = Paginator(closed_complaints, 3)
+        page_number = request.GET.get('page')
+        page_obj = Paginator.get_page(paginator, page_number)
+        return render(request, 'complaint/closed_complaints.html', {'closed_complaints':closed_complaints,'page_obj':page_obj})
+    else:
+        return HttpResponse("You dont't have permission to access this page")
+
+
+@login_required
+def close_complaint(request,pk):
+    # print("Status updated")
+    if(request.user.is_staff):
+        if request.method == "POST":
+            complaint = Complaint.objects.get(id=pk)
+            
+            if complaint.complaint_status == 3:
+                complaint.resolved_date = datetime.datetime.now()
+                complaint.complaint_status = 5;
+                # print(complaint.complaint_status)
+                complaint.save()
+                # return HttpResponse("Status changed")
+                return redirect('print_record', pk)
+            
+            elif complaint.complaint_status == 4:
+                complaint.resolved_date = datetime.datetime.now()
+                complaint.complaint_status = 6;
+                complaint.save()
+                # print(complaint.complaint_status)
+                # return HttpResponse("Status changed")
+                return redirect('print_record', pk)
+            return redirect('print_record', pk)
+        return redirect('print_record', pk)
+    else:
+        return HttpResponse("You dont't have permission to access this page")
+
+
+# View Complaint -----------------------------------------------------------------
 @login_required
 def view_complaint(request,pk):
     if(request.user.is_staff):
         try:
             complaint = Complaint.objects.get(id = pk)
             component_list = Item.objects.filter(complaint = complaint)
-            # print(complaint.complaint_status)
-            # print(component_list)
             complaint_status_form = ChangeComplaintStatusForm()
             engineers = Engineer.objects.all()
             # print(engineers)
@@ -157,6 +227,7 @@ def view_complaint(request,pk):
             return redirect('all_complaints')
     else:
         return HttpResponse("You dont't have permission to access this page")
+
 
 @login_required        
 def view_complaint_engg(request,pk):
@@ -182,6 +253,7 @@ def view_complaint_engg(request,pk):
     except Complaint.DoesNotExist:
         return redirect('all_complaints')
 
+
 @login_required
 def set_complaint_status(request,pk):
     complaint = Complaint.objects.get(id = pk)
@@ -199,6 +271,7 @@ def set_complaint_status(request,pk):
         messages.error(request, 'Something went wrong!')
         return redirect('view_complaint', pk)
     return redirect('view_complaint', pk)
+
 
 @login_required
 def assign_enineer(request,pk):
@@ -219,44 +292,35 @@ def assign_enineer(request,pk):
             complaint.save()
             return redirect('view_complaint', pk)
 
-            
+
 @login_required
-def search_complaints_global(request):
-    if(request.method == 'GET'):
-        return HttpResponse("hello there")
-
-    if(request.method == 'POST'):
-        user = request.user
-        search_str = json.loads(request.body).get('searchText')
-
-        if user.is_staff:
+def close_complaint(request,pk):
+    # print("Status updated")
+    if(request.user.is_staff):
+        if request.method == "POST":
+            complaint = Complaint.objects.get(id=pk)
             
-            with_id = Complaint.objects.filter(id__istartswith = search_str) 
-            with_c_name = Complaint.objects.filter(customer_name__istartswith = search_str) 
-            with_c_mob = Complaint.objects.filter(customer_mob__istartswith = search_str) 
-            with_c_email = Complaint.objects.filter(customer_email__istartswith = search_str) 
-            with_c_add = Complaint.objects.filter(customer_address__istartswith = search_str) 
-            with_p_name = Complaint.objects.filter(product_name__istartswith = search_str) 
-            with_p_model = Complaint.objects.filter(product_model__icontains = search_str) 
-            with_p_desc = Complaint.objects.filter(product_description__icontains = search_str) 
-            with_p_prob = Complaint.objects.filter(problem__istartswith = search_str)
-            results = with_id | with_c_name | with_c_email | with_c_mob | with_c_add | with_p_name | with_p_model | with_p_desc |with_p_prob
-            data = results.values()
-            return JsonResponse(list(data),safe=False)
-        else:
-            with_id = Complaint.objects.filter(id__istartswith = search_str ,assigned_to = user) 
-            with_c_name = Complaint.objects.filter(customer_name__istartswith = search_str,assigned_to = user) 
-            with_c_mob = Complaint.objects.filter(customer_mob__istartswith = search_str ,assigned_to = user) 
-            with_c_email = Complaint.objects.filter(customer_email__istartswith = search_str ,assigned_to = user) 
-            with_c_add = Complaint.objects.filter(customer_address__istartswith = search_str ,assigned_to = user) 
-            with_p_name = Complaint.objects.filter(product_name__istartswith = search_str ,assigned_to = user) 
-            with_p_model = Complaint.objects.filter(product_model__icontains = search_str ,assigned_to = user) 
-            with_p_desc = Complaint.objects.filter(product_description__icontains = search_str ,assigned_to = user) 
-            with_p_prob = Complaint.objects.filter(problem__istartswith = search_str ,assigned_to = user)
-            results = with_id | with_c_name | with_c_email | with_c_mob | with_c_add | with_p_name | with_p_model | with_p_desc |with_p_prob
-            data = results.values()
-            return JsonResponse(list(data),safe=False)
+            if complaint.complaint_status == 3:
+                complaint.resolved_date = datetime.datetime.now()
+                complaint.complaint_status = 5;
+                # print(complaint.complaint_status)
+                complaint.save()
+                # return HttpResponse("Status changed")
+                return redirect('print_record', pk)
+            
+            elif complaint.complaint_status == 4:
+                complaint.resolved_date = datetime.datetime.now()
+                complaint.complaint_status = 6;
+                complaint.save()
+                # print(complaint.complaint_status)
+                # return HttpResponse("Status changed")
+                return redirect('print_record', pk)
+            return redirect('print_record', pk)
+        return redirect('print_record', pk)
+    else:
+        return HttpResponse("You dont't have permission to access this page")
 
+        
 
 @login_required
 def add_component(request,pk):
@@ -290,6 +354,8 @@ def add_component(request,pk):
         messages.error(request, 'Could not add component! Plese provide valid input.')
         return render(request, 'complaint/add_component.html',context)
 
+
+
 @login_required
 def update_component(request,pk):
     item = Item.objects.get(id=pk)
@@ -321,40 +387,62 @@ def update_component(request,pk):
         return render(request, 'complaint/update_component.html',context)
 
 
+def deleteComponent(request,pk):
+    if request.method == 'POST':
+        item = Item.objects.get(id = pk)
+        complaint = item.complaint
+        print("deleting component...")
+        item.delete()
+        messages.success(request, 'Item removed successfully ')
+        if request.user.is_superuser:
+            return redirect('view_complaint', complaint.id)
+        else:
+            return redirect('view_complaint_engg', complaint.id)
 
 
 
-
+# Search Compalints Global ------------------------------------------------------------
 @login_required
-def inProgress_complaints(request):
-    complaints = Complaint.objects.filter(complaint_status = 2)
-    return render(request, 'complaint/in_progress_complaints.html',{'in_progress_complains':complaints})
+def search_complaints_global(request):
+    if(request.method == 'GET'):
+        return HttpResponse("hello there")
 
-@login_required
-def closing_complaints(request):
-    if(request.user.is_staff):
-        closing_complaints1 = Complaint.objects.filter(complaint_status=3)
-        closing_complaints2 = Complaint.objects.filter(complaint_status = 4)
-        closing_complaints = closing_complaints1 | closing_complaints2
-        return render(request, 'complaint/closing_complaints.html', {'closing_complaints':closing_complaints})
-    else:
-        return HttpResponse("You dont't have permission to access this page")
+    if(request.method == 'POST'):
+        user = request.user
+        search_str = json.loads(request.body).get('searchText')
 
-@login_required
-def closed_complaints(request):
-    if(request.user.is_staff):
-        closed_complaints1 = Complaint.objects.filter(complaint_status=5)
-        closed_complaints2 = Complaint.objects.filter(complaint_status = 6)
-        closed_complaints = closed_complaints1 | closed_complaints2
-        paginator = Paginator(closed_complaints, 3)
-        page_number = request.GET.get('page')
-        page_obj = Paginator.get_page(paginator, page_number)
-        return render(request, 'complaint/closed_complaints.html', {'closed_complaints':closed_complaints,'page_obj':page_obj})
-    else:
-        return HttpResponse("You dont't have permission to access this page")
+        # For Admin, Employee --------------
+        if user.is_staff:
+            with_id = Complaint.objects.filter(id__istartswith = search_str) 
+            with_c_name = Complaint.objects.filter(customer_name__istartswith = search_str) 
+            with_c_mob = Complaint.objects.filter(customer_mob__istartswith = search_str) 
+            with_c_email = Complaint.objects.filter(customer_email__istartswith = search_str) 
+            with_c_add = Complaint.objects.filter(customer_address__icontains = search_str) 
+            with_p_brand = Complaint.objects.filter(brand__icontains = search_str) 
+            with_p_model = Complaint.objects.filter(model_no__icontains = search_str) 
+            with_p_cond = Complaint.objects.filter(physical_condition__icontains = search_str) 
+            with_p_prob = Complaint.objects.filter(problem__icontains = search_str)
+            results = with_id | with_c_name | with_c_email | with_c_mob | with_c_add | with_p_brand | with_p_model | with_p_cond |with_p_prob
+            data = results.values()
+            return JsonResponse(list(data),safe=False)
+            
+        # For Engineer -------------
+        else:
+            with_id = Complaint.objects.filter(id__istartswith = search_str ,assigned_to = user) 
+            with_c_name = Complaint.objects.filter(customer_name__istartswith = search_str,assigned_to = user) 
+            with_c_mob = Complaint.objects.filter(customer_mob__istartswith = search_str ,assigned_to = user) 
+            with_c_email = Complaint.objects.filter(customer_email__istartswith = search_str ,assigned_to = user) 
+            with_c_add = Complaint.objects.filter(customer_address__icontains = search_str ,assigned_to = user) 
+            with_p_brand = Complaint.objects.filter(brand__icontains = search_str,assigned_to = user) 
+            with_p_model = Complaint.objects.filter(model_no__icontains = search_str ,assigned_to = user) 
+            with_p_cond = Complaint.objects.filter(physical_condition__icontains = search_str,assigned_to = user) 
+            with_p_prob = Complaint.objects.filter(problem__icontains = search_str ,assigned_to = user)
+            results = with_id | with_c_name | with_c_email | with_c_mob | with_c_add | with_p_brand | with_p_model | with_p_cond |with_p_prob
+            data = results.values()
+            return JsonResponse(list(data),safe=False)
 
-# Engineer ---------------------------------
 
+# For Engineer --------------------------------------------------------------------------
 @login_required
 def unresolved_complaints(request):
     user = request.user
@@ -378,35 +466,8 @@ def resolved_complaints(request):
     return render(request, 'complaint/resolved_complaints_e.html', {'resolved_complaints':resolved_complaints, 'page_obj':page_obj})
 
 
-@login_required
-def close_complaint(request,pk):
-    # print("Status updated")
-    if(request.user.is_staff):
-        if request.method == "POST":
-            complaint = Complaint.objects.get(id=pk)
-            
-            if complaint.complaint_status == 3:
-                complaint.resolved_date = datetime.datetime.now()
-                complaint.complaint_status = 5;
-                # print(complaint.complaint_status)
-                complaint.save()
-                # return HttpResponse("Status changed")
-                return redirect('print_record', pk)
-            
-            elif complaint.complaint_status == 4:
-                complaint.resolved_date = datetime.datetime.now()
-                complaint.complaint_status = 6;
-                complaint.save()
-                # print(complaint.complaint_status)
-                # return HttpResponse("Status changed")
-                return redirect('print_record', pk)
-            return redirect('print_record', pk)
-        return redirect('print_record', pk)
-    else:
-        return HttpResponse("You dont't have permission to access this page")
 
-        
-
+# Close Complaint ------------------------------------------------------------------------
 @login_required
 def print_record(request,pk):
     if(request.user.is_staff):
@@ -436,7 +497,6 @@ def print_record(request,pk):
         return render(request, 'home/print_record.html',context)
     else:
         return HttpResponse("You dont't have permission to access this page")
-
 
 
 def check_complaint_status(request):
@@ -497,33 +557,6 @@ def check_complaint_status(request):
                 'type':stat_type
             }
             return render(request,'home/check_status.html',context)
-
-
-
-def deleteComplaint(request,pk):
-    if(request.user.is_staff):
-        if request.method == 'POST':
-            complaint = Complaint.objects.get(id=pk)
-            c_id = complaint.id
-            complaint.delete()
-            print("deleting complaint...")
-            messages.success(request, f'Complaint with #id {c_id} deleted successfully')
-            return redirect('all_complaints')
-    else:
-        return HttpResponse("You dont't have permission to access this page")
-
-def deleteComponent(request,pk):
-    if request.method == 'POST':
-        item = Item.objects.get(id = pk)
-        complaint = item.complaint
-        print("deleting component...")
-        item.delete()
-        messages.success(request, 'Item removed successfully ')
-        if request.user.is_superuser:
-            return redirect('view_complaint', complaint.id)
-        else:
-            return redirect('view_complaint_engg', complaint.id)
-
 
 
 

@@ -3,10 +3,10 @@
 {% block body_content %}
 
 {% include 'home/partials/_message.html' %}
-<div class="row mx-1">
-    <div class="row col-sm-7">
+<div class="row">
+    <div class="row col-md-7 mx-auto" >
 
-        <div class="col-sm-3 card flex-fill w-sm-50 mx-1 mb-1">
+        <div class="col-md-3 card flex-fill  mx-1 mb-1" style="min-width: 16rem" >
             <div class="card-header m-0 p-0 px-1 mt-2">
                 <h3 class="card-title bg-light p-1 px-2 rounded"> PRODUCT DETAILS </h3>
             </div>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div class="col-sm-3 card flex-fill w-sm-50 mx-1 mb-1">
+        <div class="col-md-3 card flex-fill w-md-50 mx-1 mb-1"  style="min-width: 16rem">
             <div class="card-header m-0 p-0 px-1 mt-2">
                 <h3 class="card-title bg-light p-1 px-2 rounded"> SALES(INR) </h3>
             </div>
@@ -76,11 +76,11 @@
             </div>
         </div>
 
-        <div class="col-sm-6 card flex-fill w-sm-50 mx-1 ">
+        <div class="col-md-6 card flex-fill w-md-50 mx-1 ">
             <div class="row card-body p-2">
-                <div class="col-sm-5 left-box bg-light p-2 m-1 rounded" style=" height:8rem">
+                <div class="col-md-5 left-box bg-light p-2 m-1 rounded" style=" min-height:8rem">
                     <span class="text-success"><i class="fa-solid fa-arrow-up"></i></span>
-                    <span>Top Sold</span> 
+                    <span>Top Sold</span>
                     <br>
                     <h4 class="m-1 pl-2 text-secondary">DELL Keypad AC-43AT</h4>
                     <div class="body">
@@ -88,9 +88,9 @@
                     </div>
                     <h6 class="text-secondary mt-0 pl-2">This Week</h6>
                 </div>
-                <div class="col-sm-6 left-box bg-light p-2 m-1 rounded" style="height:8rem">
+                <div class="col-md-6 left-box bg-light p-2 m-1 rounded" style="min-height:8rem">
                     <span class="text-danger"><i class="fa-solid fa-arrow-down"></i></span>
-                    <span>Least Sold</span> 
+                    <span>Least Sold</span>
                     <br>
                     <h4 class="m-1 pl-2 text-secondary">HP Display 14' XT-93 </h4>
                     <div class="body">
@@ -102,16 +102,16 @@
 
             </div>
         </div>
-        </div>
+    </div>
 
 
 
-    <div class="col-sm-5 card flex-fill w-sm-50 mx-1" style="height: 20rekm;">
+    <div class="col-md-4 card flex-fill w-sm-50 mx-2 mx-3 mx-sm-3" style="min-width:20rem ;">
         <div class="card-header m-0 p-0 px-1 mt-2">
             <h3 class="card-title bg-light p-1 px-2 rounded"> Categories ({{category_cnt}})</h3>
         </div>
-        <div class="card-body pt-1" >
-            <div class="chart chart-sm" >
+        <div class="card-body pt-1">
+            <div class="chart chart-sm">
                 <canvas id="product_cat" width="40vw" height="13vh"></canvas>
             </div>
         </div>
@@ -172,12 +172,12 @@
                 label: 'My First Dataset',
                 data: categories_cnt,
                 backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
                 ],
                 hoverOffset: 4,
 

@@ -3,9 +3,7 @@
 {% block title %}Closed Complaints{% endblock title %}
 
 {% block navbar_content %}
-
 {% endblock navbar_content %}
-
 
 {% block body_content %}
 <nav aria-label="breadcrumb">
@@ -16,54 +14,62 @@
 </nav>
 
 <div class="card flex-fill px-2">
-        <div class="card-header m-0 p-0 px-1 mt-2">
-            <h3 class="card-title p-1 px-2 rounded">All Products</h3>
-        </div>
-        <div class="card-body pt-1" style="overflow-x:scroll ;">
-            <table class="table table-striped table-sm" style="min-width:30rem ;">
-                <thead>
-                    <th>SN</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                </thead>
-                <tbody>
-                    {% for item in product %}
-                    <tr class="">
-                        <td>{{forloop.counter}}</td>
-                        <td>{{item.name}}-{{item.brand}}</td>
-                        <td>{{item.category}}</td>
-                        <td>{{item.quantity}}</td>
-                        <td>{{item.unit_price}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <div class="card-header m-0 p-0 px-1 mt-2">
+        <h3 class="card-title p-1 px-2 rounded">All Products</h3>
+    </div>
+    <div class="card-body pt-1" style="overflow-x:scroll ;">
+        <table class="table table-striped table-sm" style="min-width:30rem ;">
+            <thead>
+                <th>SN</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Qty</th>
+                <th>Price</th>
+            </thead>
+            <tbody>
+                {% for item in page_obj %}
+                <tr class="">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{item.name}}-{{item.brand}}</td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.unit_price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
+        <div class="pagination-container" style="justify-content:space-between;" id="pagination">
+            <div>
+                Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
 
-        {% comment %} <div>
-            <nav aria-label="Page navigation example">
-                {% if page_obj.has_previous %}
-                <a class="btn btn-outline-info btn-sm" href="?page=1">First</a>
-                <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                {% endif %}
-
-                {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                <a class="btn btn-info btn-sm" href="?page={{ num }}">{{ num }}</a>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
-                    class="btn btn-outline-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+            </div>
+            <div>
+                <nav aria-label="Page navigation example">
+                    {% if page_obj.has_previous %}
+                    <a class="btn btn-outline-info btn-sm" href="?page=1">First</a>
+                    <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous</a>
                     {% endif %}
-                    {% endfor %}
 
-                    {% if page_obj.has_next %}
-                    <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
-                    <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-                    {% endif %}
-            </nav>
-        </div> {% endcomment %}
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <a class="btn btn-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
+                        class="btn btn-outline-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        {% endif %}
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+
 </div>
 
 {% endblock %}
