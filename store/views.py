@@ -46,21 +46,6 @@ def store(request):
     return render(request, 'store/store.html',context)
 # Store Page (end) ---------------------------------------------
 
-# View All Products -------------------------------------------------
-def all_products(request):
-    user = request.user
-    if(not user.is_superuser):
-        return  HttpResponse("You can't access this page")
-    all_product = Product.objects.all()
-    paginator = Paginator(all_product,50)
-    page_number = request.GET.get('page')
-    page_obj = Paginator.get_page(paginator, page_number)
-    context = {
-        'product':all_product,
-        'page_obj':page_obj
-    }
-    return render(request, 'store/all_products.html',context)
-
 
 # Register New Product -------------------------------------------------
 def new_product(request):
@@ -102,6 +87,38 @@ def new_product(request):
             messages.error(request,'Invalid Input!')
             return render(request, 'store/new_product.html',context)
 
+# View All Products -------------------------------------------------
+def all_products(request):
+    user = request.user
+    if(not user.is_superuser):
+        return  HttpResponse("You can't access this page")
+    all_product = Product.objects.all().order_by('-registred_on')
+    paginator = Paginator(all_product,50)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    context = {
+        'product':all_product,
+        'page_obj':page_obj
+    }
+    return render(request, 'store/all_products.html',context)
+
+
+
+def low_stock_products(request):
+    user = request.user
+    if(not user.is_superuser):
+        return HttpResponse("You can't access this page.")
+
+    low_stock_p = Product.objects.filter(quantity__lte=10)
+    return render(request, 'store/low_stock.html',{'low_stock_p':low_stock_p})
+
+def zero_stock_products(request):
+    user = request.user
+    if(not user.is_superuser):
+        return HttpResponse("You can't access this page.")
+
+    zero_stock_p = Product.objects.filter(quantity__lte=1)
+    return render(request, 'store/zero_stock.html',{'zero_stock_p':zero_stock_p})
 
 # Settings Page (start) ----------------------------------------
 def settings(request):

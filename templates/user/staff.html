@@ -17,47 +17,51 @@
 </nav>
 
 <div class="card flex-fill px-1 px-sm-3">
-    <div class="card-header pb-0 d-flex justify-content-between flex-wrap px-1">
+    <div class="card-header  d-flex justify-content-between mt-2 flex-wrap px-1 bg-light  px-3  mb-2 py-2 rounded ">
         <span>
-            <h2 class="card-title"> Admins</h2>
+            <h2 class="card-title my-auto"> Admins</h2>
         </span>
 
     </div>
-    <hr class="my-2">
 
 
     <div class="card-body p-1" id="table_container">
         <div class="row" >
             {% for admin in admins %}
             <div class="col-sm-4"  style="min-width: 16rem;"> 
+
                 <div class="card">
-                    <div class="card-header bg-secondary text-light">
-                        {{admin.get_full_name}}
+                    <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-secondary text-light">
+                        <div class="px-0">
+                            <strong>{{admin.get_full_name}}</strong> 
+                        </div>
+                        <div class="action_bar ">
+                            <a href="{% url 'profile' admin.id %}"><span class="btn rounded-circle btn-light btn-sm" title="View Profile"> -> </span></a>
+                        </div>
                     </div>
-                    <div class="card-body bg-light px-2 pb-2">
+                    <div class="card-body bg-light px-3 pb-2  ">
                         <table>
                             <thead>
                                 <tr>
                                     <th width="100"></th>
-                                    <th></th>
+                                    <th width="120"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>Username </th>
-                                    <td>{{admin.username}}</td>
+                                    <td>User </td>
+                                    <th>{{admin.username}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Email </th>
-                                    <td>{{admin.email}}</td>
+                                    <td>Email </td>
+                                    <th>{{admin.email}}</th>
                                 </tr>
+                               
                             </tbody>
                         </table>
 
 
-                        <div class="action_bar d-flex mt-3 justify-content-end">
-                            <a href="{% url 'profile' admin.id %}"><span class="btn rounded btn-primary">View Profile</span></a>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -71,16 +75,15 @@
 
 
 <div class="card flex-fill px-1 px-sm-3">
-    <div class="d-flex  justify-content-between px-2 rounded  px-1 align-items-center mt-2 ">
+    <div class="d-flex  justify-content-between rounded  bg-light  px-3 py-1 mb-2  align-items-center mt-2 ">
         <span>
             <h2 class="card-title my-auto"> Employees </h2>
         </span>
         <span>
-            <a href="{% url 'employee_register' %}" class="btn btn-primary">+ Add Employee</a>
+            <a href="{% url 'employee_register' %}" class="btn btn-outline-info py-1 ">+ Add Employee</a>
         </span>
         
     </div>
-    <hr class="my-2">
 
     <div class="card-body p-1" id="table_container">
 
@@ -89,10 +92,15 @@
             {% for employee in employees %}
             <div class="col-sm-4" style="min-width: 16rem;">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">
-                        {{employee.user.get_full_name}}
+                    <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-info text-light">
+                        <div class="px-0">
+                            <strong>{{employee.user.get_full_name}}</strong> 
+                        </div>
+                        <div class="action_bar ">
+                            <a href="{% url 'profile' employee.user.id %}"><span class="btn rounded-circle btn-light btn-sm" title="View Profile"> -> </span></a>
+                        </div>
                     </div>
-                    <div class="card-body bg-light px-2 pb-2">
+                    <div class="card-body bg-light px-3 pb-2  ">
                         <table>
                             <thead>
                                 <tr>
@@ -102,32 +110,28 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>Username </th>
-                                    <td>{{employee.user.username}}</td>
+                                    <td>User </td>
+                                    <th>{{employee.user.username}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Email </th>
-                                    <td>{{employee.user.email}}</td>
+                                    <td>Email </td>
+                                    <th>{{employee.user.email}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Mobile </th>
-                                    <td>{{employee.mob}}</td>
+                                    <td>Mobile </td>
+                                    <th>{{employee.mob}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Address </th>
-                                    <td>{{employee.address}}</td>
+                                    <td>Address </td>
+                                    <th>{{employee.address}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Join Date </th>
-                                    <td>{{employee.joinDate}}</td>
+                                    <td>Join Date </td>
+                                    <th>{{employee.joinDate}}</th>
                                 </tr>
                             </tbody>
                         </table>
-
-
-                        <div class="action_bar d-flex mt-3 justify-content-end">
-                            <a href="{% url 'profile' employee.user.id %}"><span class="btn rounded btn-primary">View Profile</span></a>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -141,16 +145,15 @@
 
 <!-- Engineer -->
 <div class="card flex-fill px-1 px-sm-3">
-    <div class="d-flex  justify-content-between px-2 rounded  px-1 align-items-center mt-2">
+    <div class="d-flex bg-light  px-3 py-1 mb-2 justify-content-between rounded    align-items-center mt-2">
         <span>
             <h2 class="card-title my-auto"> Engineers </h2>
         </span>
         <span>
-            <a href="{% url 'engineer_register' %}" class="btn btn-info">+ Add Engineer</a>
+            <a href="{% url 'engineer_register' %}" class="btn  btn-outline-primary  py-1">+ Add Engineer</a>
         </span>
 
     </div>
-    <hr class="my-2">
 
 
     <div class="card-body px-1 py-1" id="table_container">
@@ -159,10 +162,15 @@
             {% for engineer in engineers %}
             <div class="col-sm-4"  style="min-width: 16rem;">
                 <div class="card">
-                    <div class="card-header bg-info text-light">
-                        {{engineer.user.get_full_name}}
+                    <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-primary text-light">
+                        <div class="px-0">
+                            <strong>{{engineer.user.get_full_name}}</strong> 
+                        </div>
+                        <div class="action_bar ">
+                            <a href="{% url 'profile' engineer.user.id %}"><span class="btn rounded-circle btn-light btn-sm" title="View Profile"> -> </span></a>
+                        </div>
                     </div>
-                    <div class="card-body bg-light px-2 pb-2  ">
+                    <div class="card-body bg-light px-3 pb-2  ">
                         <table>
                             <thead>
                                 <tr>
@@ -172,36 +180,34 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>Username </th>
-                                    <td>{{engineer.user.username}}</td>
+                                    <td>User </td>
+                                    <th>{{engineer.user.username}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Email </th>
-                                    <td>{{engineer.user.email}}</td>
+                                    <td>Email </td>
+                                    <th>{{engineer.user.email}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Mobile </th>
-                                    <td>{{engineer.mob}}</td>
+                                    <td>Mobile </td>
+                                    <th>{{engineer.mob}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Address </th>
-                                    <td>{{engineer.address}}</td>
+                                    <td>Address </td>
+                                    <th>{{engineer.address}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Expertise </th>
-                                    <td>{{engineer.expertise}}</td>
+                                    <td>Expertise </td>
+                                    <th>{{engineer.expertise}}</th>
                                 </tr>
                                 <tr>
-                                    <th>Join Date </th>
-                                    <td>{{engineer.joinDate}}</td>
+                                    <td>Join Date </td>
+                                    <th>{{engineer.joinDate}}</th>
                                 </tr>
                             </tbody>
                         </table>
 
 
-                        <div class="action_bar d-flex mt-3 justify-content-end">
-                            <a href="{% url 'profile' engineer.user.id %}"><span class="btn rounded btn-primary">View Profile</span></a>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

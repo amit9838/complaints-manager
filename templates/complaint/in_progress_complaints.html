@@ -53,16 +53,10 @@
                         <td>{{complaint.assigned_to}} ({{complaint.assigned_to.engineer.expertise}})</td>
                             {% comment %} <td>{{complaint.problem}}</td> {% endcomment %}
                             <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge" style="font-size: .9rem;"></span></td>
-                            <td>
-                                {% if user.is_staff %}
+                            <td width="40">
                                 <a href="{% url 'view_complaint' complaint.id %}">
-                                    <div class="btn btn-primary rounded py-1">View</div>
+                                    <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                                 </a>
-                                {% else %}
-                                <a href="{% url 'view_complaint_engg' complaint.id %}">
-                                    <div class="btn btn-primary rounded py-1">View</div>
-                                </a>
-                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}

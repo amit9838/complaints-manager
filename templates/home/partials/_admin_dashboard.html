@@ -218,7 +218,7 @@
                         <th>Product</th>
                         <th style=" width: 40%;">Problem</th>
                         <th>Registred on</th>
-                        <th width= "100" style="min-width:11rem; text-align: center; ">Status</th>
+                        <th width= "80" style="min-width:11rem; text-align: center; ">Status</th>
                         <th>View</th>
                     </tr>
                 </thead>
@@ -233,8 +233,8 @@
                         <td>{{complaint.registred_date}}</td>
                         <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
                                 style="font-size: .9rem;"></span></td>
-                        <td><a href="{% url 'view_complaint' complaint.id %}">
-                                <div class="btn btn-primary rounded py-1">View</div>
+                        <td width="40"><a href="{% url 'view_complaint' complaint.id %}">
+                                <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                             </a>
                         </td>
                     </tr>
@@ -243,113 +243,3 @@
             </table>
         </div>
     </div>
-
-
-    {% comment %}
-
-    <div class="contents d-flex bg-light" style="height:90vh ;">
-        <div class="left_control_panel bg-grey rounded px-2 mt-1 py-2 " style="width:15%;"">
-            <h4 class=" text-dark text-center"> <span></i> </span> <span> {{user.get_full_name}}</span></h4>
-            <hr class="m-0">
-        </div>
-        <div class="left_contents p-1" style="width:70%;">
-            <div class="bg-grey rounded mb-2 py-1 text-dark px-2"
-                style="display: flex; justify-content: space-between;">
-                <span class="my-auto" style="font-size:1.5rem; font-weight:Bold;">
-                    <span class="mr-2"
-                        style="width:1rem; height:.1rem; border:.2rem solid red; border-radius: .2rem; background-color: red;"></span>
-                    Admin Dashboard
-                </span>
-                <div class="action-bar bg-light  p-1 rounded">
-                    <a href={% url 'register_complaint' %}>
-                        <div class="btn btn-primary btn-sm mr-1">New Complaint</div>
-                    </a>
-                    <a href={% url 'all_complaints' %}>
-                        <div class="btn btn-secondary btn-sm ">All Complaints</div>
-                    </a>
-                </div>
-            </div>
-
-            <h5 class="bg-grey p-1 px-2 rounded">
-                Recent Complaints
-            </h5>
-            <div class="recent_complaints_container px-2">
-
-                <table class="table table-sm table-striped">
-                    <thead>
-                        <tr>
-                            <th>Complaint ID</th>
-                            <th>Customer</th>
-                            <th>Product</th>
-                            <th>Problem</th>
-                            <th>Registred on</th>
-                            <th>Status</th>
-                            <th>View</th>
-                        </tr>
-                    </thead>
-
-
-
-                    <tbody>
-                        {% for complaint in recent_complaints %}
-                        <tr>
-                            <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
-                            <td>{{complaint.customer_name}}</td>
-                            <td> <span>{{complaint.product_name}}</span> - <span>{{complaint.product_model}}</span>
-                            </td>
-                            <td>{{complaint.problem}}</td>
-                            <td>{{complaint.registred_date}}</td>
-                            <td><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
-                                    style="font-size: .9rem;"></span></td>
-                            <td><a href="{% url 'view_complaint' complaint.id %}">
-                                    <div class="btn btn-primary rounded py-1">View</div>
-                                </a>
-                            </td>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-
-            <h5 class="bg-grey p-1 px-2 rounded">
-                Complaints This Week
-            </h5>
-        </div>
-        <div class="right_contents p-1" style="width:20%; border-left: 1px solid lightgrey">
-            <h4 class="bg-grey  p-1 rounded px-2">Highlights</h4>
-            <strong>
-                Total Employe(s):
-            </strong>
-            {{no_of_emp}}
-            <br>
-            <strong>
-                Total Engineer(s):
-            </strong>
-            {{no_of_engg}}
-            <br>
-            <strong>
-                Total Complaints:
-            </strong>
-            {{tatal_complaints}}
-            <br>
-            <strong>
-                Pending_complaints:
-            </strong>
-            {{pending_complaints}}
-            <br>
-            <br>
-            <strong>
-                Recent Joining:
-            </strong>
-            {{recent_emp}} as
-            {% if user.employee %}
-            Employee
-            {% else %}
-            Engineer
-            {% endif %}
-        </div>
-    </div>
-    <br>
-</div> {% endcomment %}

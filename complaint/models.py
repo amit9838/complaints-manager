@@ -63,6 +63,7 @@ class Complaint(models.Model):
     problem = models.CharField(max_length=5000)
 
 
+
     # def __str__(self):
     #     return self.category + "-" + self.brand + "("+ self.customer_name + ")"
         

@@ -136,7 +136,7 @@ def deleteComplaint(request,pk):
 @login_required
 def list_complaints(request):
     if request.user.is_staff:
-        all_complaints = Complaint.objects.all()
+        all_complaints = Complaint.objects.all().order_by('-registred_date')
         paginator = Paginator(all_complaints, 50)
         page_number = request.GET.get('page')
         page_obj = Paginator.get_page(paginator, page_number)
@@ -180,7 +180,6 @@ def closed_complaints(request):
 
 @login_required
 def close_complaint(request,pk):
-    # print("Status updated")
     if(request.user.is_staff):
         if request.method == "POST":
             complaint = Complaint.objects.get(id=pk)
@@ -188,17 +187,13 @@ def close_complaint(request,pk):
             if complaint.complaint_status == 3:
                 complaint.resolved_date = datetime.datetime.now()
                 complaint.complaint_status = 5;
-                # print(complaint.complaint_status)
                 complaint.save()
-                # return HttpResponse("Status changed")
                 return redirect('print_record', pk)
             
             elif complaint.complaint_status == 4:
                 complaint.resolved_date = datetime.datetime.now()
                 complaint.complaint_status = 6;
                 complaint.save()
-                # print(complaint.complaint_status)
-                # return HttpResponse("Status changed")
                 return redirect('print_record', pk)
             return redirect('print_record', pk)
         return redirect('print_record', pk)
@@ -263,7 +258,6 @@ def set_complaint_status(request,pk):
         if complaint_status_form.is_valid():
             status = complaint_status_form.cleaned_data.get('complaint_status')
             complaint.complaint_status = status
-            
             # complaint.resolved_date = None
             complaint.save()
             messages.success(request, 'Status updated successfully.')
@@ -281,7 +275,6 @@ def assign_enineer(request,pk):
         if engg_id == "-1":
             complaint.complaint_status = 2
             complaint.save()
-            
             return redirect('view_complaint', pk)
         else:
             selected_engg = User.objects.get(id = engg_id)
@@ -291,7 +284,6 @@ def assign_enineer(request,pk):
             messages.success(request, 'Engineer assigned successfully')
             complaint.save()
             return redirect('view_complaint', pk)
-
 
 @login_required
 def close_complaint(request,pk):
@@ -321,7 +313,6 @@ def close_complaint(request,pk):
         return HttpResponse("You dont't have permission to access this page")
 
         
-
 @login_required
 def add_component(request,pk):
     form  = AddComponentForm()
@@ -353,7 +344,6 @@ def add_component(request,pk):
                 return redirect('view_complaint_engg', pk)
         messages.error(request, 'Could not add component! Plese provide valid input.')
         return render(request, 'complaint/add_component.html',context)
-
 
 
 @login_required
@@ -398,7 +388,6 @@ def deleteComponent(request,pk):
             return redirect('view_complaint', complaint.id)
         else:
             return redirect('view_complaint_engg', complaint.id)
-
 
 
 # Search Compalints Global ------------------------------------------------------------
@@ -488,9 +477,7 @@ def print_record(request,pk):
         context = {
             'complaint':complaint,
             'components':components,
-            # 'sub_total':subTotal,
             # 'tax_percent':tax_percent,
-            # 'tax_amount':round(tax_amount,2),
             'total_amount':round(subTotal,2),
         }
 
@@ -542,7 +529,6 @@ def check_complaint_status(request):
                 stat_msg = f"Sorry! No information available with this id."
                 stat_type = "info"
                 context = {
-                    # 'complaint':complaint,
                     'status_msg':stat_msg,
                     'type':stat_type
                 }
@@ -552,7 +538,6 @@ def check_complaint_status(request):
             stat_msg = "Sorry! We couldn't find any querry. Please try again"
             stat_type = "danger"
             context = {
-                # 'complaint':complaint,
                 'status_msg':stat_msg,
                 'type':stat_type
             }
@@ -563,13 +548,14 @@ def check_complaint_status(request):
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count
-# from django.contrib.auth.models import 
+
+# from django.contrib.auth.models import
+
 # For Graph
 class Complaints_log_api(APIView):
     def get(self,request,format=None):
         complaints_reg = Complaint.objects.values('registred_date').annotate(count=Count('id'))[:30]
         complaints_rep = Complaint.objects.values('resolved_date').annotate(count=Count('id'))[0:30]
-        # print(complaints_rep)
         data = {
             'registred':complaints_reg,
             'resolved':complaints_rep

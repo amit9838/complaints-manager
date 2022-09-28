@@ -1,14 +1,14 @@
-{% extends 'base_auth.html' %}
+{% extends 'base_dashboard.html' %}
 
 {% block title %}Complete Profile{% endblock title %}
 
 {% block content %}
 
-<div class="card full-flex">
+<div class="card full-flex w-50 mx-auto">
 
     <div class="card-body">
         <div class="container">
-            <h2 class="text-center bg-light rounded my-3 py-2">
+            <h2 class="text-center bg-light rounded my-3 py-2 mt-1">
                 Complete Your Profile
             </h2>
             <div class="row py-1">
@@ -19,7 +19,7 @@
                     Engineer
                 </div>
             </div>
-    
+
             <div class="row py-1">
                 <div class="col-sm-3">
                     <h6 class="mb-0">Username</h6>
@@ -28,8 +28,7 @@
                     {{user.username}}
                 </div>
             </div>
-    
-    
+
             <div class="row py-1">
                 <div class="col-sm-3">
                     <h6 class="mb-0">Name</h6>
@@ -38,7 +37,7 @@
                     {{user.get_full_name}}
                 </div>
             </div>
-    
+
             <div class="row py-1">
                 <div class="col-sm-3">
                     <h6 class="mb-0">Email</h6>
@@ -47,25 +46,23 @@
                     {{user.email}}
                 </div>
             </div>
-                <hr>
-    
+            <hr>
+
             <form action="" method="post">
                 {% csrf_token %}
                 {{form}}
                 <div class="text-center w-100 mt-3">
-                    <button class="btn btn-info w-100 mt-2" type="submit" >Continue</button>                
+                    <button class="btn btn-info w-100 mt-2" type="submit">Continue</button>
                 </div>
             </form>
             <br>
             <a class="btn btn-secondary  text-center w-100" href={% url 'dashboard' %} data-bs-toggle="dropdown">
                 <span class=" px-3">Skip</span>
-              </a>
+            </a>
         </div>
     </div>
 
 </div>
 
 
-
-  
 {% endblock content %}
