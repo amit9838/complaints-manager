@@ -1,4 +1,5 @@
 from datetime import datetime
+from socket import J1939_PGN_ADDRESS_COMMANDED
 from django.shortcuts import render,redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from store.forms import NewProductFrom
@@ -44,6 +45,24 @@ def store(request):
         'cat_list':cat_list_json
     }
     return render(request, 'store/store.html',context)
+
+
+def search_product(request):
+    if(request.method=='GET'):
+        re = Product.objects.all();
+        da = re.values();
+        return JsonResponse(list(da),safe=False)
+
+    if (request.method =='POST'):
+        search_str = json.loads(request.body).get('searchText')
+        with_p_name = Product.objects.filter(name__istartswith = search_str)
+        with_p_brand = Product.objects.filter(brand__istartswith = search_str)
+        with_p_cat = Product.objects.filter(category__istartswith = search_str)
+        with_p_desc = Product.objects.filter(desc__icontains = search_str)
+        res = with_p_name | with_p_brand | with_p_cat | with_p_desc
+        data = res.values();
+        return JsonResponse(list(data),safe=False)
+
 # Store Page (end) ---------------------------------------------
 
 

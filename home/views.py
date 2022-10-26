@@ -59,12 +59,11 @@ def dashboard(request):
 
         else:
             complaints_assigned = Complaint.objects.filter(assigned_to = user)
-            total_complaint_assigned = Complaint.objects.filter(assigned_to = user).count()
+            total_complaint_assigned = complaints_assigned.count()
             context = {
                 "user":user,
                 "complaints_assigned":complaints_assigned,
                 "total_comlaints_assigned":total_complaint_assigned,
-                "pending_complaints":pending_complaints
             }
         return render(request, 'home/dashboard.html', context)
 

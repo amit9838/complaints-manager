@@ -4,10 +4,11 @@ from django.urls.conf import include
 from . import views
 
 
-urlpatterns = [
+urlpatterns = [ 
     path('',views.store, name='store'),
     path('settings/',views.settings, name='settings'),
     path('add-category/',views.add_category, name='add_category'),
+    path('search-product/',views.search_product, name='search_product'),
     path('delete-category/<int:pk>/',views.delete_category, name='delete_category'),
     path('update-category/<int:pk>/',views.update_category, name='update_category'),
     path('all-products/',views.all_products, name='all_products'),

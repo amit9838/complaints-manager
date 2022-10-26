@@ -2,9 +2,270 @@
 
 {% block title %}View Compaint{% endblock title %}
 
-
 {% block body_content %}
 {% include 'home/partials/_message.html' %}
+
+<style>
+        .borderless td,
+        .borderless th {
+                border: none;
+                margin: 0;
+                padding: .1rem .5rem;
+                font-size: .9rem;
+        }
+</style>
+
+<style>
+        .main2 {
+                margin-top: 2rem;
+                height: 6rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+        }
+
+        .mainchild {
+                position: relative;
+                /* height: 4rem; */
+                min-width: 25rem;
+                width: 90%;
+                /* border: 2px solid rgb(183, 87, 87); */
+                display: flex;
+        }
+
+        .child {
+                width: 25%;
+                display: inline-block;
+                color: rgb(36, 33, 33);
+                position: relative;
+                margin: 10px;
+                padding: 8px;
+                font-weight: 300;
+        }
+
+        .date {
+                visibility: hidden;
+        }
+
+        .child h3 {
+                font-size: 0.9rem;
+                font-weight: 500;
+                text-align: center;
+                margin-bottom: 3px;
+        }
+
+        .child h5 {
+                color: rgb(153, 153, 153);
+                font-size: 0.8rem;
+                font-weight: 400;
+                text-align: center;
+
+        }
+
+        .mainchild::after {
+                content: '';
+                width: 100%;
+                height: 0%;
+                position: absolute;
+                background-color: #a7abaf;
+                border-top: 4px solid #cfd4d9;
+                /* top: 310px; */
+                border-radius: 100px;
+                /* left: 50%; */
+                z-index: 1;
+        }
+
+        .child::before {
+                content: '';
+                width: 1.7rem;
+                height: 1.7rem;
+                position: absolute;
+                background-color: #a7abaf;
+                top: -1.4rem;
+                border-radius: 100%;
+                left: 45%;
+                border: 5px solid white;
+                z-index: 3;
+        }
+
+        .done .date {
+                visibility: visible;
+        }
+
+        .done::before {
+                background-color: rgb(0, 184, 67);
+                /* background-color: rgb(38, 104, 165) ; */
+        }
+
+        .failed::before {
+                background-color: rgb(250, 16, 16);
+                /* background-color: rgb(38, 104, 165) ; */
+        }
+
+        .mainchild::before {
+                content: '';
+                width: 75%;
+                /*isko lekr adjust kr lo  1 index is 10% then to reach other block add 20% then at last add 10% to finish*/
+                height: 0%;
+                position: absolute;
+                border-top: 4px solid rgb(35, 204, 114);
+                top: 0px;
+                border-radius: 100px;
+                /* left: 50%; */
+                z-index: 2;
+        }
+
+        .current::before {
+                background-color: rgb(38, 104, 165);
+        }
+
+        .current::after {
+                content: '';
+                width: 1.4rem;
+                height: 1.4rem;
+                position: absolute;
+                background-color: transparent;
+                top: -1.2rem;
+                border-radius: 100%;
+                left: 45.86%;
+                border: 3px solid rgb(38, 104, 165);
+                z-index: 4;
+                animation: wave 1s infinite;
+        }
+
+        @keyframes wave {
+                0% {
+                        opacity: 1;
+                        transform: scale(1);
+                }
+
+                100% {
+                        opacity: 0;
+                        transform: scale(1.5);
+                }
+        }
+
+        #close_and_checkout,
+        #assign_engineer {
+                display: flex;
+                justify-content: space-around;
+        }
+
+        .header_btn {
+                display: flex;
+                justify-content: end;
+        }
+
+        .hide_scrollbar::-webkit-scrollbar {
+                /* width: 2em; */
+                height: 2em;
+
+        }
+
+        /* for mobile view */
+        @media screen and (max-width:760px) {
+                .main2 {
+                        margin-top: 2rem;
+
+                        height: fit-content;
+                        /* padding-left: 3rem; */
+                        /* border: 2px solid red; */
+                }
+
+                .mainchild {
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        /* left: 2%; */
+                }
+
+                .child {
+                        text-align: start;
+                        width: 23%;
+                        position: relative;
+                        left: 5rem;
+                        margin: 10px;
+                        padding: 8px;
+                }
+
+                .child h3 {
+                        text-align: start;
+                }
+
+                .mainchild::after {
+                        width: 0%;
+                        height: 93%;
+                        left: 4rem;
+                        border-left: 4px solid #cfd4d9;
+                }
+
+                .child::before {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        left: -2.3rem;
+                        top: 0;
+
+                }
+
+                .done,
+                .current {
+                        width: 60%;
+                }
+
+                .child h3 {
+                        font-weight: 500;
+                        font-size: .9rem;
+                }
+
+                .child h5 {
+                        color: darkgray;
+                        font-size: 0.8rem;
+                        font-weight: 400;
+                        text-align: start;
+
+                        margin-bottom: 0rem;
+                }
+
+                .mainchild::before {
+                        width: 0%;
+                        height: 75%;
+                        /*isko lekr adjust kr lo  1 index is 10% then to reach other block add 20% then at last add 10% to finish*/
+                        position: absolute;
+                        left: 4rem;
+                        border-left: 4px solid rgb(35, 204, 114);
+
+                }
+
+                .current::before {
+                        background-color: rgb(38, 104, 165);
+                }
+
+
+                .current::after {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        left: -2.3rem;
+                        top: 0;
+                }
+
+                #close_and_checkout,
+                #assign_engineer {
+                        display: block;
+                        justify-content: center;
+                }
+
+                .header_btn {
+
+                        margin-top: 1rem;
+                        display: flex;
+                        justify-content: start;
+                }
+
+
+        }
+</style>
+
 <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white">
                 <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
@@ -13,131 +274,132 @@
         </ol>
 </nav>
 
-<div class="card flex-fill">
-
-        {% if user.is_staff %}
-        <div class="card-body">
-                <div class="titlebar row bg-light mb-1 w-100 d-flex justify-content-between  rounded mx-auto">
-                        <span class="col-sm-8 d-flex align-items-center">
-                                <h3 class="pl-2 my-2 px-2 text-secondary rounded"> Complaint ID #{{complaint.id}}</h3>
-                                <span class="badge mx-2" id="status_badge"
-                                        style="font-size: .9rem;">{{complaint.complaint_status}}</span>
-
-                        </span>
-
-                        <span class="col-sm-4 d-flex justify-content-end align-items-center" id="header_action">
-                                <div class=" mx-2" id="print_action">
-                                        <div class="form-container" id="print_checkout">
-                                                <form action="{% url 'close_complaint' complaint.id %}" method="post">
-                                                        {% csrf_token %}
-                                                        <input type="submit" class="btn btn-success m-0"
-                                                                value="Close & Checkout">
-                                                </form>
-                                        </div>
-                                </div>
-                                <div class="btn-group">
-                                        <button type="button" class="btn btn-secondary dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Options
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right" style="margin-top:.2rem;"
-                                                aria-labelledby="dropdownMenuButton">
-                                                <!-- <a class="dropdown-item" href="#">Print</a> -->
-
-                                                <a class="dropdown-item text-success" id="share_on_wa" target="_blank">
-                                                        <i class="fa-brands fa-whatsapp"></i> Share</a>
-
-                                                <script>
-                                                        let btn_item = document.getElementById("share_on_wa");
-                                                        // device detection
-                                                        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                                                                btn_item.href = `
-                                                                https://api.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
-                                                                %0AHello  *{{complaint.customer_name}}*, 
-                                                                %0AYour Complaint has been registered successfully.
-                                                                %0A%0A*Details*
-                                                                %0A--------------------------------------------------------------------
-                                                                %0A*Complaint id :* {{complaint.id}}.
-                                                                %0A*Name :* {{complaint.customer_name}}.
-                                                                %0A*Email :* {{complaint.customer_email}}.
-                                                                %0A*Model :* {{complaint.product_name}}{{complaint.product_model}}.
-                                                                %0A*Problem :* {{complaint.problem}}.
-                                                                %0A--------------------------------------------------------------------
-                                                                %0A%0A Track status at %20 https://www.google.com/ %20 
-                                                                %0A%0A*Thanks for visiting!*
-                                                               `
-                                                        }
-                                                        else {
-                                                                btn_item.href = `
-                                                                https://web.whatsapp.com/send?phone=91{{complaint.customer_mob}}&text=
-                                                                %0AHello  *{{complaint.customer_name}}*, 
-                                                                %0AYour Complaint has been registered successfully.
-                                                                %0A%0A*Details*
-                                                                %0A--------------------------------------------------------------------
-                                                                %0A*Complaint id :* {{complaint.id}}.
-                                                                %0A*Name :* {{complaint.customer_name}}.
-                                                                %0A*Email :* {{complaint.customer_email}}.
-                                                                %0A*Model :* {{complaint.product_name}}{{complaint.product_model}}.
-                                                                %0A*Problem :* {{complaint.problem}}.
-                                                                %0A--------------------------------------------------------------------
-                                                                %0A%0A Track status at %20 https://www.google.com/ %20 
-                                                                %0A%0A*Thanks for visiting!*
-                                                               `
-                                                        }
-                                                </script>
-
-                                                <div class="dropdown-item" id="print_action">
-                                                        <a class="" href="{% url 'print_record' complaint.id %}"
-                                                                style="font-size:1.2remaads;" title="print"><i
-                                                                        class="fa-solid fa-print"></i> Print
-                                                        </a>
-                                                </div>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" style=""
-                                                        href="{% url 'update_complaint' complaint.id %}">
-                                                        <i class="fa-solid fa-pencil"></i> Update</a>
-                                                {% if request.user.is_superuser %}
-                                                <form action="{% url 'delete_complaint' complaint.id %}" method="post">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="dropdown-item text-danger m-0"> <i
-                                                                        class="fa-solid fa-trash-can"></i>Delete</button>
-                                                </form>
-                                                {% endif %}
-                                        </div>
-                                </div>
-
-                        </span>
+<div class="card flex-fill mb-2 mt-4">
+        <div class="card-body row  py-3">
+                <div class="col-md-6">
+                        <h2 class="title text-secondary align-center my-auto">Complaint ID: <strong>
+                                        #{{complaint.id}}</strong></h2>
                 </div>
+                <div class="col-md-6 header_btn">
+                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-outline-primary mx-1" ><i class="fa-solid fa-pencil"></i> Edit</a>
+                        <div class="btn btn-outline-danger mx-1"><i class="fa-solid fa-trash-can"></i> Delete</div>
+                        <div class="btn btn-outline-info mx-1"><i class="fa-brands fa-whatsapp"></i> Share</div>
+                        <div class="btn btn-outline-primary mx-1"><i class="fa-solid fa-print"></i> Print</div>
+                </div>
+        </div>
+</div>
+<div class="card flex-fill mb-2" style="height:fit-content ;">
+        <!-- <h3 class="status pl-1 pt-2 ml-4 mt-1 text-secondary"> <strong> Status </strong></h3> -->
+        <div class="main2">
+                <div class="mainchild">
+                        <div class="child done">
+                                <h3>Registered</h3>
+                                <div class="date">
+                                        <h5>{{complaint.registred_date}}</h5>
+                                        <h5>Registred by <strong>{{complaint.registred_by}}</strong> </h5>
+                                </div>
+                        </div>
+                        <div class="child done">
+                                {% if complaint.complaint_status == 1 %}
+                                <h3>Assign Engineer</h3>
+                                <form action="{% url 'assign_engineer' complaint.id %}" class="" id="assign_engineer"
+                                        method="post">
+                                        {% csrf_token %}
+                                        <select name="assign_engineer" class="form-control form-control-sm rounded w-75"
+                                                id="id_assign_engineer">
+                                                <option value="-1">Assign Engineer</option>
+                                                {% for engineer in engineers %}
+                                                <option value="{{engineer.user.id}}">{{engineer.user.username}}
+                                                </option>
+                                                {% endfor %}
+                                                <input class="btn btn-primary rounded btn-sm py-0 mx-auto "
+                                                        type="submit" value='Assign' />
+                                        </select>
+                                </form>
 
+                                {% elif complaint.complaint_status > 1 %}
+                                <h3>Assigned</h3>
+                                <div class="date">
+                                        <h5>{{complaint.assigned_date}}</h5>
+                                        <h5>
+                                                <strong>{{complaint.assigned_by}} </strong> assigned
+                                                <strong>{{complaint.assigned_to}}</strong>
+                                        </h5>
+                                </div>
+                                {% endif %}
+                        </div>
 
-                <style>
-                        .borderless td,
-                        .borderless th {
-                                border: none;
-                                margin: 0;
-                                padding: .1rem .5rem;
-                        }
-                </style>
+                        <div class="child done failed">
+                                {% if complaint.complaint_status < 3 %} <h3>In Progress</h3>
+                                        {% else %}
+                                        {% if complaint.complaint_status == 3 %}
+                                        <h3>Repaired</h3>
 
-                <div class="complaint_details_container row justify-content-between px-1 text-dark"
-                        style="flex-wrap:wrap;">
-                        <div class="container-left col-sm-5 rounded px-2"
-                                style=" height: fit-content; min-height: 20rem; position: relative;">
-                                <h5 class="bg-light p-1 pl-2 rounded my-1">Customer Details</h5>
+                                        {% elif complaint.complaint_status == 4 %}
+                                        <h3>Failed to Repair</h3>
+                                        {% endif %}
+                                        <div class="date">
+                                                <h5>{{complaint.resolved_date}}</h5>
+                                                <h5>Executed by <strong>{{complaint.resolved_by}}</strong> </h5>
+                                        </div>
+
+                                        {% endif %}
+                        </div>
+                        <div class="child current ">
+                                {% if complaint.complaint_status < 3 %} <h3>To be Colsed</h3>
+                                        {% elif complaint.complaint_status < 5 %} <h3>Waiting to Close</h3>
+                                                <div class="" id="close_and_checkout">
+                                                        <div class="form-container" id="print_checkout">
+                                                                <form class=""
+                                                                        action="{% url 'close_complaint' complaint.id %}"
+                                                                        method="post">
+                                                                        {% csrf_token %}
+                                                                        <input type="submit"
+                                                                                class="btn btn-success mx-auto py-1 px-2 "
+                                                                                value="Close & Checkout">
+                                                                </form>
+                                                        </div>
+                                                </div>
+
+                                                {% elif complaint.complaint_status <= 6 %} <h3>Closed</h3>
+                                                        <div class="date">
+                                                                <h5>{ complaint.closed_date }</h5>
+                                                                <h5>{ complaint.closed_by }</h5>
+                                                        </div>
+
+                                                        {% endif %}
+                        </div>
+                </div>
+        </div>
+</div>
+
+<div class="row mb-2">
+        <div class="col-md-6">
+                <div class="costomer-info card flex-fill mb-2" style="min-height:17rem;">
+                        <div class="card-body p-2 hide_scrollbar" style="overflow-x:scroll ; scrollbar-width: thin;">
+                                <h3 class="bg-light px-2 py-1 rounded text-secondary"><strong>Customer Details </strong>
+                                </h3>
                                 <div class="contents px-2  py-2">
                                         <table class=" borderless table-sm">
                                                 <tbody>
                                                         <tr>
-                                                                <td class="text-secondary">Customer</td>
+                                                                <td class="text-secondary" width="120">Customer</td>
                                                                 <td>{{complaint.customer_name}}</td>
                                                         </tr>
                                                         <tr>
                                                                 <td class="text-secondary">Mobile</td>
                                                                 <td>{{complaint.customer_mob}}</td>
+                                                                <td class="text-cendter"><span
+                                                                                class="badge badge-success ">Verified <i
+                                                                                        class="fa-solid fa-check"></i></span>
+                                                                </td>
                                                         </tr>
                                                         <tr>
                                                                 <td class="text-secondary">Email</td>
                                                                 <td>{{complaint.customer_email}}</td>
+                                                                <td><span
+                                                                                class="btn btn-sm btn-outline-primary p-0 px-1 rounded">Click
+                                                                                to Verify</span></td>
                                                         </tr>
                                                         <tr>
                                                                 <td class="text-secondary">Address</td>
@@ -148,276 +410,198 @@
                                         </table>
 
                                 </div>
-                                <!-- <hr class="my-0"> -->
-                                <div class="control_bar  d-flex bg-light  mt-2 py-2 align-items-center justify-content-around rounded"
-                                        style=" border: 1px solid rgb(235, 234, 234); position: absolute; bottom:.5rem; left:.5rem;right:.5rem;">
-                                        <form action="{% url 'set_complaint_status' complaint.id %}" method="post">
-                                                {% csrf_token %}
-                                                <label class="text-secondary mb-0" for="">Current Status</label>
-                                                {{complaint_status_form}}
-                                                <input class="btn btn-primary rounded btn-sm py-0 mt-1" type="submit"
-                                                        value='Change' />
-                                        </form>
-                                        <form action="{% url 'assign_engineer' complaint.id %}" method="post">
-                                                {% csrf_token %}
-                                                <label class="text-secondary mb-0" for="">Assigned Engineer </label>
-                                                <select name="assign_engineer"
-                                                        class="form-control form-control-sm rounded"
-                                                        id="id_assign_engineer">
-                                                        <option value="-1">Assign Engineer</option>
-                                                        {% for engineer in engineers %}
-                                                        <option value="{{engineer.user.id}}">{{engineer.user.username}}
-                                                        </option>
-                                                        {% endfor %}
-                                                        <input class="btn btn-primary rounded btn-sm ml-1 py-0 mt-1"
-                                                                type="submit" value='Change' />
-                                                </select>
-                                        </form>
-                                </div>
                         </div>
+                </div>
 
-                        <div class="container-right col-sm-7 bg-white  px-2 ">
-                                <h5 class="bg-light rounded my-1 p-1 pl-2">Product Details</h5>
-                                <div class="contents px-2  py-2 ">
-
+        </div>
+        <div class="col-md-6">
+                <div class="product-info card flex-fill mb-2 hide_scrollbar"
+                        style="min-height:17rem; overflow-x:scroll ; scrollbar-width: thin;">
+                        <div class="card-body p-2">
+                                <h3 class="bg-light px-2 py-1 rounded text-secondary"><strong>Product Details </strong>
+                                </h3>
+                                <div class="contents px-2  py-1 ">
                                         <table class=" borderless">
                                                 <tbody>
                                                         <tr>
-                                                                <td class="text-secondary">Product</td>
-                                                                <td>{{complaint.product_name}}</td>
+                                                                <td class="text-secondary"">Category</td>
+                                                                <td>{{complaint.category}}</td>
                                                         </tr>
                                                         <tr>
-                                                                <td class="text-secondary">Description</td>
-                                                                <td>{{complaint.product_description}}</td>
-                                                        </tr>
-                                                        {% comment %} <tr>
-                                                                <td class="text-secondary">Problem</td>
-                                                                <td>{{complaint.problem}}</td>
-                                                        </tr> {% endcomment %}
-                                                        <tr>
-                                                                <td class="text-secondary ">Registred By</td>
-                                                                <td>{{complaint.registred_by}}</td>
+                                                                <td class=" text-secondary">Brand</td>
+                                                                <td>{{complaint.brand}}</td>
                                                         </tr>
                                                         <tr>
-                                                                <td class="text-secondary">Registred On</td>
-                                                                <td>{{complaint.registred_date}}</td>
+                                                                <td class="text-secondary">Model</td>
+                                                                <td> {{complaint.model_no}} </td>
                                                         </tr>
-                                        </table>
-                                        <table class="borderless">
-                                                {% if complaint.complaint_status != 0 %}
+                                                        {% if complaint.serial_no %}
+                                                        <tr>
+                                                                <td class="text-secondary">Serial Number</td>
+                                                                <td>{{complaint.serial_no}}</td>
+                                                        </tr>
+                                                        {% endif %}
+                                                        <tr>
+                                                                <td class="text-secondary">Physical Condition</td>
+                                                                <td>{{complaint.physical_condition}}</td>
+                                                        </tr>
+                                                        {% if complaint.updated_by %}
+                                                        <tr>
+                                                                <td class="text-secondary ">Updated</td>
+                                                                <td>{{complaint.updated_by}} on {{complaint.updated_on}}
+                                                                </td>
+                                                        </tr>
+                                                        {% endif %}
+                                                        <tr>
 
-                                                {% if complaint.complaint_status != 1 %}
-                                                <tr>
-                                                        <td class="text-secondary">Assigned To</td>
-                                                        <td>{{complaint.assigned_to}}</td>
-                                                </tr>
-                                                <tr>
-                                                        <td class="text-secondary">Assigned Date</td>
-                                                        <td>{{complaint.assigned_date}}</td>
-                                                </tr>
-                                                <tr>
-                                                        <td class="text-secondary">Resolved Date</td>
-                                                        <td>{{complaint.resolved_date}}</td>
-                                                </tr>
-                                                {% endif %}
-                                                {% endif %}
+                                                                <th class="text-secondary mt-2">Checklist</th>
+                                                                <td>
+                                                                        <span class>
+                                                                                <button type="button"
+                                                                                        class="more_attr btn btn-outline-primary btn-sm rounded"
+                                                                                        data-toggle="modal"
+                                                                                        data-target="#model_checklist">
+                                                                                        View Checklist ->
+                                                                                </button>
 
-                                                </tbody>
+                                                                                <!-- Modal -->
+                                                                                <div class="modal fade"
+                                                                                        id="model_checklist"
+                                                                                        tabindex="-1" role="dialog"
+                                                                                        aria-labelledby="exampleModalLabel"
+                                                                                        aria-hidden="true">
+                                                                                        <div class="modal-dialog"
+                                                                                                role="document">
+                                                                                                <div
+                                                                                                        class="modal-content">
+                                                                                                        <div
+                                                                                                                class="modal-header">
+                                                                                                                <h5 class="modal-title"
+                                                                                                                        id="exampleModalLabel">
+                                                                                                                        Pre
+                                                                                                                        Repair
+                                                                                                                        Checklist
+                                                                                                                </h5>
+                                                                                                                <button type="button"
+                                                                                                                        class="close"
+                                                                                                                        data-dismiss="modal"
+                                                                                                                        aria-label="Close">
+                                                                                                                        <span
+                                                                                                                                aria-hidden="true">&times;</span>
+                                                                                                                </button>
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                                class="modal-body">
+                                                                                                                <table
+                                                                                                                        class='table table-sm table-borderless'>
+                                                                                                                        <tbody>
+                                                                                                                                <tr>
+                                                                                                                                </tr>
+                                                                                                                                {% for item in check_list %}
+                                                                                                                                <tr>
+                                                                                                                                        <th>{{item.c_list_key}}
+                                                                                                                                        </th>
+                                                                                                                                        <td>{{item.c_list_val}}
+                                                                                                                                        </td>
+
+                                                                                                                                </tr>
+                                                                                                                                {% endfor %}
+                                                                                                                        </tbody>
+                                                                                                                </table>
+
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+
+                                                                        </span>
+                                                                </td>
+                                                        </tr>
+
                                         </table>
                                         <hr class="my-2">
-                                        {% comment %}
-                                        <hr> {% endcomment %}
-                                        <div class="row mx-0">
-                                                <div class="col-sm-2">
+                                        <div class="d-flex mx-0 px-0">
+                                                <div class="col-md-2 pl-1 mx-0" style="min-width:5rem ;">
                                                         <strong class="mb-0">Problem</strong>
                                                 </div>
-                                                <div class="col-sm-10 text-secondary">
+                                                <div class="col-md-10 text-secondary" style="min-width:15rem ;">
                                                         {{complaint.problem}}
                                                 </div>
                                         </div>
                                 </div>
-
                         </div>
                 </div>
-                <a href="{% url 'add_checklist' complaint.id %}" class="btn btn-primary">Checklist</a>
-        </div>
 
-
-        {% else %}
-        {% comment %} Engineer View ---------------------------------- {% endcomment %}
-
-        <div class="card-body">
-                You dont have permission to view this page
-        </div>
-        {% endif %}
-
-
-        <div class="px-4">
-                {% if components %}
-                <div class="d-flex mt-3 justify-content-between align-items-center">
-                        <span class="pl-2" style="width: 18rem; ">Parts Used in Repairing</span>
-                        <span class="ml-2" style="height:1px; width: 90rem; background-color: lightgrey;">
-                        </span>
-                </div>
-                <div class="table-container px-2">
-
-                        <table class="table table-sm">
-                                <thead>
-                                        <tr>
-                                                <th>Item</th>
-                                                <th>Description</th>
-                                                <th style=" width: 6rem;">Unit Price</th>
-                                                <th style=" width: 8rem;">Quantity</th>
-                                                <th style=" width: 8rem;">Action</th>
-                                </thead>
-
-                                <tbody>
-                                        {% for component in components %}
-                                        <tr>
-                                                <td>{{component.item_name}}</td>
-                                                <td>{{component.item_description}}</td>
-                                                <td>{{component.unit_price}}</td>
-                                                <td>{{component.quantity}}</td>
-                                                <td>
-                                                        <span class="d-flex">
-                                                                <a class="btn btn-primary btn-sm mx-2 rounded"
-                                                                        href="{% url 'update_component' component.id %}">Edit</a>
-
-
-
-                                                                <!-- Button trigger modal -->
-                                                                <button type="button"
-                                                                        class="btn btn-danger btn-sm rounded"
-                                                                        data-toggle="modal" data-target="#exampleModal">
-                                                                        Remove
-                                                                </button>
-
-                                                                <!-- Modal -->
-                                                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                                        role="dialog"
-                                                                        aria-labelledby="exampleModalLabel"
-                                                                        aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                                <div class="modal-content">
-                                                                                        <div class="modal-header">
-                                                                                                <h5 class="modal-title"
-                                                                                                        id="exampleModalLabel">
-                                                                                                        Are you sure
-                                                                                                        want to remove?
-                                                                                                </h5>
-                                                                                                <button type="button"
-                                                                                                        class="close"
-                                                                                                        data-dismiss="modal"
-                                                                                                        aria-label="Close">
-                                                                                                        <span
-                                                                                                                aria-hidden="true">&times;</span>
-                                                                                                </button>
-                                                                                        </div>
-                                                                                        <div class="modal-body">
-                                                                                                Item can not be recovred
-                                                                                                once deleted!
-                                                                                        </div>
-                                                                                        <div class="modal-footer">
-                                                                                                <button type="button"
-                                                                                                        class="btn btn-secondary"
-                                                                                                        data-dismiss="modal">Close</button>
-
-                                                                                                <form action="{% url 'delete_component' component.id %}"
-                                                                                                        method="post">
-                                                                                                        {% csrf_token %}
-                                                                                                        <input type="submit"
-                                                                                                                class="btn btn-danger rounded"
-                                                                                                                value="Yes">
-                                                                                                </form>
-                                                                                        </div>
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
-                                                        </span>
-                                                </td>
-                                        </tr>
-                                        {% endfor %}
-                                </tbody>
-                        </table>
-                </div>
-
-        </div>
-        {% endif %}
-
-        <div class="bottom-control mx-2 mb-3  mt-1  d-flex bg-light rounded  justify-content-center  p-0">
-                <a class="btn text-primary" href="{% url 'add_component' complaint.id %}">
-                        <div class="" style="font-size:1rem ;">
-                                <i class="fa-solid fa-plus"></i> Add Component
-                        </div>
-                </a>
         </div>
 </div>
 
+<div class="row mx-0">
+        <!-- Header -->
+        <div class="card">
+                <div class="card-body pt-2 pb-1 px-2">
+                        <div class="header row bg-light py-1 rounded">
+                                <div class="col-md-6 my-auto">
+                                        <h3 class="my-auto py-auto text-secondary"><strong> Components Used </strong></h3>
+                                </div>
+                                <div class="col-md-6 header_btn">
+                                        {% if components %}
+                                        <a class="btn btn-primary mx-1"  href="{% url 'list_components' complaint.id %}"><i class="fa-solid fa-gear"></i>
+                                                Manage</a>
+                                        {% else %}
+                                        <a class="btn btn-primary mx-1" href="{% url 'list_components' complaint.id%}"><i class="fa-solid fa-plus"></i>
+                                                Add Component
+                                        {% endif %}
+                                        </a>
+                                </div>
+                        </div>
+                </div>
+                <!-- <hr class="py-0 my-1"> -->
+                <div class="px-1 mt-1">
+                        
+                        {% if components %}
+                        <div class="table-container px-2">
 
+                                <table class="table table-sm">
+                                        <thead>
+                                                <tr>
+                                                        <th>Item</th>
+                                                        <th>Description</th>
+                                                        <th style=" width: 6rem;">Unit Price</th>
+                                                        <th style=" width: 8rem;">Quantity</th>
+                                                        <th style=" width: 8rem;">Action</th>
+                                                </tr>
+                                        </thead>
+
+                                        <tbody>
+                                                {% for component in components %}
+                                                <tr>
+                                                        <td>{{component.item_name}}</td>
+                                                        <td>{{component.item_description}}</td>
+                                                        <td>{{component.unit_price}}</td>
+                                                        <td>{{component.quantity}}</td>
+                                                        <td>
+
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
+                                        </tbody>
+                                </table>
+                        </div>
+                        {% else %}
+                        <div class="empty_box d-flex justify-content-center mt-4">
+                                <h3 class="text-secondary">No Components Added yet</h3>
+                                
+                        </div>
+                        <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
+                                Click <a href="" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
+                                
+                        </div>
+                        
+                        {% endif %}
+                </div>
+        </div>
+</div>
 <script>
-        complaint_drp = document.getElementById("id_complaint_status");
-        let cmp_status = "{{complaint.complaint_status}}"
-        Array.from(complaint_drp.children).forEach(element => {
-                if (element.value == cmp_status) {
-                        element.selected = true
-                }
-        });
-
-        engg_drp = document.getElementById("id_assign_engineer");
-        let engg_selected = "{{complaint.assigned_to.id}}"
-        Array.from(engg_drp.children).forEach(element => {
-                if (element.value == engg_selected) {
-                        element.selected = true
-                }
-        });
-
-        let status_badge = document.getElementById("status_badge");
-        let status = "{{complaint.complaint_status}}";
-        if (status == 2) {
-                status_badge.classList.add("bg-primary")
-                status_badge.innerHTML = "In Progress"
-        }
-        else if (status == 3) {
-                status_badge.classList.add("bg-success")
-                status_badge.innerHTML = "Repaired"
-        }
-        else if (status == 4) {
-                status_badge.classList.add("bg-danger")
-                status_badge.innerHTML = "Failed to Repair"
-        }
-        else if (status == 5) {
-                status_badge.classList.add("bg-secondary")
-                status_badge.innerHTML = "Repaired and Closed"
-        }
-        else if (status == 6) {
-                status_badge.classList.add("bg-dark")
-                status_badge.innerHTML = "Failed and Closed"
-        }
-        else {
-                status_badge.classList.add("bg-warning")
-                status_badge.innerHTML = "Registred"
-        }
-
-        //  console.log(engg_selected)
-
-        let print_action = document.getElementById("print_action");
-        let print_checkout = document.getElementById("print_checkout")
-
-        if (cmp_status < 3) {
-                print_action.style.visibility = "hidden";
-        }
-        else {
-                print_action.style.visibility = "shown";
-        }
-
-        if (cmp_status < 3 || cmp_status > 4) {
-                print_checkout.style.visibility = "hidden";
-        }
-        else {
-                print_checkout.style.visibility = "shown";
-        }
-
-
 
 </script>
 

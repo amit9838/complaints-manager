@@ -1,3 +1,4 @@
+from itertools import product
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -207,12 +208,15 @@ def view_complaint(request,pk):
     if(request.user.is_staff):
         try:
             complaint = Complaint.objects.get(id = pk)
+            check_list = CheckList.objects.filter(complaint = complaint)
+
             component_list = Item.objects.filter(complaint = complaint)
             complaint_status_form = ChangeComplaintStatusForm()
             engineers = Engineer.objects.all()
             # print(engineers)
             context = {
                 'components':component_list,
+                'check_list':check_list,
                 'complaint':complaint,
                 'complaint_status_form':complaint_status_form,
                 'engineers' : engineers,
@@ -313,37 +317,44 @@ def close_complaint(request,pk):
         return HttpResponse("You dont't have permission to access this page")
 
         
-@login_required
-def add_component(request,pk):
-    form  = AddComponentForm()
+
+def list_components(request,pk):
+    complaint = Complaint.objects.get(id=pk)
+    components = Item.objects.filter(complaint = complaint)
     context = {
-            'form':form,
-        }
-    if request.method == "GET":
-        complaint_item =  Complaint.objects.get(id=pk)
-        context = {
-            'form':form,
-            'complaint':complaint_item
-        }
-        return render(request, 'complaint/add_component.html',context)
+        "components" : components,
+        "complaint":complaint
+    }
+    return render(request, 'complaint/list_components.html',context)
+
+
+@login_required
+def add_component(request,pk_cmp):
     if request.method == "POST":
-        complaint_item =  Complaint.objects.get(id=pk)
-        form  = AddComponentForm(request.POST)
-        context = {
-            'form':form,
-            'complaint':complaint_item
-        }
-        if form.is_valid():
-            form_items = form.save(commit=False)
-            form_items.complaint = complaint_item
-            form_items.save()
-            messages.success(request, 'Component added successfully.')
-            if request.user.is_superuser:
-                return redirect('view_complaint', pk)
-            else:
-                return redirect('view_complaint_engg', pk)
-        messages.error(request, 'Could not add component! Plese provide valid input.')
-        return render(request, 'complaint/add_component.html',context)
+        complaint_item =  Complaint.objects.get(id=pk_cmp)
+        pk_pro = request.POST['pk_pro']
+        product = Product.objects.get(id = pk_pro)
+        is_listed_pro1 = ""
+        is_listed_pro2 = ""
+        try:
+            is_listed_pro1 = Item.objects.get(product = product)
+            is_listed_pro2 = Item.objects.get(complaint = complaint_item)
+        except Item.DoesNotExist:
+            pass
+        if(is_listed_pro1 and is_listed_pro2):
+            is_listed_pro1.quantity +=1
+            product.quantity -= 1;
+            is_listed_pro1.save()
+            product.save()
+        else:
+            i_name = product.brand + "-" + product.name
+            Item.objects.create(product = product, complaint = complaint_item, item_name =i_name, item_description = product.desc, unit_price = product.unit_price, quantity = 1)
+            product.quantity -= 1;
+            product.save()
+        messages.success(request, 'Component added successfully.')
+        return redirect('list_components', pk_cmp)
+    messages.error(request, 'Could not add component! Plese provide valid input.')
+    return redirect('list_components', pk_cmp)
 
 
 @login_required
@@ -380,14 +391,18 @@ def update_component(request,pk):
 def deleteComponent(request,pk):
     if request.method == 'POST':
         item = Item.objects.get(id = pk)
+        product = Product.objects.get(id = item.product.id)
+        product.quantity += item.quantity;
         complaint = item.complaint
-        print("deleting component...")
+        # print("deleting component...")
+        product.save()
         item.delete()
+        
         messages.success(request, 'Item removed successfully ')
         if request.user.is_superuser:
-            return redirect('view_complaint', complaint.id)
+            return redirect('list_components', complaint.id)
         else:
-            return redirect('view_complaint_engg', complaint.id)
+            return redirect('list_components', complaint.id)
 
 
 # Search Compalints Global ------------------------------------------------------------
@@ -516,8 +531,8 @@ def check_complaint_status(request):
                     'type':stat_type
                 }
 
-            elif(stat>2 and stat<4):
-                stat_msg = "W'll inform you when your device is ready!"
+            elif(stat>2 and stat<=4):
+                stat_msg = "Service in progress, you will be informed very soon."
                 stat_type = "success"
                 context = {
                     'complaint':complaint,

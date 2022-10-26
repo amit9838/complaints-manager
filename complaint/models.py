@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from user.models import *
+from store.models import *
 import datetime
 
 
 # Includes list of items and service charge
 
 class Item(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True,blank =True)
     complaint = models.ForeignKey("complaint.Complaint", on_delete=models.CASCADE)
     item_name = models.CharField(max_length=125)
     item_description = models.CharField(max_length=255, blank=True)
@@ -64,8 +66,8 @@ class Complaint(models.Model):
 
 
 
-    # def __str__(self):
-    #     return self.category + "-" + self.brand + "("+ self.customer_name + ")"
+    def __str__(self):
+        return   self.brand.upper() +"-" + self.model_no + "  ("+ self.customer_name + ")" + "  [" + self.category + "] " 
         
 
 

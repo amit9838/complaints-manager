@@ -51,7 +51,7 @@
                     <tr>
                         <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
                         <td>{{complaint.customer_name}}</td>
-                        <td> <span>{{complaint.product_name}}</span> - <span>{{complaint.product_model}}</span> </td>
+                        <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                         <td>{{complaint.problem}}</td>
                         <td>{{complaint.registred_date}}</td>
                         <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
@@ -139,7 +139,7 @@
     // let item = document.getElementById('search_msg');
     let search_msg = document.getElementById("search_msg");
     let res_found_msg = document.getElementById("res_found_msg");
-    console.log(all_comlpaints_table);
+    // console.log(all_comlpaints_table);
 
 
 
@@ -161,7 +161,7 @@
         else {
             let msg = `Showing <strong>(${data.length})</strong> Result(s) for <strong> ${searchVal} ...</strong>`;
             res_found_msg.innerHTML = msg;
-            console.log("results found")
+            // console.log("results found")
 
             data.forEach(complaint => {
                 let itemID = complaint.id;
@@ -181,7 +181,7 @@
                             <tr>
                                 <th scope="row"><span># </span> <span>${complaint.id}</span></th>
                                 <td>${complaint.customer_name}</td>
-                                <td> <span>${complaint.product_name}</span> - <span>${complaint.product_model}</span> </td>
+                                <td> <span>${complaint.brand}</span> - <span>${complaint.model_no}</span> </td>
                                 <td >${complaint.problem}</td>
                                 <td>${complaint.registred_date}</td>
                                 <td style = "text-align: center;"><span class="mx-2 status_badge st${complaint.complaint_status}" id="status_badge" style="font-size: .9rem;"></span></td>
@@ -201,8 +201,6 @@
                                     </tr> `;
             });
             table_body.innerHTML = search_res;
-
-
         }
     }
 
@@ -210,7 +208,7 @@
 
     function reset_search() {
         if (search_box.value.length == 0) {
-            console.log("cleared");
+            // console.log("cleared");
             all_comlpaints_table.style.display = "block";
             search_res_table.style.display = "none";
         }
@@ -235,7 +233,7 @@
 
     search_box.addEventListener('keyup', () => {
         if (search_box.value.length == 0) {
-            console.log("cleared");
+            // console.log("cleared");
             all_comlpaints_table.style.display = "block";
             search_res_table.style.display = "none";
         }
@@ -251,7 +249,7 @@
     })
 
     function Search_cmp() {
-        console.log(search_box.value);
+        // console.log(search_box.value);
         searchVal = search_box.value
         url = "{% url 'search-complaint_global' %}"
         // console.log(url);
@@ -260,7 +258,7 @@
             method: "POST",
         }).then((res) => res.json()).then((data) => {
 
-            console.log("data", data);
+            // console.log("data", data);
             populate_res(data);
         });
     }
