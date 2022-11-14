@@ -1,5 +1,5 @@
 # Complaint Manager
-### Advance complaint manager with huge set of features.
+### Advance complaint manager.
 
 ## Features
 - 3 user roles (Admin, Enployee, Engineer)
