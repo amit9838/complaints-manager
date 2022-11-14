@@ -19,6 +19,7 @@ class Product(models.Model):
     category = models.CharField(max_length=32)
     desc = models.CharField(max_length=3000,blank=True)
     quantity = models.IntegerField()
+    warrenty = models.PositiveIntegerField()  # In months
     unit_price = models.IntegerField()
     registred_on = models.DateField(null=True, blank=True)
     registred_by = models.ForeignKey(User,db_column="p_registred_by", blank=True,null=True,on_delete=models.SET_NULL,related_name = "p_registred_by" ,verbose_name = "Registred By")

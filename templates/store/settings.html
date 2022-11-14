@@ -12,7 +12,7 @@
 {% include 'home/partials/_message.html' %}
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+    <ol class="breadcrumb bg-white border">
         <li class="breadcrumb-item"><a href="{% url 'store' %}">Store</a></li>
         <li class="breadcrumb-item active" aria-current="page">Settings</li>
     </ol>
@@ -22,8 +22,10 @@
     <div class="card-header m-0 p-0 px-1 mt-2 ">
         <h3 class="card-title p-1 px-2 rounded">Settings</h3>
     </div>
-    <div class="card-body pt-1" style="overflow-x:scroll; min-width: 70rem; ">
-        <div class="category bg-light w-25 px-2 pb-2 rounded">
+    <div class="card-body pt-1" >
+        <div class="row">
+        
+        <div class="category  border bg-light col-md-3 px-2 pb-2 rounded">
             <h5 class="text-secondary px-2 pt-2 mb-0">Add Category</h5>
             <div class="form">
                 <form action={% url 'add_category' %} class=" d-flex py-1 justify-content-between" method="post">
@@ -36,7 +38,7 @@
         </hr>
         <hr class="m-0 p-0 mt-2 mx-2" >
         <h6 class="text-secondary mt-2 ml-2 ">Available Categories</h6>
-            <div class="list-categories rounded bg-white m-2" style="height:20rem; overflow-y:scroll; overflow-x: scroll;">
+            <div class="list-categories rounded bg-white m-2" style="height:20rem; overflow-y:scroll;">
                 <table class="table table-sm">
                     {% for item in categories %}
                     <tr>
@@ -122,7 +124,22 @@
                 </table>
             </div>
         </div>
+    
+
+
+        <div class="col-md-9">
+            <div class="card flex-full border rounded" style="height:100% ;">
+                <div class="card-header m-0 p-0 px-1 mt-2 mt-0 align-center my-auto ">
+                    <h3 class="card-title p-1 px-2 rounded my-auto py-2 py-auto">Tax Settings</h3>
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 </div>
 
 {% endblock %}

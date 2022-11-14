@@ -1,4 +1,5 @@
 from datetime import datetime
+from math import prod
 from socket import J1939_PGN_ADDRESS_COMMANDED
 from django.shortcuts import render,redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -55,8 +56,8 @@ def search_product(request):
 
     if (request.method =='POST'):
         search_str = json.loads(request.body).get('searchText')
-        with_p_name = Product.objects.filter(name__istartswith = search_str)
-        with_p_brand = Product.objects.filter(brand__istartswith = search_str)
+        with_p_name = Product.objects.filter(name__icontains = search_str)
+        with_p_brand = Product.objects.filter(brand__icontains = search_str)
         with_p_cat = Product.objects.filter(category__istartswith = search_str)
         with_p_desc = Product.objects.filter(desc__icontains = search_str)
         res = with_p_name | with_p_brand | with_p_cat | with_p_desc
@@ -121,6 +122,9 @@ def all_products(request):
     }
     return render(request, 'store/all_products.html',context)
 
+def view_product(request,pk):
+    product = Product.objects.get(id=pk)
+    return render(request,'store/view_product.html',{'product':product})
 
 
 def low_stock_products(request):

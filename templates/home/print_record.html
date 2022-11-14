@@ -14,7 +14,7 @@
 
 </head>
 
-<body>
+<body id="pagecontents">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style>
@@ -63,31 +63,63 @@
         border-radius: .2rem;
         background-color: rgb(63, 10, 10);
     }
+
+    @media print {
+               .page-tools {
+                  visibility: hidden;
+               }
+
+               @page {
+                margin-top: 0;
+                margin-bottom: 0;
+                size: auto;
+                margin-left: .05in;
+                margin-right: .25in;
+                padding-right: .2in;
+                }
+                
+                @page :footer {
+                display: none
+                }
+            
+                @page :header {
+                    display: none
+                }
+    
+                body {
+                    padding-top: 72px;
+                    padding-bottom: 72px ;
+                    /* padding-right: 20cm; */
+                    /* padding-left: 50px; */
+                }
+
+            }
+
 </style>
 
 
-<div class="page-content container">
+<div class="page-content container px-4" >
     <div class="page-header text-blue-d2">
         <h1 class="page-title text-secondary-d1">
             Invoice
             <small class="page-info">
                 <i class="fa fa-angle-double-right text-80"></i>
-                #{{complaint.id}}
             </small>
         </h1>
 
-        <!-- <div class="page-tools">
+        <div class="page-tools">
             <div class="action-buttons">
                 <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
                     <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
                     Print
                 </a>
-                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
+                <button class="btn bg-white btn-light mx-1px text-95" onclick="print_pdf()" href="#" data-title="PDF">
                     <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
                     Export
-                </a>
+                </button>
             </div>
-        </div> -->
+        </div>
+
     </div>
 
     <div class="container px-0">
@@ -106,7 +138,7 @@
                 <hr class="row brc-default-l1 mx-n1 mb-4" />
 
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 pl-4">
                         <div>
                             <span class="text-sm text-grey-m2 align-middle">To:</span>
                             <span class="text-600 text-110 text-blue align-middle">{{complaint.customer_name}}</span>
@@ -123,7 +155,7 @@
                     </div>
                     <!-- /.col -->
 
-                    <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                    <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end pr-4">
                         <hr class="d-sm-none" />
                         <div class="text-grey-m2">
                             <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
@@ -139,41 +171,17 @@
                     </div>
                     <!-- /.col -->
                 </div>
-<!-- 
-                <div class="mt-4">
-                    <div class="row text-600 text-white bgc-default-tp1 py-25">
-                        <div class="d-none d-sm-block col-1">#</div>
-                        <div class="col- col-sm-5">Description</div>
-                        <div class="col-2">Amount</div>
-                    </div>
-
-                    <div class="text-95 text-secondary-d3">
-                        <div class="row mb-2 mb-sm-0 py-25">
-                            <div class="d-none d-sm-block col-1">1</div>
-                            <div class="col-9 col-sm-5">Domain registration</div>
-                            <div class="col-2 text-secondary-d2">$20</div>
-                        </div>
-
-                        <div class="row mb-2 mb-sm-0 py-25 bgc-default-l4">
-                            <div class="d-none d-sm-block col-1">2</div>
-                            <div class="col-9 col-sm-5">Web hosting</div>
-                            <div class="col-2 text-secondary-d2">$15</div>
-                        </div>
 
                     
-                    <div class="row border-b-2 brc-default-l2"></div> -->
-
-                    <!-- or use a table instead  -->
-                    
-            <div class="table-responsive">
-                <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
-                    <thead class="bg-none bgc-default-tp1">
-                        <tr class="text-white">
+            <div class="table-responsive table-sm">
+                <table class="table  table-bordered  border brc-default-l1">
+                    <thead class="bg-light">
+                        <tr class="text-dark">
                             <th class="opacity-2">#</th>
                             <th>Description</th>
                             <th width="60">Qty</th>
                             <th width="140">Unit Price</th>
-                            <th width="180">Amount</th>
+                            <th width="180">Sub Total</th>
                         </tr>
                     </thead>
 
@@ -182,13 +190,10 @@
                         {% for item in components %}
                             <tr>
                                 <td>{{forloop.counter}}</td>
-                                <td>{{item.item_name}} 
-                                    {% if item.item_description %}
-                                        <span class="text-secondary">- {{item.item_description}}</span></td>
-                                    {% endif %}
+                                <td><strong class="text-secondary">{{item.brand}}</strong> - {{item.name}}</td> 
                                 <td>{{item.quantity}}</td>
-                                <td class="text-95"><i class="fa-solid fa-indian-rupee-sign"></i>{{item.unit_price}}</td>
-                                <td class="text-secondary-d2"><i class="fa-solid fa-indian-rupee-sign"></i>{{item.total}}</td>
+                                <td class="text-95"><i class="fa-solid fa-indian-rupee-sign text-secondary" style="font-size:.9em;"></i>{{item.unit_price}}</td>
+                                <td class="text-secondary-d2"><i class="fa-solid fa-indian-rupee-sign text-secondary" style="font-size:.9em;"></i>{{item.total}}</td>
                             </tr> 
                         {% endfor %}
                     </tbody>
@@ -221,7 +226,7 @@
                         </div>
                     </div>
                 <hr class="my-0 py-0 w-75"> -->
-                    <div class="row my-2 align-items-center bgc-primary-l3 p-2">
+                <div class="row mx align-items-center bgc-primary-l3 px-2">
                         <div class="col-7 text-right">
                             Total Amount
                         </div>
@@ -367,7 +372,36 @@ hr {
 
 </style>
 
-<script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"> </script>
+<script>
+    var doc = new jsPDF();
+    function print_pdfq() {
+            console.log("Printing...")
+            let conent = document.getElementById("pagecontents");
+            doc.fromHTML(conent,
+            10,
+            10,
+        {
+            'width':170
+        },
+        function() {
+            doc.save("Invoice.pdf");
+        }
+        );
+    }
+    function print_pdf() {
+        var divContents = $("#pagecontents").html();
+            var printWindow = window.open('', '', 'height=1920 ,width=1080');
+            printWindow.document.write('<html><head><title>DIV Contents</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+    }
+
+
 
 </script>
 </body>

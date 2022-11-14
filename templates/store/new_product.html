@@ -10,7 +10,7 @@
 {% block body_content %}
 {% include 'home/partials/_message.html' %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+    <ol class="breadcrumb bg-white border">
         <li class="breadcrumb-item"><a href="{% url 'store' %}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">New Product</li>
     </ol>
@@ -43,6 +43,8 @@
                 </select>
                 {{form.desc.label}}
                 {{form.desc}}
+                {{form.warrenty.label}}
+                {{form.warrenty}}
                 {{form.quantity.label}}
                 {{form.quantity}}
                 {{form.unit_price.label}}

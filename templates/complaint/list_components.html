@@ -34,10 +34,10 @@
 <div class="row mx-0">
     <!-- Header -->
     <div class="card">
-            <div class="card-body pt-2 pb-1 px-2">
+            <div class="card-body pt-2 pb-1 mx-2 px-0">
                     <div class="header row bg-light py-1 rounded">
                             <div class="col-md-6 my-auto d-flex">
-                                    <input type="search" class="form-control form-control-sm w-50" id="search_input" placeholder="Type to Search">
+                                    <input type="search" class="form-control form-control w-50" id="search_input" placeholder="Type to Search">
                                     <button class="mx-1 btn btn-secondary" disabled id="clearText">Clear</button>
                             </div>
                             <div class="col-md-6 header_btn">
@@ -48,8 +48,8 @@
                     </div>
             </div>
             <!-- <hr class="py-0 my-1"> -->
-            <div class="card rounded mt-1" id ="res_box" style="position:absolute; min-width: 65%; display: none;" >
-                <div class="card-body rounded border py-2">
+            <div class="card rounded mt-1 mx-auto " id ="res_box" style="position:absolute; min-width: 65%; display: none;" >
+                <div class="card-body rounded border py-1 px-2">
                         <div class="res_container" id="res_container" style="overflow-y:scroll; overflow-x: hidden; max-height: 70vh;"> 
 
                         </div>
@@ -58,30 +58,29 @@
             <div class="px-1 mt-1">
                     
                     {% if components %}
-                    <div class="table-container px-2">
+                    <div class="table-container px-0">
 
-                            <table class="table table-sm">
-                                    <thead>
+                            <table class="table table-sm table-striped rounded">
+                                    <thead class="bg-secondary text-light">
                                             <tr>
-                                                    <th>Item</th>
-                                                    <th>Description</th>
-                                                    <th style=" width: 6rem;">Unit Price</th>
-                                                    <th style=" width: 8rem;">Quantity</th>
-                                                    <th style=" width: 8rem;">Action</th>
+                                                    <th width="220" class=" mx-auto pl-2">Item</th>
+                                                    <th >Description</th>
+                                                    <th width="60" >Quantity</th>
+                                                    <th width="60" >Action</th>
                                             </tr>
                                     </thead>
 
                                     <tbody>
+                                        <tr></tr>
                                             {% for component in components %}
                                             <tr>
-                                                    <td>{{component.item_name}}</td>
-                                                    <td>{{component.item_description}}</td>
-                                                    <td>{{component.unit_price}}</td>
-                                                    <td>{{component.quantity}}</td>
-                                                    <td>
-                                                        <form action="{% url 'delete_component' component.id %}" method="POST" >
+                                                    <td>{{component.brand}}-{{component.name}}</td>
+                                                    <td>{{component.desc}}</td>
+                                                    <td style="text-align:center ;">{{component.quantity}}</td>
+                                                    <td style="text-align:center ;">
+                                                        <form action="{% url 'delete_component' component.id %}" method="POST"  >
                                                                 {% csrf_token %}
-                                                                <button type="submit" class="btn btn-danger btn-sm rounded"><i class="fa-solid fa-trash"></i></button>
+                                                                <button type="submit" class="btn btn-danger btn-sm py-0 rounded"><i class="fa-solid fa-trash"></i></button>
                                                         </form>
                                                     </td>
                                             </tr>
@@ -95,7 +94,7 @@
                             
                     </div>
                     <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
-                            Click <a href="" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
+                            Type in search box to search for components
                             
                     </div>
                     
@@ -172,26 +171,27 @@
                 data.forEach(item => {
                         // console.log(item);   
                         res+=`
-                                <div class="row bg-light p-2 mb-2 rounded">
+                                <div class="row bg-light p-2 mb-2 rounded mx-1">
                                         <div class="col-md-10">
                                                 <div class="header d-flex my-0 pb-0">
-
                                                         <h5 class="my-auto">
-                                                                ${item.brand} - ${item.name} [${item.category}]
+                                                                ${item.brand} - ${item.name} | 
                                                         </h5>
                                                         <div class="badge mb-">     
-                                                                <span class="badge badge-success">Available</span>
+                                                                <span class="badge badge-primary">${item.category}</span>
+                                                                <span class="badge badge-info">${item.warrenty} months warrenty</span>
+                                                                </span> <span class="badge badge-success">Available</span>
                                                         </div>
                                                 </div>
                                                 <span class = "text-secondary" style="font-size:.7rem; font-weight:400;">
                                                         ${item.desc}
                                                 </span>
                                         </div>
-                                        <div class="col-md-1 my-auto">
-                                                <form action = "{% url 'add_component' complaint.id %}" method = "POST">
+                                        <div class="col-md-2 my-auto">
+                                                <form action = "{% url 'add_component' complaint.id %}" method = "POST"">
                                                         {% csrf_token %}
                                                         <input type = "text" value = ${item.id} name = "pk_pro" hidden>
-                                                        <input type = "submit" value = "+ Add" class = "btn btn-primary"> 
+                                                        <button type = "submit" class = "btn btn-primary btn-sm rounded float-right"><i class="fa-solid fa-plus"></i> Add </button>
                                                 </form>        
                                         </div>
                                 </div>

@@ -20,6 +20,10 @@ class NewProductFrom(ModelForm):
         label="Category",
         widget=forms.TextInput(attrs={'class':'form-control form-control-sm','type':'text','placeholder':''})
     )
+    warrenty = forms.CharField(
+        label='Warrenty (in months)',
+        widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
+    )
     quantity = forms.CharField(
         label='Quantity',
         widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
@@ -31,4 +35,4 @@ class NewProductFrom(ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name','brand','desc','category','quantity','unit_price']
+        fields = ['name','brand','desc','category','warrenty','quantity','unit_price']

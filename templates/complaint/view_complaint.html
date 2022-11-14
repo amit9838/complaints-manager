@@ -105,7 +105,7 @@
 
         .mainchild::before {
                 content: '';
-                width: 75%;
+                width: 45%;
                 /*isko lekr adjust kr lo  1 index is 10% then to reach other block add 20% then at last add 10% to finish*/
                 height: 0%;
                 position: absolute;
@@ -115,6 +115,20 @@
                 /* left: 50%; */
                 z-index: 2;
         }
+
+        #progress1::before {
+                width: 25%;
+        }
+        #progress2::before {
+                width: 50%;
+        }
+        #progress3::before , #progress4::before {
+                width: 75%;
+        }
+        #progress5::before , #progress6::before {
+                width: 100%;
+        }
+
 
         .current::before {
                 background-color: rgb(38, 104, 165);
@@ -126,18 +140,18 @@
                 height: 1.4rem;
                 position: absolute;
                 background-color: transparent;
-                top: -1.2rem;
+                top: -1.25rem;
                 border-radius: 100%;
                 left: 45.86%;
                 border: 3px solid rgb(38, 104, 165);
                 z-index: 4;
-                animation: wave 1s infinite;
+                animation: wave 1.5s infinite;
         }
 
         @keyframes wave {
                 0% {
                         opacity: 1;
-                        transform: scale(1);
+                        transform: scale(.9);
                 }
 
                 100% {
@@ -237,6 +251,24 @@
 
                 }
 
+                #progress1::before {
+                        width: 0%;
+                        height:20%;
+                }
+                #progress2::before {
+                        width: 0%;
+                        height: 50%;
+                }
+                #progress3::before , #progress4::before {
+                        width: 0%;
+                        height: 68%;
+                }
+                #progress5::before , #progress6::before {
+                        width: 0%;
+                        height: 100%;
+                }
+
+
                 .current::before {
                         background-color: rgb(38, 104, 165);
                 }
@@ -266,15 +298,15 @@
         }
 </style>
 
-<nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
+<nav aria-label="breadcrumb ">
+        <ol class="breadcrumb bg-white border">
                 <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
                 <li class="breadcrumb-item active" aria-current="page">View Complaint</li>
         </ol>
 </nav>
 
-<div class="card flex-fill mb-2 mt-4">
+<div class="card flex-fill mb-2 mt-2">
         <div class="card-body row  py-3">
                 <div class="col-md-6">
                         <h2 class="title text-secondary align-center my-auto">Complaint ID: <strong>
@@ -282,30 +314,30 @@
                 </div>
                 <div class="col-md-6 header_btn">
                         <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-outline-primary mx-1" ><i class="fa-solid fa-pencil"></i> Edit</a>
-                        <div class="btn btn-outline-danger mx-1"><i class="fa-solid fa-trash-can"></i> Delete</div>
-                        <div class="btn btn-outline-info mx-1"><i class="fa-brands fa-whatsapp"></i> Share</div>
-                        <div class="btn btn-outline-primary mx-1"><i class="fa-solid fa-print"></i> Print</div>
+                        <a href="{% url 'delete_complaint' complaint.id %}" class="btn btn-outline-danger mx-1"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        <a href="" class="btn btn-outline-info mx-1"><i class="fa-brands fa-whatsapp"></i> Share</a>
+                        <a href="{% url 'print_record' complaint.id %}" class="btn btn-outline-primary mx-1"><i class="fa-solid fa-print"></i> Print</a>
                 </div>
         </div>
 </div>
 <div class="card flex-fill mb-2" style="height:fit-content ;">
         <!-- <h3 class="status pl-1 pt-2 ml-4 mt-1 text-secondary"> <strong> Status </strong></h3> -->
         <div class="main2">
-                <div class="mainchild">
-                        <div class="child done">
+                <div class="mainchild" id="progress{{complaint.complaint_status}}">
+                        <div class="child">
                                 <h3>Registered</h3>
                                 <div class="date">
                                         <h5>{{complaint.registred_date}}</h5>
                                         <h5>Registred by <strong>{{complaint.registred_by}}</strong> </h5>
                                 </div>
                         </div>
-                        <div class="child done">
+                        <div class="child">
                                 {% if complaint.complaint_status == 1 %}
                                 <h3>Assign Engineer</h3>
                                 <form action="{% url 'assign_engineer' complaint.id %}" class="" id="assign_engineer"
                                         method="post">
                                         {% csrf_token %}
-                                        <select name="assign_engineer" class="form-control form-control-sm rounded w-75"
+                                        <select name="assign_engineer" class="form-control form-control-sm p-0 my-0 rounded w-75"
                                                 id="id_assign_engineer">
                                                 <option value="-1">Assign Engineer</option>
                                                 {% for engineer in engineers %}
@@ -329,7 +361,8 @@
                                 {% endif %}
                         </div>
 
-                        <div class="child done failed">
+                        <div class="child">
+                                <h3 id="rep_stats"></h3>
                                 {% if complaint.complaint_status < 3 %} <h3>In Progress</h3>
                                         {% else %}
                                         {% if complaint.complaint_status == 3 %}
@@ -345,7 +378,7 @@
 
                                         {% endif %}
                         </div>
-                        <div class="child current ">
+                        <div class="child ">
                                 {% if complaint.complaint_status < 3 %} <h3>To be Colsed</h3>
                                         {% elif complaint.complaint_status < 5 %} <h3>Waiting to Close</h3>
                                                 <div class="" id="close_and_checkout">
@@ -355,7 +388,7 @@
                                                                         method="post">
                                                                         {% csrf_token %}
                                                                         <input type="submit"
-                                                                                class="btn btn-success mx-auto py-1 px-2 "
+                                                                                class="btn btn-sm rounded btn-success mx-auto py-1 px-2 "
                                                                                 value="Close & Checkout">
                                                                 </form>
                                                         </div>
@@ -363,11 +396,11 @@
 
                                                 {% elif complaint.complaint_status <= 6 %} <h3>Closed</h3>
                                                         <div class="date">
-                                                                <h5>{ complaint.closed_date }</h5>
-                                                                <h5>{ complaint.closed_by }</h5>
+                                                                <h5>{{complaint.closed_date}}</h5>
+                                                                <h5>Closed by <strong>{{complaint.closed_by}}</strong></h5>
                                                         </div>
 
-                                                        {% endif %}
+                                        {% endif %}
                         </div>
                 </div>
         </div>
@@ -377,8 +410,8 @@
         <div class="col-md-6">
                 <div class="costomer-info card flex-fill mb-2" style="min-height:17rem;">
                         <div class="card-body p-2 hide_scrollbar" style="overflow-x:scroll ; scrollbar-width: thin;">
-                                <h3 class="bg-light px-2 py-1 rounded text-secondary"><strong>Customer Details </strong>
-                                </h3>
+                                <h4 class="bg-light px-2 py-1 rounded text-secondary"><strong>Customer Details </strong>
+                                </h4>
                                 <div class="contents px-2  py-2">
                                         <table class=" borderless table-sm">
                                                 <tbody>
@@ -389,17 +422,12 @@
                                                         <tr>
                                                                 <td class="text-secondary">Mobile</td>
                                                                 <td>{{complaint.customer_mob}}</td>
-                                                                <td class="text-cendter"><span
-                                                                                class="badge badge-success ">Verified <i
-                                                                                        class="fa-solid fa-check"></i></span>
-                                                                </td>
+                                                                
                                                         </tr>
                                                         <tr>
                                                                 <td class="text-secondary">Email</td>
                                                                 <td>{{complaint.customer_email}}</td>
-                                                                <td><span
-                                                                                class="btn btn-sm btn-outline-primary p-0 px-1 rounded">Click
-                                                                                to Verify</span></td>
+                                                                
                                                         </tr>
                                                         <tr>
                                                                 <td class="text-secondary">Address</td>
@@ -418,8 +446,8 @@
                 <div class="product-info card flex-fill mb-2 hide_scrollbar"
                         style="min-height:17rem; overflow-x:scroll ; scrollbar-width: thin;">
                         <div class="card-body p-2">
-                                <h3 class="bg-light px-2 py-1 rounded text-secondary"><strong>Product Details </strong>
-                                </h3>
+                                <h4 class="bg-light px-2 py-1 rounded text-secondary"><strong>Product Details </strong>
+                                </h4>
                                 <div class="contents px-2  py-1 ">
                                         <table class=" borderless">
                                                 <tbody>
@@ -541,47 +569,42 @@
                 <div class="card-body pt-2 pb-1 px-2">
                         <div class="header row bg-light py-1 rounded">
                                 <div class="col-md-6 my-auto">
-                                        <h3 class="my-auto py-auto text-secondary"><strong> Components Used </strong></h3>
+                                        <h4 class="my-auto py-auto text-secondary"><strong> Components Used </strong></h4>
                                 </div>
                                 <div class="col-md-6 header_btn">
                                         {% if components %}
-                                        <a class="btn btn-primary mx-1"  href="{% url 'list_components' complaint.id %}"><i class="fa-solid fa-gear"></i>
+                                        <a class="btn btn-primary btn-sm rounded mx-1"  href="{% url 'list_components' complaint.id %}"><i class="fa-solid fa-gear"></i>
                                                 Manage</a>
                                         {% else %}
-                                        <a class="btn btn-primary mx-1" href="{% url 'list_components' complaint.id%}"><i class="fa-solid fa-plus"></i>
+                                        <a class="btn btn-primary btn-sm rounded mx-1" href="{% url 'list_components' complaint.id%}"><i class="fa-solid fa-plus"></i>
                                                 Add Component
                                         {% endif %}
                                         </a>
                                 </div>
                         </div>
                 </div>
-                <!-- <hr class="py-0 my-1"> -->
                 <div class="px-1 mt-1">
                         
                         {% if components %}
                         <div class="table-container px-2">
-
                                 <table class="table table-sm">
-                                        <thead>
+                                        <thead class="bg-secondary text-light pl-2">
                                                 <tr>
-                                                        <th>Item</th>
-                                                        <th>Description</th>
-                                                        <th style=" width: 6rem;">Unit Price</th>
-                                                        <th style=" width: 8rem;">Quantity</th>
-                                                        <th style=" width: 8rem;">Action</th>
+                                                        <th width="240" >Item</th>
+                                                        <th >Description</th>
+                                                        <th width="120" style="text-align:center;">Quantity</th>
+                                                        <th width="120" style="text-align:center;">Unit Price</th>
                                                 </tr>
                                         </thead>
 
                                         <tbody>
                                                 {% for component in components %}
                                                 <tr>
-                                                        <td>{{component.item_name}}</td>
-                                                        <td>{{component.item_description}}</td>
-                                                        <td>{{component.unit_price}}</td>
-                                                        <td>{{component.quantity}}</td>
-                                                        <td>
-
-                                                        </td>
+                                                        <td>{{component.brand}}-{{component.name}}</td>
+                                                        <td>{{component.desc}}</td>
+                                                        <td style="text-align:center;">{{component.quantity}}</td>
+                                                        <td style="text-align:center;">{{component.unit_price}}</td>
+                                                      
                                                 </tr>
                                                 {% endfor %}
                                         </tbody>
@@ -593,7 +616,7 @@
                                 
                         </div>
                         <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
-                                Click <a href="" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
+                                Click <a  href="{% url 'list_components' complaint.id%}" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
                                 
                         </div>
                         
@@ -602,6 +625,52 @@
         </div>
 </div>
 <script>
+        let curr = document.getElementsByClassName("mainchild")[0];
+        let children = curr.children;
+        complaint_status = "{{complaint.complaint_status}}"
+        let rep_stats = document.getElementById("rep_stats");
+        
+        console.log(rep_stats)
+        complaint_status = complaint_status
+        complaint_status = parseInt(complaint_status)
+
+        if(complaint_status == 1) {
+                children[0].classList.add("done");
+                children[1].classList.add("current");
+        }
+        else if(complaint_status == 2) {
+                children[0].classList.add("done");
+                children[1].classList.add("done");
+                children[2].classList.add("current");
+        }
+        else if(complaint_status == 3) {
+                children[0].classList.add("done");
+                children[1].classList.add("done");
+                children[2].classList.add("done");
+                children[3].classList.add("current");
+        }
+        else if(complaint_status == 4) {
+                children[0].classList.add("done");
+                children[1].classList.add("done");
+                children[2].classList.add("failed");
+                children[3].classList.add("current");
+        }
+        else if(complaint_status == 5 || complaint_status == 6) {
+                children[0].classList.add("done");
+                children[1].classList.add("done");
+                children[2].classList.add("done");
+                children[3].classList.add("done");
+
+                if(complaint_status ==5){
+                        rep_stats.innerText = "Repaired";
+                }
+                if(complaint_status ==6){
+                        rep_stats.innerText = "Failed to Repair";
+                }
+                
+        }
+
+
 
 </script>
 

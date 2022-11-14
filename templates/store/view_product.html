@@ -1,0 +1,99 @@
+{% extends 'base_dashboard_store.html' %}
+
+{% block title %}Closed Complaints{% endblock title %}
+
+{% block navbar_content %}
+
+{% endblock navbar_content %}
+
+
+{% block body_content %}
+{% include 'home/partials/_message.html' %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white border">
+        <li class="breadcrumb-item"><a href="{% url 'store' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'all_products' %}">All Products</a></li>
+        <li class="breadcrumb-item active" aria-current="page">View Product</li>
+    </ol>
+</nav>
+
+<div class="card flex-full">
+    <!-- <div class="card-header"></div> -->
+    <div class="card-body py-2">
+        <div class="header row">
+            <div class="col-sm-5 p-1">
+                <div class="left-container bg-lights px-3 py-2 rounded border">
+                <div class="header row">
+                    <div class="col-10">
+                        <h4 class="py-0 my-0 mb-1">{{product.name}}</h4>
+                    </div>
+                    <div class="col-2">
+                        <a href="" class="btn btn-sm py-0 rounded btn-outline-primary border-0  float-right" title="Edit" ><i class="fa-solid fa-pencil"></i></a>
+                    </div>
+                </div>
+                <hr class="my-0 mb-1">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Category</td>
+                                <th><span class="badge badge-primary">{{product.category}}</span></th>
+                            </tr>
+                            <tr>
+                                <td width="180">Product Id</td>
+                                <th width="180"  ># {{product.id}}</th>
+                            </tr>
+                            <tr>
+                                <td width="180">Brand</td>
+                                <th width="180"  >{{product.brand}}</th>
+                            </tr>
+                            <tr>
+                                <td>Warrenty</td>
+                                <td><strong>{{product.warrenty}} </strong> Months</td>
+                            </tr>
+                            <tr>
+                                <td>Unit Price(Rs.)</td>
+                                <th>{{product.unit_price}}</th>
+                            </tr>
+                            <tr>
+                                <td>Available Qunatity</td>
+                                <td>
+                                    <strong>{{product.quantity}} </strong> Pcs
+                                    {% if product.quantity > 30 %}
+                                    <span class="badge badge-success">Available</span>
+                                    {% elif product.quantity < 30 and  product.quantity > 0 %}
+                                    <span class="badge badge-warning">Low</span>
+                                    {% elif product.quantity == 0 %}
+                                    <span class="badge badge-danger">Out Of Stock</span>
+                                    {%endif%}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Registred On/By</td>
+                                <th>{{product.registred_on}}({{product.registred_by}})</th>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="col-sm-7 p-1">
+                <div class="right-container bg-lights px-3 py-2 rounded h-100 border">
+                    <div class="header row">
+                        <div class="col-10">
+                            <h5 class="align-centexr mb-1">Description</h5>
+                        </div>
+                        <div class="col-2">
+                            <!-- <a href="" class="btn btn-sm rounded btn-outline-danger py-0 float-right border-0" title="Delete" ><i class="fa-solid fa-trash"></i></a> -->
+                        </div>
+                    </div>
+                    <hr class="my-0 mb-1">
+                    <p>{{product.desc}} </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

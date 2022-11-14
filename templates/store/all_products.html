@@ -7,7 +7,7 @@
 
 {% block body_content %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+    <ol class="breadcrumb bg-white border">
         <li class="breadcrumb-item"><a href="{% url 'store' %}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">All Products</li>
     </ol>
@@ -19,12 +19,13 @@
     </div>
     <div class="card-body pt-1" style="overflow-x:scroll ;">
         <table class="table table-striped table-sm" style="min-width:30rem ;">
-            <thead>
+            <thead class="bg-secondary text-light">
                 <th>SN</th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Qty</th>
                 <th>Price</th>
+                <th></th>
             </thead>
             <tbody>
                 {% for item in page_obj %}
@@ -34,6 +35,11 @@
                     <td>{{item.category}}</td>
                     <td>{{item.quantity}}</td>
                     <td>{{item.unit_price}}</td>
+                    <td width="40">
+                        <a href="{% url 'view_product' item.id %}">
+                            <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

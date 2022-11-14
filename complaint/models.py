@@ -10,8 +10,11 @@ import datetime
 class Item(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL,null=True,blank =True)
     complaint = models.ForeignKey("complaint.Complaint", on_delete=models.CASCADE)
-    item_name = models.CharField(max_length=125)
-    item_description = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=256)
+    brand = models.CharField(max_length=64 ,blank=True)
+    category = models.CharField(max_length=32)
+    warrenty = models.PositiveIntegerField()  # In months
+    desc = models.CharField(max_length=3000,blank=True)
     unit_price = models.PositiveIntegerField()
     quantity = models.PositiveIntegerField()
 

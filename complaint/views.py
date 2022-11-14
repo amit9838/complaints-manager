@@ -1,4 +1,5 @@
 from itertools import product
+from unicodedata import name
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -45,6 +46,8 @@ def update_complaint(request,pk):
         try:
             complaint = Complaint.objects.get(id=pk)
             form  = ComplaintRegisterForm(instance=complaint)
+            if not request.user.is_superuser:
+                form.fields['customer_mob'].disabled = True
             context = {
                     
                     'complaint_register_form':form,
@@ -54,13 +57,11 @@ def update_complaint(request,pk):
                 return render(request, 'complaint/update_complaint.html',context) 
             if request.method == "POST":
                 form = ComplaintRegisterForm(request.POST, instance=complaint)
+                form.fields['customer_mob'].disabled = True
                 if form.is_valid():
                     form.save()
                     messages.success(request, 'Complaint has been successfully updated.')
-                    if request.user.is_superuser:
-                        return redirect('view_complaint', complaint.id)
-                    else:
-                        return redirect('view_complaint_engg', complaint.id)
+                    return redirect('view_complaint', complaint.id)
                 
                 messages.error(request, 'Complaint not Updated! Please provide valid input.')
                 return render(request, 'complaint/update_complaint.html',context)
@@ -333,22 +334,25 @@ def add_component(request,pk_cmp):
     if request.method == "POST":
         complaint_item =  Complaint.objects.get(id=pk_cmp)
         pk_pro = request.POST['pk_pro']
+        print(pk_pro)
         product = Product.objects.get(id = pk_pro)
+        print(product)
         is_listed_pro1 = ""
         is_listed_pro2 = ""
         try:
-            is_listed_pro1 = Item.objects.get(product = product)
-            is_listed_pro2 = Item.objects.get(complaint = complaint_item)
+            is_listed_pro1 = Item.objects.filter(product = product)
+            is_listed_pro2 = Item.objects.filter(complaint = complaint_item)
+            print(complaint_item)
+            print(is_listed_pro2)
         except Item.DoesNotExist:
             pass
         if(is_listed_pro1 and is_listed_pro2):
-            is_listed_pro1.quantity +=1
+            is_listed_pro1[0].quantity +=1
             product.quantity -= 1;
-            is_listed_pro1.save()
+            is_listed_pro1[0].save()
             product.save()
         else:
-            i_name = product.brand + "-" + product.name
-            Item.objects.create(product = product, complaint = complaint_item, item_name =i_name, item_description = product.desc, unit_price = product.unit_price, quantity = 1)
+            Item.objects.create(product = product, complaint = complaint_item,brand =product.brand ,name =product.name, category = product.category,desc = product.desc, warrenty = product.warrenty, unit_price = product.unit_price, quantity = 1)
             product.quantity -= 1;
             product.save()
         messages.success(request, 'Component added successfully.')

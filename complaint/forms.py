@@ -13,7 +13,7 @@ class ComplaintRegisterForm(ModelForm):
     )
     customer_mob = forms.CharField(
         label="Mobile Number",
-        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm','type':'Number','placeholder':''})
+        widget=forms.TextInput(attrs = {'class':'form-control form-control-sm ','type':'Number','placeholder':'', 'id':'mob_input' })
     )
     customer_email = forms.EmailField(
         label="Email",
@@ -56,32 +56,38 @@ class ComplaintRegisterForm(ModelForm):
 
 
 class AddComponentForm(ModelForm):
-    item_name = forms.CharField(
-        label="Item Name",
-        widget=forms.TextInput(attrs={'class':'form-control', 'type':'text','placeholder':'Item Name'})
-        , max_length=120, required=True
-        )
-    item_description = forms.CharField(
-        label="Item Description",
-        widget=forms.Textarea(attrs={'class':'form-control', 'type':'text','placeholder':'Item Description'})
-        , max_length=120, required=False
-        )
-    unit_price = forms.CharField(
-        label="Unit Price",
-        widget=forms.NumberInput(attrs={'class':'form-control', 'type':'number','placeholder':'Unit Price'})
-        , max_length=120, required=True
-        )
-
+    name = forms.CharField(
+        label="Product Name",
+        widget=forms.TextInput(attrs={'class':'form-control form-control-sm','type':'text','placeholder':''})
+    )
+    brand = forms.CharField(
+        label="Brand",
+        widget=forms.TextInput(attrs={'class':'form-control form-control-sm','type':'text','placeholder':''})
+    )
+    desc = forms.CharField(
+        label="Description",
+        widget=forms.Textarea(attrs={'class':'form-control form-control-sm','type':'text','placeholder':'','rows':5})
+    )
+    category = forms.CharField(
+        label="Category",
+        widget=forms.TextInput(attrs={'class':'form-control form-control-sm','type':'text','placeholder':''})
+    )
+    warrenty = forms.CharField(
+        label='Warrenty (in months)',
+        widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
+    )
     quantity = forms.CharField(
-        label="Qunatity",
-        widget=forms.NumberInput(attrs={'class':'form-control', 'type':'number','placeholder':'Qunatity'})
-        , max_length=120, required=True
-        )
+        label='Quantity',
+        widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
+    )
+    unit_price = forms.CharField(
+        label='Unit Price',
+        widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
+    )
 
     class Meta:
-        model = Item
-        fields = ['item_name','item_description','unit_price', 'quantity']
-
+        model = Product
+        fields = ['name','brand','desc','category','warrenty', 'quantity','unit_price']
 
 
 class ChangeComplaintStatusForm(ModelForm):
