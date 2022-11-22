@@ -37,10 +37,13 @@
                 <thead class="bg-secondary text-light">
                     <tr>
                         <th>Complaint ID</th>
+                        
                         <th>Customer</th>
                         <th>Product</th>
                         <th style=" width: 40%;">Problem</th>
+                        {% if request.user.is_staff %}
                         <th>Registred on</th>
+                        {% endif %}
                         <th width="80" style="min-width:11rem; text-align: center; ">Status</th>
                         <th>View</th>
                     </tr>
@@ -53,7 +56,9 @@
                         <td>{{complaint.customer_name}}</td>
                         <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                         <td>{{complaint.problem}}</td>
+                        {% if request.user.is_staff %}
                         <td>{{complaint.registred_date}}</td>
+                        {% endif %}
                         <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
                                 id="status_badge" style="font-size: .9rem;"></span></td>
                         <td width="40">
@@ -116,7 +121,9 @@
                         <th>Customer</th>
                         <th>Product</th>
                         <th style=" width: 40%;">Problem</th>
+                        {% if request.user.is_staff %}
                         <th>Registred on</th>
+                        {% endif %}
                         <th style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
                         <th>View</th>
                     </tr>
@@ -183,17 +190,18 @@
                                 <td>${complaint.customer_name}</td>
                                 <td> <span>${complaint.brand}</span> - <span>${complaint.model_no}</span> </td>
                                 <td >${complaint.problem}</td>
+                                {% if request.user.is_staff %}
                                 <td>${complaint.registred_date}</td>
+                                {% endif %}
                                 <td style = "text-align: center;"><span class="mx-2 status_badge st${complaint.complaint_status}" id="status_badge" style="font-size: .9rem;"></span></td>
                                 <td>
                                     {% if user.is_staff %}
-                                    <a  href=${view_cmp}>
-                                        <div class="btn btn-primary rounded py-1">View</div>
+                                    <a href=${view_cmp}>
+                                        <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                                     </a>
-                                    
                                     {% else %}
-                                    <a  href=${view_cmp1}>
-                                    <div class="btn btn-primary rounded py-1">View</div>
+                                    <a href=${view_cmp1}>
+                                        <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                                     </a>
                                     {% endif %}
 

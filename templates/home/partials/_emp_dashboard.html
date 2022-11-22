@@ -22,7 +22,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h1 class="mt-1 mb-3">{{tatal_complaints}}</h1>
+                                <h1 class="mt-1 mb-3">132</h1>
                                 <div class="mb-0">
                                     <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
                                     <span class="text-muted">Since last week</span>
@@ -200,21 +200,21 @@
         }
 
     </script>
-    <div class="card flex-fill px-2 ">
-        <div class="card-header">
-            <h2 class=" my-0 card-title"> Recent Complaints </h2>
+    <div class="card flex-fill px-2">
+        <div class="card-header mt-1 py-1 px-1">
+            <h2 class=" my-0 p-1 px-1 card-title"> Recent Complaints </h2>
         </div>
-        <div class="card-body" style="overflow-x:scroll ;">
+        <div class="card-body p-0 px-3" style="overflow-x:scroll ;">
 
-            <table class="table table-sm table-striped">
-                <thead>
+            <table class="table table-sm table-striped" style="min-width:50rem;">
+                <thead class="bg-secondary text-light">
                     <tr>
                         <th>Complaint ID</th>
                         <th>Customer</th>
                         <th>Product</th>
                         <th style=" width: 40%;">Problem</th>
                         <th>Registred on</th>
-                        <th style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
+                        <th width= "80" style="min-width:11rem; text-align: center; ">Status</th>
                         <th>View</th>
                     </tr>
                 </thead>
@@ -224,13 +224,13 @@
                     <tr>
                         <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
                         <td>{{complaint.customer_name}}</td>
-                        <td> <span>{{complaint.product_name}}</span> - <span>{{complaint.product_model}}</span> </td>
+                        <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                         <td>{{complaint.problem}}</td>
                         <td>{{complaint.registred_date}}</td>
-                        <td><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
+                        <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
                                 style="font-size: .9rem;"></span></td>
-                        <td><a href="{% url 'view_complaint' complaint.id %}">
-                                <div class="btn btn-primary rounded py-1">View</div>
+                        <td width="40"><a href="{% url 'view_complaint' complaint.id %}">
+                                <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                             </a>
                         </td>
                     </tr>

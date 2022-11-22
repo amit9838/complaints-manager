@@ -3,7 +3,7 @@
 {% block title %}Profile{% endblock title %}
 
 {% block body_content %}
-
+{% include 'home/partials/_message.html' %}
 <div class="row gutters-sm">
     <div class="col-md-4 mb-3">
       <div class="card">
@@ -23,12 +23,12 @@
 
             {% endif %}
             <div class="mt-3">
-              <h4>{{user.get_full_name}}</h4>
+              <h4>{{user_passed.get_full_name}}</h4>
 
-            {% if user.is_superuser %}
+            {% if user_passed.is_superuser %}
                 <p class="text-secondary mb-1">Admin</p>
             
-            {% elif user.employee %}
+            {% elif user_passed.employee %}
                 <p class="text-secondary mb-1">Staff</p>
             
             {% else %}
@@ -86,7 +86,7 @@
                     <h6 class="mb-0">Username</h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
-                    {{user.username}}
+                    {{user_passed.username}}
                 </div>
                 </div>
               <hr>
@@ -95,7 +95,7 @@
               <h6 class="mb-0">Full Name</h6>
             </div>
             <div class="col-sm-9 text-secondary">
-                {{user.get_full_name}}
+                {{user_passed.get_full_name}}
             </div>
         </div>
         <hr>
@@ -104,7 +104,7 @@
                 <h6 class="mb-0">Email</h6>
             </div>
             <div class="col-sm-9 text-secondary">
-                {{user.email}}
+                {{user_passed.email}}
             </div>
         </div>
         <hr>
@@ -142,7 +142,7 @@
           {% if user.is_superuser %}
           <div class="row">
             <div class="col-sm-12">
-              <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+              <a class="btn btn-info" href="{% url 'update_profile' user_passed.id %}">Edit</a>
             </div>
           </div>
           {% endif %}

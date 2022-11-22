@@ -4,6 +4,24 @@
 
 
 {% block body_content %}
+
+
+<style>
+        .header_btn {
+                display: flex;
+                justify-content: end;
+        }
+
+        @media screen and (max-width:760px) {
+                .header_btn {
+
+                margin-top: 1rem;
+                display: flex;
+                justify-content: start;
+                }
+        }
+</style>
+
 {% include 'home/partials/_message.html' %}
 <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white">
@@ -32,47 +50,19 @@
                 </style>
 
                 <div class="complaint_details_container row justify-content-between px-1 text-dark" style="flex-wrap:wrap;">
-                        <div class="container-left col-sm-5 rounded px-2" style=" height: fit-content; min-height: 20rem; position: relative;">
-                                <h5 class="bg-light p-1 pl-2 rounded my-1">Customer Details</h5>
-                                <div class="contents px-2  py-2">
-                                        <table class=" borderless table-sm">
-                                                <tbody>
-                                                  <tr>
-                                                    <td class="text-secondary">Customer</td>
-                                                    <td>{{complaint.customer_name}}</td>
-                                                  </tr>
-                                                  <tr>
-                                                        <td class="text-secondary">Mobile</td>
-                                                        <td>{{complaint.customer_mob}}</td>
-                                                </tr>
-                                                  <tr>
-                                                        <td class="text-secondary">Address</td>
-                                                        <td>{{complaint.customer_address}}</td>
-                                                </tr>
-                                                  
-                                                </tbody>
-                                              </table>
-                                              <hr  class="my-2 ">
-                                              <table class="borderless">
-                                                <!-- <tr>
-                                                  <td class="text-secondary">Assigned To</td>
-                                                  <td>{{complaint.assigned_to}}</td>
-                                                </tr> -->
-                                                <tr>
-                                                  <td class="text-secondary">Assigned Date</td>
-                                                  <td>{{complaint.assigned_date}}</td>
-                                                </tr>
-                                                <tr>
-                                                  <td class="text-secondary">Resolved Date</td>
-                                                  <td>{{complaint.resolved_date}}</td>
-                                                </tr>
-                                              </tbody>
-                                            </table> 
-                                        
-                                </div>
+                        <div class="container-left col-sm-5 rounded px-2" style=" height: fit-content; ">
+                                <!-- <h5 class="bg-light p-1 pl-2 rounded my-1"> ComStatus</h5> -->
+     
                                 <!-- <hr class="my-0"> -->
-                                <div class="control_bar  bg-light  mt-2 py-2 align-items-center mx-auto  rounded" style=" width: 95%; border: 1px solid rgb(235, 234, 234); position: absolute; bottom:.5rem; left:.5rem;right:.5rem;"> 
+                                
+                                
+                                <div class="control_bar  bg-light  mt-2 py-2 align-items-center mx-auto  rounded" style=" width: 95%; border: 1px solid rgb(235, 234, 234); "> 
                                         <h5 class="text-center" style="text-decoration:underline rgb(203, 203, 203);"> <strong>Complaint Status</strong></h5>
+                                        
+                                        {% if complaint.complaint_status > 4 %}
+                                        <h3 class="text-center text-secondary bg-white py-3 mx-4 rounded "><i class="fa-solid fa-lock"></i>  Complaint Closed</h3>
+                                        
+                                        {% else %}
                                         <form  action = "" method = "post" class="w-100">
                                                 {% csrf_token %}
                                                 <div class="form_container w-100 d-flex justify-content-around">
@@ -98,9 +88,10 @@
                                                 </div>
                                                 <hr class="my-2">
                                                 <div class="submit-btn d-flex justify-content-center">
-                                                        <input  class="btn btn-primary rounded btn-sm py-1 w-25 mt-1" type = "submit" value = 'Submit' style="font-size:.9rem ;"/>
+                                                        <input  class="btn btn-primary rounded btn-sm py-1 w-25 mt-1" type = "submit" value = 'Save' style="font-size:.9rem ;"/>
                                                 </div>
                                         </form>
+                                        {% endif %}
                                 </div>
                         </div>
                         
@@ -110,35 +101,111 @@
 
                                         <table class=" borderless">
                                                 <tbody>
-                                                  <tr>
-                                                    <td class="text-secondary">Product</td>
-                                                    <td>{{complaint.product_name}}</td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="text-secondary">Description</td>
-                                                    <td>{{complaint.product_description}}</td>
-                                                  </tr>
-                                                   
-                                                  <tr>
-                                                    <td class="text-secondary " >Registred By</td>
-                                                    <td>{{complaint.registred_by}}</td>
-                                                  </tr>
-                                                  <tr>
-                                                    <td class="text-secondary">Registred On</td>
-                                                    <td>{{complaint.registred_date}}</td>
-                                                  </tr>
-                                                </table>
+                                                        <tr>
+                                                                <td class="text-secondary"">Category</td>
+                                                                <td>{{complaint.category}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                                <td class=" text-secondary">Brand</td>
+                                                                <td>{{complaint.brand}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                                <td class="text-secondary">Model</td>
+                                                                <td> {{complaint.model_no}} </td>
+                                                        </tr>
+                                                        {% if complaint.serial_no %}
+                                                        <tr>
+                                                                <td class="text-secondary">Serial Number</td>
+                                                                <td>{{complaint.serial_no}}</td>
+                                                        </tr>
+                                                        {% endif %}
+                                                        <tr>
+                                                                <td class="text-secondary">Physical Condition</td>
+                                                                <td>{{complaint.physical_condition}}</td>
+                                                        </tr>
+                                                        {% if complaint.updated_by %}
+                                                        <tr>
+                                                                <td class="text-secondary ">Updated</td>
+                                                                <td>{{complaint.updated_by}} on {{complaint.updated_on}}
+                                                                </td>
+                                                        </tr>
+                                                        {% endif %}
+                                                        <tr>
 
-                                                <hr  class="my-2">
-                                                {% comment %} <hr> {% endcomment %}
-                                                      <div class="row mx-0">
-                                                        <div class="col-sm-2">
-                                                            <strong class="mb-0">Problem</strong>
-                                                        </div>
-                                                                <div class="col-sm-10 text-secondary">
-                                                                                {{complaint.problem}}
-                                                                </div>
+                                                                <th class="text-secondary mt-2">Checklist</th>
+                                                                <td>
+                                                                        <span class>
+                                                                                <button type="button"
+                                                                                        class="more_attr btn btn-outline-primary btn-sm rounded"
+                                                                                        data-toggle="modal"
+                                                                                        data-target="#model_checklist">
+                                                                                        View Checklist ->
+                                                                                </button>
+
+                                                                                <!-- Modal -->
+                                                                                <div class="modal fade"
+                                                                                        id="model_checklist"
+                                                                                        tabindex="-1" role="dialog"
+                                                                                        aria-labelledby="exampleModalLabel"
+                                                                                        aria-hidden="true">
+                                                                                        <div class="modal-dialog"
+                                                                                                role="document">
+                                                                                                <div
+                                                                                                        class="modal-content">
+                                                                                                        <div
+                                                                                                                class="modal-header">
+                                                                                                                <h5 class="modal-title"
+                                                                                                                        id="exampleModalLabel">
+                                                                                                                        Pre
+                                                                                                                        Repair
+                                                                                                                        Checklist
+                                                                                                                </h5>
+                                                                                                                <button type="button"
+                                                                                                                        class="close"
+                                                                                                                        data-dismiss="modal"
+                                                                                                                        aria-label="Close">
+                                                                                                                        <span
+                                                                                                                                aria-hidden="true">&times;</span>
+                                                                                                                </button>
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                                class="modal-body">
+                                                                                                                <table
+                                                                                                                        class='table table-sm table-borderless'>
+                                                                                                                        <tbody>
+                                                                                                                                <tr>
+                                                                                                                                </tr>
+                                                                                                                                {% for item in check_list %}
+                                                                                                                                <tr>
+                                                                                                                                        <th>{{item.c_list_key}}
+                                                                                                                                        </th>
+                                                                                                                                        <td>{{item.c_list_val}}
+                                                                                                                                        </td>
+
+                                                                                                                                </tr>
+                                                                                                                                {% endfor %}
+                                                                                                                        </tbody>
+                                                                                                                </table>
+
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                </div>
+
+                                                                        </span>
+                                                                </td>
+                                                        </tr>
+
+                                        </table>
+                                        <hr class="my-2">
+                                        <div class="d-flex mx-0 px-0">
+                                                <div class="col-md-2 pl-1 mx-0" style="min-width:5rem ;">
+                                                        <strong class="mb-0">Problem</strong>
                                                 </div>
+                                                <div class="col-md-10 text-secondary" style="min-width:15rem ;">
+                                                        {{complaint.problem}}
+                                                </div>
+                                        </div>
 
                                 </div>
         
@@ -146,103 +213,66 @@
                 </div>
         </div>
 
-        <div class="px-4">
-                {% if components %}
-        <div class="d-flex mt-3 justify-content-between align-items-center">
-                <span  class="pl-2" style="width: 18rem; ">Parts Used </span>
-                <span class="ml-2" style="height:1px; width: 90rem; background-color: lightgrey;">
-                </span>
-        </div>
-        <div class="table-container px-2" style="overflow-x: scroll;">
 
-                <table class="table table-sm" style="min-width:30rem;">
-                <thead>
-                        <tr>
-                        <th width = "50">Item</th>
-                        <th width = "60%">Description</th>
-                        <th width = "80">Unit Price</th>
-                        <th width = "50">Quantity</th>
-                        <th width = "80" style="min-width:8rem ;">Action</th>
-                </thead>
-                
-                <tbody>
-                        {% for component in components %}
-                        <tr>
-                                <td>{{component.item_name}}</td>
-                                <td>{{component.item_description}}</td>
-                                <td>{{component.unit_price}}</td>
-                                <td>{{component.quantity}}</td>
-                                <td>
-                                        <span class="d-flex">
-                                                <a class="btn btn-primary btn-sm mx-2 rounded"
-                                                        href="{% url 'update_component' component.id %}">Edit</a>
-
-
-
-                                                <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-danger btn-sm rounded"
-                                                        data-toggle="modal" data-target="#exampleModal">
-                                                        Remove
-                                                </button>
-
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                        role="dialog"
-                                                        aria-labelledby="exampleModalLabel"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                                <h5 class="modal-title"
-                                                                                        id="exampleModalLabel">
-                                                                                        Are you sure want to remove?</h5>
-                                                                                <button type="button"
-                                                                                        class="close"
-                                                                                        data-dismiss="modal"
-                                                                                        aria-label="Close">
-                                                                                        <span
-                                                                                                aria-hidden="true">&times;</span>
-                                                                                </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                                Item can not be recovred once deleted!
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                                <button type="button"
-                                                                                        class="btn btn-secondary"
-                                                                                        data-dismiss="modal">Close</button>
-                                                                                                                        
-                                                                                        <form action="{% url 'delete_component' component.id %}"
-                                                                                        method="post">
-                                                                                        {% csrf_token %}
-                                                                                        <input type="submit"
-                                                                                                class="btn btn-danger rounded"
-                                                                                                value="Yes">
-                                                                                </form>
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-                                                </div>
-
-
-                                        </span>
-                                </td>
-                        </tr>
-                        {% endfor %}
-                </tbody>
-                </table>
-                </div>
-
-                </div>
-                {% endif %}
-
-                <div class="bottom-control mx-2 mb-3  mt-1  d-flex bg-light rounded  justify-content-center  p-0" >
-                        <a  class="btn text-primary" href="{% url 'add_component' complaint.id %}">
-                                <div class="" style="font-size:1rem ;">
-                                        <i class="fa-solid fa-plus"></i> Add Component
+<!-- Components Used -->
+<div class="row mx-0">
+        <!-- Header -->
+        <div class="card">
+                <div class="card-body pt-2 pb-1 px-4">
+                        <div class="header row bg-light py-1 rounded">
+                                <div class="col-md-6 my-auto">
+                                        <h4 class="my-auto py-auto text-secondary"><strong> Components Used </strong></h4>
                                 </div>
-                        </a>
+                                <div class="col-md-6 header_btn">
+                                        {% if components %}
+                                        <a class="btn btn-primary btn-sm rounded mx-0"  href="{% url 'list_components' complaint.id %}"><i class="fa-solid fa-gear"></i>
+                                                Manage</a>
+                                        {% else %}
+                                        <a class="btn btn-primary btn-sm rounded mx-0" href="{% url 'list_components' complaint.id%}"><i class="fa-solid fa-plus"></i>
+                                                Add Component
+                                        {% endif %}
+                                        </a>
+                                </div>
+                        </div>
                 </div>
+                <div class="px-1 mt-1">
+                        {% if components %}
+                        <div class="table-container px-2">
+                                <table class="table table-sm">
+                                        <thead class="bg-secondary text-light pl-2">
+                                                <tr>
+                                                        <th width="240" >Item</th>
+                                                        <th >Description</th>
+                                                        <th width="120" style="text-align:center;">Quantity</th>
+                                                </tr>
+                                        </thead>
+
+                                        <tbody>
+                                                {% for component in components %}
+                                                <tr>
+                                                        <td>{{component.brand}}-{{component.name}}</td>
+                                                        <td>{{component.desc}}</td>
+                                                        <td style="text-align:center;">{{component.quantity}}</td>
+                                                      
+                                                </tr>
+                                                {% endfor %}
+                                        </tbody>
+                                </table>
+                        </div>
+                        {% else %}
+                        <div class="empty_box d-flex justify-content-center mt-4">
+                                <h3 class="text-secondary">No Components Added yet</h3>
+                                
+                        </div>
+                        <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
+                                Click <a  href="{% url 'list_components' complaint.id%}" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
+                                
+                        </div>
+                        
+                        {% endif %}
+                </div>
+        </div>
+</div>
 </div>
 
 

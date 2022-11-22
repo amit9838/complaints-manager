@@ -28,7 +28,7 @@ def register_complaint(request):
             if form_cmp.is_valid():
                 formdata = form_cmp.save(commit=False)
                 formdata.registred_by = request.user
-                formdata.complaint_status = 1;
+                formdata.complaint_status = 1
                 formdata.category = cat
                 formdata.save()
                 obj = form_cmp.instance
@@ -185,6 +185,7 @@ def close_complaint(request,pk):
     if(request.user.is_staff):
         if request.method == "POST":
             complaint = Complaint.objects.get(id=pk)
+            complaint.closed_by = request.user
             
             if complaint.complaint_status == 3:
                 complaint.resolved_date = datetime.datetime.now()
@@ -234,10 +235,12 @@ def view_complaint_engg(request,pk):
     try:
         complaint = Complaint.objects.get(id = pk)
         component_list = Item.objects.filter(complaint = complaint)
+        check_list = CheckList.objects.filter(complaint = complaint)
 
         # print(engineers)
         context = {
             'components':component_list,
+            'check_list':check_list,
             'complaint':complaint,
         }
         if request.method == 'GET':
@@ -263,6 +266,10 @@ def set_complaint_status(request,pk):
         if complaint_status_form.is_valid():
             status = complaint_status_form.cleaned_data.get('complaint_status')
             complaint.complaint_status = status
+
+            if status >=4 and status <=5:
+                complaint.resolved_by = request.user
+            
             # complaint.resolved_date = None
             complaint.save()
             messages.success(request, 'Status updated successfully.')
@@ -284,6 +291,7 @@ def assign_enineer(request,pk):
         else:
             selected_engg = User.objects.get(id = engg_id)
             complaint.assigned_to = selected_engg
+            complaint.assigned_by = request.user
             complaint.assigned_date = datetime.datetime.now()
             complaint.complaint_status = 2
             messages.success(request, 'Engineer assigned successfully')
@@ -299,7 +307,7 @@ def close_complaint(request,pk):
             
             if complaint.complaint_status == 3:
                 complaint.resolved_date = datetime.datetime.now()
-                complaint.complaint_status = 5;
+                complaint.complaint_status = 5
                 # print(complaint.complaint_status)
                 complaint.save()
                 # return HttpResponse("Status changed")
@@ -307,7 +315,7 @@ def close_complaint(request,pk):
             
             elif complaint.complaint_status == 4:
                 complaint.resolved_date = datetime.datetime.now()
-                complaint.complaint_status = 6;
+                complaint.complaint_status = 6
                 complaint.save()
                 # print(complaint.complaint_status)
                 # return HttpResponse("Status changed")
@@ -333,27 +341,25 @@ def list_components(request,pk):
 def add_component(request,pk_cmp):
     if request.method == "POST":
         complaint_item =  Complaint.objects.get(id=pk_cmp)
+        # print(pk_cmp)
+        # print(vars(complaint_item))
         pk_pro = request.POST['pk_pro']
         print(pk_pro)
         product = Product.objects.get(id = pk_pro)
-        print(product)
+        # print(product)
         is_listed_pro1 = ""
-        is_listed_pro2 = ""
         try:
-            is_listed_pro1 = Item.objects.filter(product = product)
-            is_listed_pro2 = Item.objects.filter(complaint = complaint_item)
-            print(complaint_item)
-            print(is_listed_pro2)
+            is_listed_pro1 = Item.objects.filter(product = product,complaint = complaint_item)
         except Item.DoesNotExist:
             pass
-        if(is_listed_pro1 and is_listed_pro2):
+        if(is_listed_pro1):
             is_listed_pro1[0].quantity +=1
-            product.quantity -= 1;
+            product.quantity -= 1
             is_listed_pro1[0].save()
             product.save()
         else:
-            Item.objects.create(product = product, complaint = complaint_item,brand =product.brand ,name =product.name, category = product.category,desc = product.desc, warrenty = product.warrenty, unit_price = product.unit_price, quantity = 1)
-            product.quantity -= 1;
+            Item.objects.create(product = product, complaint = complaint_item, brand=product.brand, name =product.name, category = product.category, desc = product.desc, warrenty = product.warrenty, unit_price = product.unit_price, quantity = 1)
+            product.quantity -= 1
             product.save()
         messages.success(request, 'Component added successfully.')
         return redirect('list_components', pk_cmp)

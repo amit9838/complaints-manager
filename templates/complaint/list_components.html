@@ -25,7 +25,11 @@
     <ol class="breadcrumb bg-white">
             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
+            {% if not request.user.is_staff %}
+            <li class="breadcrumb-item"><a href="{% url 'view_complaint_engg' complaint.id %}">View Complaint</a></li>
+            {% else %}
             <li class="breadcrumb-item"><a href="{% url 'view_complaint' complaint.id %}">View Complaint</a></li>
+            {% endif %}
             <li class="breadcrumb-item active" aria-current="page">Compnents</li>
     </ol>
 </nav>
@@ -35,10 +39,21 @@
     <!-- Header -->
     <div class="card">
             <div class="card-body pt-2 pb-1 mx-2 px-0">
-                    <div class="header row bg-light py-1 rounded">
+                <table>
+                        
+                                                <h4 class="py-2">Complaint ID: #{{complaint.id}} </h4>
+                       
+                </table>
+                <!-- <hr>     -->
+                <div class="header row bg-light py-1 rounded">
                             <div class="col-md-6 my-auto d-flex">
-                                    <input type="search" class="form-control form-control w-50" id="search_input" placeholder="Type to Search">
+                                {% if complaint.complaint_status < 5  and complaint.complaint_status > 1 %}
+                                    <input type="search" class="form-control form-control w-50" id="search_input" placeholder="Type to Search" >
                                     <button class="mx-1 btn btn-secondary" disabled id="clearText">Clear</button>
+                                {% else %}        
+                                        <input type="search" class="form-control form-control w-50" id="search_input" placeholder="Type to Search" disabled>
+                                        <span class="my-auto  px-2 py-auto text-muted mx-2" > <i class="fa-solid fa-lock"></i>  Complaint Closed </span>
+                                {% endif %}
                             </div>
                             <div class="col-md-6 header_btn">
                                  
@@ -78,10 +93,14 @@
                                                     <td>{{component.desc}}</td>
                                                     <td style="text-align:center ;">{{component.quantity}}</td>
                                                     <td style="text-align:center ;">
+                                                        {% if complaint.complaint_status < 5 %}
                                                         <form action="{% url 'delete_component' component.id %}" method="POST"  >
                                                                 {% csrf_token %}
                                                                 <button type="submit" class="btn btn-danger btn-sm py-0 rounded"><i class="fa-solid fa-trash"></i></button>
                                                         </form>
+                                                        {% else %}
+                                                                <button type="submit"  class="btn btn-danger btn-sm py-0 rounded" disabled><i class="fa-solid fa-trash"></i></button>
+                                                        {% endif %}
                                                     </td>
                                             </tr>
                                             {% endfor %}
@@ -137,7 +156,7 @@
         }
     })
     token = '{{csrf_token}}'
-    console.log(token)
+//     console.log(token)
 
 
     function search_product() {
@@ -151,7 +170,7 @@
                         "X-CSRFToken": token,
                 }     
         }).then((res)=>res.json()).then((data)=>{
-                // console.log(data);
+                console.log(data);
                 populate_data(data);
         })
     }
@@ -180,19 +199,23 @@
                                                         <div class="badge mb-">     
                                                                 <span class="badge badge-primary">${item.category}</span>
                                                                 <span class="badge badge-info">${item.warrenty} months warrenty</span>
-                                                                </span> <span class="badge badge-success">Available</span>
+                                                                ${item.quantity<1? `</span> <span class="badge badge-danger">Not Available</span>`:`</span> <span class="badge badge-success">Available</span>`}
                                                         </div>
                                                 </div>
+
                                                 <span class = "text-secondary" style="font-size:.7rem; font-weight:400;">
                                                         ${item.desc}
                                                 </span>
                                         </div>
                                         <div class="col-md-2 my-auto">
-                                                <form action = "{% url 'add_component' complaint.id %}" method = "POST"">
+                                                <form class = "btn_form" action = "{% url 'add_component' complaint.id %}" method = "POST"">
                                                         {% csrf_token %}
                                                         <input type = "text" value = ${item.id} name = "pk_pro" hidden>
-                                                        <button type = "submit" class = "btn btn-primary btn-sm rounded float-right"><i class="fa-solid fa-plus"></i> Add </button>
-                                                </form>        
+                                                        
+                                                        ${item.quantity<1? `<button type = "submit"  class = "add_component  btn btn-primary btn-sm rounded float-right" disabled><i class="fa-solid fa-plus"></i> Add </button>`:`<button type = "submit"  class = "add_component  btn btn-primary btn-sm rounded float-right"><i class="fa-solid fa-plus"></i> Add </button>` }
+                                                
+                                                        
+                                                </form>     
                                         </div>
                                 </div>
                         `
@@ -200,7 +223,6 @@
         }
         res_container.innerHTML = res;
     }
-
 </script>
 
 {% endblock %}
