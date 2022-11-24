@@ -139,7 +139,6 @@ def update_profile(request,pk):
             return render(request,'user/profile.html',context)
         
 
-@login_required  # type: ignore
 def employee_register(request):
     if request.method == "GET":
         return render(request, 'user/employee_register.html',{'form':UserRegisterForm})
@@ -159,8 +158,6 @@ def employee_register(request):
             return redirect('complete_employee_profile')
         return render(request, 'user/employee_register.html',{'form':form})
     
-
-
 
 @login_required
 def complete_emp_profile(request):
@@ -185,7 +182,6 @@ def complete_emp_profile(request):
 
 
 
-@login_required #type:ignore
 def engineer_register(request):
     if request.method == "GET":
         return render(request, 'user/engineer_register.html',{'form':UserRegisterForm})
@@ -259,6 +255,7 @@ class LoginView(View):
 
         if u_name and u_pass:
             user = authenticate(username = u_name, password = u_pass)
+            print(user)
 
             if user:
                 login(request,user)

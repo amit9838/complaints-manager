@@ -131,6 +131,7 @@
                 <th>Category</th>
                 <th>Qty</th>
                 <th>Price</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 {% for item in recent_product %}
@@ -140,6 +141,11 @@
                     <td>{{item.category}}</td>
                     <td>{{item.quantity}}</td>
                     <td>{{item.unit_price}}</td>
+                    <td width="40">
+                        <a href="{% url 'view_product' item.id %}">
+                            <div class="btn btn-outline-primary rounded py-0 px-2 float-right"> -> </div>
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -1,0 +1,78 @@
+{% extends 'base_dashboard_store.html' %}
+
+{% block title %}Closed Complaints{% endblock title %}
+
+{% block navbar_content %}
+
+{% endblock navbar_content %}
+
+
+{% block body_content %}
+{% include 'home/partials/_message.html' %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white border">
+        <li class="breadcrumb-item"><a href="{% url 'store' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">New Product</li>
+    </ol>
+</nav>
+
+<style>
+    .form-control {
+        /* margin-top: .5rem; */
+        margin-bottom: .5rem;
+    }
+</style>
+
+<div class="card w-50 mx-auto p-2 pt-0">
+    <div class="card-header pb-0 my-0">
+        <h3 class="text-secondary  px-2 py-1 " > New Product</h3>
+        <!-- <hr class="my-1">     -->
+    </div>
+
+    <div class="card-body rounded  mt-0 pb-2" >
+        <form action={% url 'update_product' product.id %} method="post">
+            {% csrf_token %}
+            <div class="w-75 mx-auto">
+                {{form.name.label}}
+                {{form.name}}
+                {{form.brand.label}}
+                {{form.brand}}
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-control form-control-sm ">
+                    <!-- category goes here -->
+                </select>
+                {{form.desc.label}}
+                {{form.desc}}
+                {{form.warrenty.label}}
+                {{form.warrenty}}
+                {{form.quantity.label}}
+                {{form.quantity}}
+                {{form.unit_price.label}}
+                {{form.unit_price}}
+            </div>
+            <!-- {{complaint_register_form}} -->
+            <div class="submit-btn border-top mt-4 py-0">
+                <div class="btn-container col-sm-2 float-right mt-2 mr-0 pr-0" style="min-width:10rem;">
+                    <button type="submit" class="btn btn-primary btn-block"> Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let cat = document.getElementById('category');
+    catrgories = {{categories|safe}};
+
+    str = `<option value="null">Select Category</option>`;
+    if(catrgories.length>0){
+        catrgories.forEach(e => {
+            str+=`
+            <option value="${e.toLowerCase()}" ${e.toLowerCase()=='{{p_cat}}' ? `selected`:``} >${e}</option>
+            `
+        });
+        cat.innerHTML = str;
+    }
+</script>
+
+{% endblock %}

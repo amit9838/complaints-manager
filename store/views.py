@@ -49,10 +49,10 @@ def store(request):
 
 
 def search_product(request):
-    if(request.method=='GET'):
-        re = Product.objects.all();
-        da = re.values();
-        return JsonResponse(list(da),safe=False)
+    # if(request.method=='GET'):
+    #     res = Product.objects.all();
+    #     data = res.values();
+    #     return JsonResponse(list(data),safe=False)
 
     if (request.method =='POST'):
         search_str = json.loads(request.body).get('searchText')
@@ -98,7 +98,7 @@ def new_product(request):
             form_staging.registred_on = datetime.now()
             form_staging.save()
             messages.success(request,'Product added successfully')
-            return redirect('new_product')
+            return redirect('all_products')
         else:
             context = {
             'form':formObj,
@@ -107,6 +107,59 @@ def new_product(request):
             messages.error(request,'Invalid Input!')
             return render(request, 'store/new_product.html',context)
 
+
+def update_product(request,pk):
+    # product = Product.objects.all()
+    user = request.user
+    product = Product.objects.get(id = pk)
+    p_cat = product.category
+
+    if(not user.is_superuser):
+        return  HttpResponse("You can't access this page")
+    
+    cat = Category.objects.all()
+    categories = []
+    for item in cat:
+        categories.append(item.name)
+    cats = json.dumps(categories)
+
+    form = NewProductFrom(instance=product)
+    if request.method=='GET':
+        context = {
+            'form':form,
+            'categories':cats,
+            'product':product,
+            'p_cat':p_cat
+        }
+        return render(request, 'store/update_product.html',context)
+    if request.method=='POST':
+        formObj = NewProductFrom(request.POST,instance=product)
+        cat = request.POST['category']
+        if formObj.is_valid():
+            form_staging = formObj.save(commit=False)
+            form_staging.category = cat
+            form_staging.registred_by = user
+            form_staging.registred_on = datetime.now()
+            form_staging.save()
+            messages.success(request,'Product updated successfully')
+            return redirect('view_product',pk)
+        else:
+            context = {
+            'form':formObj,
+            'categories':cats,
+            'product':product,
+            'p_cat':p_cat
+            }
+            messages.error(request,'Invalid Input!')
+            return render(request, 'store/update_product.html',context)
+
+
+
+def delete_product(request,pk):
+    product = Product.objects.get(id=pk)
+    product.delete()
+    messages.success(request,f'{product.name} deleted successfully!')
+    return redirect('all_products')
 # View All Products -------------------------------------------------
 def all_products(request):
     user = request.user

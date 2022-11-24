@@ -1,5 +1,3 @@
-from itertools import product
-from unicodedata import name
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -304,7 +302,6 @@ def close_complaint(request,pk):
     if(request.user.is_staff):
         if request.method == "POST":
             complaint = Complaint.objects.get(id=pk)
-            
             if complaint.complaint_status == 3:
                 complaint.resolved_date = datetime.datetime.now()
                 complaint.complaint_status = 5
@@ -324,8 +321,7 @@ def close_complaint(request,pk):
         return redirect('print_record', pk)
     else:
         return HttpResponse("You dont't have permission to access this page")
-
-        
+ 
 
 def list_components(request,pk):
     complaint = Complaint.objects.get(id=pk)
@@ -335,7 +331,6 @@ def list_components(request,pk):
         "complaint":complaint
     }
     return render(request, 'complaint/list_components.html',context)
-
 
 @login_required
 def add_component(request,pk_cmp):
@@ -569,13 +564,11 @@ def check_complaint_status(request):
             return render(request,'home/check_status.html',context)
 
 
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count
 
 # from django.contrib.auth.models import
-
 # For Graph
 class Complaints_log_api(APIView):
     def get(self,request,format=None):

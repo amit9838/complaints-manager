@@ -6,6 +6,8 @@
 {% endblock navbar_content %}
 
 {% block body_content %}
+
+{% include 'home/partials/_message.html' %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-white border">
         <li class="breadcrumb-item"><a href="{% url 'store' %}">Dashboard</a></li>
@@ -14,8 +16,25 @@
 </nav>
 
 <div class="card flex-fill px-2">
-    <div class="card-header m-0 p-0 px-1 mt-2">
-        <h3 class="card-title p-1 px-2 rounded">All Products</h3>
+    <div class="card-header row m-0 p-0 px-1 mt-2">
+        <div class="header-left col-sm-8">
+            <h3 class="card-title p-1 px-2 rounded">All Products</h3>
+        </div>
+        <div class="header-right col-sm-4">
+            <div class="right-container d-flex justify-content-sm-end  mx-auto">
+                <input type="search" class="form-control form-control" id="search_input" placeholder="Type to Search" >
+                <button class="mx-1 btn btn-light" disabled id="clearText"><i class="fa-solid fa-circle-xmark text-danger"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results ----------------------->
+    <div class="card rounded mt-1 mx-auto " id ="res_box" style="position:absolute; right: 2rem; top: 3rem; min-width: 85%; display: none;" >
+        <div class="card-body rounded border py-1 px-2">
+                <div class="res_container" id="res_container" style="overflow-y:scroll; overflow-x: hidden; max-height: 70vh;"> 
+
+                </div>
+        </div>
     </div>
     <div class="card-body pt-1" style="overflow-x:scroll ;">
         <table class="table table-striped table-sm" style="min-width:30rem ;">
@@ -74,8 +93,106 @@
         </div>
 
     </div>
-
-
 </div>
+
+
+<script>
+    search_input = document.getElementById("search_input");
+    res_box = document.getElementById("res_box");
+    res_container = document.getElementById("res_container");
+    clearText = document.getElementById("clearText");
+
+    search_input.addEventListener('keyup', () => {
+        if(search_input.value.length <= 0) {
+                clearText.disabled = true;
+        }
+        if(search_input.value.length > 0) {
+                clearText.disabled = false;
+                clearText.addEventListener('click',()=> {
+                        search_input.value = "";
+                        res_box.style.display = "none";
+                        clearText.disabled = true;
+                })
+        }
+
+        if(search_input.value.length >= 2) {
+        //     console.log("search activated!");
+            search_product()
+            res_box.style.display = "block";
+        }
+        if(search_input.value.length<2){
+                // console.log("Searching stopped!");
+                res_box.style.display = "none";
+        }
+    })
+    token = '{{csrf_token}}'
+//     console.log(token)
+
+
+    function search_product() {
+        searchTxt = search_input.value
+        url = "http://127.0.0.1:8000/store/search-product/";
+        fetch(url,{
+                body:JSON.stringify({searchText:searchTxt}),
+                method : "POST",
+                credentials: 'same-origin',
+                headers: {
+                        "X-CSRFToken": token,
+                }     
+        }).then((res)=>res.json()).then((data)=>{
+                console.log(data);
+                populate_data(data);
+        })
+    }
+
+    function populate_data(data){
+        res = "";
+        if(data.length<=0){
+                console.log("No results found.");
+                res = "No Results Found!";
+        }
+        else{
+                // console.log(data.length);
+                res += `<h5 class = "pb-2"> 
+                        Showing (<strong>${data.length}</strong>) result(s) for <strong>${searchTxt}</stong> ...
+                        </h5>`
+
+                data.forEach(item => {
+                        // console.log(item);   
+                        res+=`
+                                <div class="row bg-light p-2 mb-2 rounded mx-1">
+                                        <div class="col-md-10">
+                                                <div class="header d-flex my-0 pb-0">
+                                                        <h5 class="my-auto">
+                                                                ${item.brand} - ${item.name} | 
+                                                        </h5>
+                                                        <div class="badge mb-">     
+                                                                <span class="badge badge-primary">${item.category}</span>
+                                                                <span class="badge badge-info">${item.warrenty} months warrenty</span>
+                                                                ${item.quantity<1? `</span> <span class="badge badge-danger">Not Available</span>`:`</span> <span class="badge badge-success">Available</span>`}
+                                                        </div>
+                                                </div>
+
+                                                <span class = "text-secondary" style="font-size:.7rem; font-weight:400;">
+                                                        ${item.desc}
+                                                </span>
+                                        </div>
+                                        <div class="col-md-2 my-auto">
+                                                <form class = "btn_form" action = "" method = "POST"">
+                                                        {% csrf_token %}
+                                                        <input type = "text" value = ${item.id} name = "pk_pro" hidden>
+                                                        
+                                                        ${item.quantity<1? `<button type = "submit"  class = "add_component  btn btn-primary btn-sm rounded float-right" disabled><i class="fa-solid fa-plus"></i> Add </button>`:`<button type = "submit"  class = "add_component  btn btn-primary btn-sm rounded float-right"><i class="fa-solid fa-plus"></i> Add </button>` }
+                                                
+                                                        
+                                                </form>     
+                                        </div>
+                                </div>
+                        `
+                });
+        }
+        res_container.innerHTML = res;
+    }
+</script>
 
 {% endblock %}

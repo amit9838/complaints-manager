@@ -23,17 +23,43 @@
         <div class="header row">
             <div class="col-sm-5 p-1">
                 <div class="left-container bg-lights px-3 py-2 rounded border">
-                <div class="header row">
-                    <div class="col-10">
+                    <div class="header row">
+                        <div class="col-sm-9">
                         <h4 class="py-0 my-0 mb-1">{{product.name}}</h4>
                     </div>
-                    <div class="col-2">
-                        <a href="" class="btn btn-sm py-0 rounded btn-outline-primary border-0  float-right" title="Edit" ><i class="fa-solid fa-pencil"></i></a>
+                    <div class="col-sm-3 d-flex align-items-center justify-content-end">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-outline-danger btn-sm py-0" data-toggle="modal" data-target="#delete_product">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="delete_product" tabindex="-1" role="dialog" aria-labelledby="delete_productLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="delete_productLabel">Confirmation!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure want to delete <strong>{{product.name}}</strong> ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    {% comment %} <button type="button" class="btn btn-primary">Save changes</button> {% endcomment %}
+                                    <a href="{% url 'delete_product' product.id  %}" class="btn btn-outline-danger " title="Delete" >Yes</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <a href="{% url 'update_product' product.id  %}" class="btn btn-sm ml-1 py-0 rounded btn-outline-primary" title="Edit" ><i class="fa-solid fa-pencil"></i></a>
                 </div>
-                <hr class="my-0 mb-1">
-                    <table>
-                        <tbody>
+            </div>
+            <hr class="my-0 mb-1">
+            <table>
+                <tbody>
                             <tr>
                                 <td>Category</td>
                                 <th><span class="badge badge-primary">{{product.category}}</span></th>
