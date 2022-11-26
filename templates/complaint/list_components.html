@@ -96,10 +96,10 @@
                                                         {% if complaint.complaint_status < 5 %}
                                                         <form action="{% url 'delete_component' component.id %}" method="POST"  >
                                                                 {% csrf_token %}
-                                                                <button type="submit" class="btn btn-danger btn-sm py-0 rounded"><i class="fa-solid fa-trash"></i></button>
+                                                                <button type="submit" title="Remove" class="btn btn-outline-danger btn-sm py-0 rounded"><i class="fa-solid fa-xmark"></i></button>
                                                         </form>
                                                         {% else %}
-                                                                <button type="submit"  class="btn btn-danger btn-sm py-0 rounded" disabled><i class="fa-solid fa-trash"></i></button>
+                                                        <button type="submit" title="Remove" class="btn btn-outline-danger btn-sm py-0 rounded" disabled><i class="fa-solid fa-xmark"></i></button>
                                                         {% endif %}
                                                     </td>
                                             </tr>
@@ -157,7 +157,7 @@
 
     function search_product() {
         searchTxt = search_input.value
-        url = "http://127.0.0.1:8000/store/search-product/";
+        url = "{% url 'search_product' %}";
         fetch(url,{
                 body:JSON.stringify({searchText:searchTxt}),
                 method : "POST",
@@ -166,7 +166,6 @@
                         "X-CSRFToken": token,
                 }     
         }).then((res)=>res.json()).then((data)=>{
-                console.log(data);
                 populate_data(data);
         })
     }
