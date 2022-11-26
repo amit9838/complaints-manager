@@ -248,6 +248,8 @@ def view_complaint_engg(request,pk):
             stat = request.POST['cmpStatus']        
             complaint.complaint_status = stat
             complaint.resolved_date = datetime.datetime.now()
+            if int(stat) >= 4 and int   (stat) <= 5:
+                complaint.resolved_by = request.user
             complaint.save()
             messages.success(request, 'Status updated successfully.')
             return redirect('view_complaint_engg', pk)
@@ -271,10 +273,22 @@ def set_complaint_status(request,pk):
             # complaint.resolved_date = None
             complaint.save()
             messages.success(request, 'Status updated successfully.')
-            return redirect('view_complaint', pk)
+            if request.user.is_staff:
+                return redirect('view_complaint', pk)
+            else:
+                return redirect('view_complaint_engg', pk)
+
+
         messages.error(request, 'Something went wrong!')
+        if request.user.is_staff:
+            return redirect('view_complaint', pk)
+        else:
+            return redirect('view_complaint_engg', pk)
+
+    if request.user.is_staff:
         return redirect('view_complaint', pk)
-    return redirect('view_complaint', pk)
+    else:
+        return redirect('view_complaint_engg', pk)
 
 
 @login_required

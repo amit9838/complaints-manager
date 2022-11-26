@@ -1,6 +1,4 @@
 from datetime import datetime
-from math import prod
-from socket import J1939_PGN_ADDRESS_COMMANDED
 from django.shortcuts import render,redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from store.forms import NewProductFrom

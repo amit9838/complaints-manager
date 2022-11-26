@@ -89,7 +89,7 @@
                 z-index: 3;
         }
 
-        .done .date {
+        .done .date , .failed .date {
                 visibility: visible;
         }
 
@@ -363,19 +363,19 @@
 
                         <div class="child">
                                 <h3 id="rep_stats"></h3>
-                                {% if complaint.complaint_status < 3 %} <h3>In Progress</h3>
+                                {% if complaint.complaint_status < 3 %} 
+                                                <h3>In Progress</h3>
                                         {% else %}
-                                        {% if complaint.complaint_status == 3 %}
-                                        <h3>Repaired</h3>
+                                                {% if complaint.complaint_status == 3 %}
+                                                        <h3>Repaired</h3>
 
-                                        {% elif complaint.complaint_status == 4 %}
-                                        <h3>Failed to Repair</h3>
-                                        {% endif %}
-                                        <div class="date">
-                                                <h5>{{complaint.resolved_date}}</h5>
-                                                <h5>Executed by <strong>{{complaint.resolved_by}}</strong> </h5>
-                                        </div>
-
+                                                {% elif complaint.complaint_status == 4 %}
+                                                        <h3>Failed to Repair</h3>
+                                                {% endif %}
+                                                <div class="date">
+                                                        <h5>{{complaint.resolved_date}}</h5>
+                                                        <h5>Executed by <strong>{{complaint.resolved_by}}</strong> </h5>
+                                                </div>
                                         {% endif %}
                         </div>
                         <div class="child ">
