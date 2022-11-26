@@ -29,28 +29,9 @@
     </div>
 
     <!-- Results ----------------------->
-    <style>
-        #res_box {
-            position:absolute;
-            right: 2rem;
-            top: 2.8rem;
-            width: 85%; 
-            min-width: 24rem;
-            display: none;
-        }
-        @media screen and (max-width:760px) {
-            #res_box {
-                right: .3rem;
-                top:4.8rem;
-            }
-        }
-
-    </style>
-
-    <div class="card rounded mt-1 mx-auto " id ="res_box" >
-
+    <div class="card rounded mt-1 mx-auto " id ="res_box" style="position:absolute; right: 2rem; top: 3rem; min-width: 85%; display: none;" >
         <div class="card-body rounded border py-1 px-2">
-                <div class="res_container" id="res_container" style="overflow-y:scroll; overflow-x: hidden; max-height: 60vh;"> 
+                <div class="res_container" id="res_container" style="overflow-y:scroll; overflow-x: hidden; max-height: 70vh;"> 
 
                 </div>
         </div>
@@ -135,6 +116,7 @@
         }
 
         if(search_input.value.length >= 2) {
+        //     console.log("search activated!");
             search_product()
             res_box.style.display = "block";
         }
@@ -149,7 +131,7 @@
 
     function search_product() {
         searchTxt = search_input.value
-        url = "{% url 'search_product' %}";
+        url = "http://127.0.0.1:8000/store/search-product/";
         fetch(url,{
                 body:JSON.stringify({searchText:searchTxt}),
                 method : "POST",
@@ -163,22 +145,20 @@
         })
     }
 
-    
     function populate_data(data){
         res = "";
         if(data.length<=0){
-                // console.log("No results found.");
-                res = `<h5 class="my-3 mx-4" >No Results found!</h5>`;
+                console.log("No results found.");
+                res = "No Results Found!";
         }
         else{
                 // console.log(data.length);
                 res += `<h5 class = "pb-2"> 
                         Showing (<strong>${data.length}</strong>) result(s) for <strong>${searchTxt}</stong> ...
                         </h5>`
-                        
-                data.forEach(item => {  
-                        let itemID = item.id;
-                        let view_product = "{% url 'store' %}view-product/attr/".replace('attr', itemID);
+
+                data.forEach(item => {
+                        // console.log(item);   
                         res+=`
                                 <div class="row bg-light p-2 mb-2 rounded mx-1">
                                         <div class="col-md-10">
@@ -201,9 +181,9 @@
                                                 <form class = "btn_form" action = "" method = "POST"">
                                                         {% csrf_token %}
                                                         <input type = "text" value = ${item.id} name = "pk_pro" hidden>
-                                                        <a href=${view_product}>
-                                                            <div class="btn btn-outline-primary rounded py-0 px-2 float-end">View</div>
-                                                        </a>
+                                                        
+                                                        ${item.quantity<1? `<button type = "submit"  class = "add_component  btn btn-primary btn-sm rounded float-right" disabled><i class="fa-solid fa-plus"></i> Add </button>`:`<button type = "submit"  class = "add_component  btn btn-primary btn-sm rounded float-right"><i class="fa-solid fa-plus"></i> Add </button>` }
+                                                
                                                         
                                                 </form>     
                                         </div>

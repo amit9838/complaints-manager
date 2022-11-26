@@ -93,7 +93,7 @@
                     <thead>
                         <th>Attribute</th>
                         <th>Value</th>
-                        <th>Action</th>
+                        <th></th>
                     </thead>
                     <tbody>
                         <tr></tr>
@@ -148,8 +148,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="btn btn-danger btn-sm rounded" href="{% url  'delete_checklist' complaint.id  item.id %}">
-                                        <i class="fa-solid fa-xmark"></i></a>
+                                    <a class="btn btn-danger btn-sm text-light" href="{% url  'delete_checklist' complaint.id  item.id %}"><i
+                                            class="fa-solid fa-trash-can"></i></a>
                                 </span>
                             </td>
                         </tr>
@@ -169,7 +169,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add Part</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">New Attribute</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -181,12 +181,12 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="attr_key">Name</label>
-                                        <input type="key" class="form-control" id="attr_key" placeholder=""
+                                        <input type="key" class="form-control" id="attr_key" placeholder="Key"
                                             name="key">
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="attr_val">Value</label>
-                                        <input type="value" class="form-control" id="attr_val" placeholder=""
+                                        <label for="attr_val">Property</label>
+                                        <input type="value" class="form-control" id="attr_val" placeholder="Value"
                                             name="val">
                                     </div>
                                 </div>
