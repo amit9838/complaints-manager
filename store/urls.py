@@ -3,6 +3,7 @@ from django.urls import path
 from django.urls.conf import include
 from . import views
 
+# URL to a page that display a form to edit all global preferences
 
 urlpatterns = [ 
     path('',views.store, name='store'),

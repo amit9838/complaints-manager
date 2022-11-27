@@ -89,7 +89,8 @@
                 z-index: 3;
         }
 
-        .done .date , .failed .date {
+        .done .date,
+        .failed .date {
                 visibility: visible;
         }
 
@@ -119,13 +120,18 @@
         #progress1::before {
                 width: 25%;
         }
+
         #progress2::before {
                 width: 50%;
         }
-        #progress3::before , #progress4::before {
+
+        #progress3::before,
+        #progress4::before {
                 width: 75%;
         }
-        #progress5::before , #progress6::before {
+
+        #progress5::before,
+        #progress6::before {
                 width: 100%;
         }
 
@@ -253,17 +259,22 @@
 
                 #progress1::before {
                         width: 0%;
-                        height:20%;
+                        height: 20%;
                 }
+
                 #progress2::before {
                         width: 0%;
                         height: 50%;
                 }
-                #progress3::before , #progress4::before {
+
+                #progress3::before,
+                #progress4::before {
                         width: 0%;
                         height: 68%;
                 }
-                #progress5::before , #progress6::before {
+
+                #progress5::before,
+                #progress6::before {
                         width: 0%;
                         height: 100%;
                 }
@@ -313,14 +324,47 @@
                                         #{{complaint.id}}</strong></h2>
                 </div>
                 <div class="col-md-6 header_btn">
-                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-outline-primary mx-1" ><i class="fa-solid fa-pencil"></i> Edit</a>
-                        <a href="{% url 'delete_complaint' complaint.id %}" class="btn btn-outline-danger mx-1"><i class="fa-solid fa-trash-can"></i> Delete</a>
+                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-outline-primary mx-1"><i
+                                        class="fa-solid fa-pencil"></i> Edit</a>
+
+
+                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modal_delete_complaint">
+                                        <i class="fa-solid fa-trash-can"></i> Delete
+                                </button>
+                                        
+                                        <!-- Modal -->
+                                <div class="modal fade" id="modal_delete_complaint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation? </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                        Are you sure sure want to delete complaint with id <strong># {{complaint.id}} </strong> ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                                <form action="{% url 'delete_complaint' complaint.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-danger mx-1"> Yes</button>
+                                                </form>
+                                                </div>
+                                                </div>
+                                        </div>
+                                </div>
+
+                        
                         <a href="" class="btn btn-outline-info mx-1"><i class="fa-brands fa-whatsapp"></i> Share</a>
-                        <a href="{% url 'print_record' complaint.id %}" class="btn btn-outline-primary mx-1"><i class="fa-solid fa-print"></i> Print</a>
+                        <a href="{% url 'print_record' complaint.id %}" class="btn btn-outline-primary mx-1"><i
+                                        class="fa-solid fa-print"></i> Print</a>
                 </div>
         </div>
 </div>
-<div class="card flex-fill mb-2" style="height:fit-content ;">
+<div class="card flex-fill mb-2" style="height:fit-content;">
         <!-- <h3 class="status pl-1 pt-2 ml-4 mt-1 text-secondary"> <strong> Status </strong></h3> -->
         <div class="main2">
                 <div class="mainchild" id="progress{{complaint.complaint_status}}">
@@ -337,7 +381,8 @@
                                 <form action="{% url 'assign_engineer' complaint.id %}" class="" id="assign_engineer"
                                         method="post">
                                         {% csrf_token %}
-                                        <select name="assign_engineer" class="form-control form-control-sm p-0 my-0 rounded w-75"
+                                        <select name="assign_engineer"
+                                                class="form-control form-control-sm p-0 my-0 rounded w-75"
                                                 id="id_assign_engineer">
                                                 <option value="-1">Assign Engineer</option>
                                                 {% for engineer in engineers %}
@@ -363,19 +408,18 @@
 
                         <div class="child">
                                 <h3 id="rep_stats"></h3>
-                                {% if complaint.complaint_status < 3 %} 
-                                                <h3>In Progress</h3>
+                                {% if complaint.complaint_status < 3 %} <h3>In Progress</h3>
                                         {% else %}
-                                                {% if complaint.complaint_status == 3 %}
-                                                        <h3>Repaired</h3>
+                                        {% if complaint.complaint_status == 3 %}
+                                        <h3>Repaired</h3>
 
-                                                {% elif complaint.complaint_status == 4 %}
-                                                        <h3>Failed to Repair</h3>
-                                                {% endif %}
-                                                <div class="date">
-                                                        <h5>{{complaint.resolved_date}}</h5>
-                                                        <h5>Executed by <strong>{{complaint.resolved_by}}</strong> </h5>
-                                                </div>
+                                        {% elif complaint.complaint_status == 4 %}
+                                        <h3>Failed to Repair</h3>
+                                        {% endif %}
+                                        <div class="date">
+                                                <h5>{{complaint.resolved_date}}</h5>
+                                                <h5>Executed by <strong>{{complaint.resolved_by}}</strong> </h5>
+                                        </div>
                                         {% endif %}
                         </div>
                         <div class="child ">
@@ -394,13 +438,14 @@
                                                         </div>
                                                 </div>
 
-                                                {% elif complaint.complaint_status <= 6 %} <h3>Closed</h3>
+                                                {% elif complaint.complaint_status <= 6 %} <h3>Complaint Closed</h3>
                                                         <div class="date">
                                                                 <h5>{{complaint.closed_date}}</h5>
-                                                                <h5>Closed by <strong>{{complaint.closed_by}}</strong></h5>
+                                                                <h5>Closed by <strong>{{complaint.closed_by}}</strong>
+                                                                </h5>
                                                         </div>
 
-                                        {% endif %}
+                                                {% endif %}
                         </div>
                 </div>
         </div>
@@ -422,12 +467,12 @@
                                                         <tr>
                                                                 <td class="text-secondary">Mobile</td>
                                                                 <td>{{complaint.customer_mob}}</td>
-                                                                
+
                                                         </tr>
                                                         <tr>
                                                                 <td class="text-secondary">Email</td>
                                                                 <td>{{complaint.customer_email}}</td>
-                                                                
+
                                                         </tr>
                                                         <tr>
                                                                 <td class="text-secondary">Address</td>
@@ -442,6 +487,7 @@
                 </div>
 
         </div>
+
         <div class="col-md-6">
                 <div class="product-info card flex-fill mb-2 hide_scrollbar"
                         style="min-height:17rem; overflow-x:scroll ; scrollbar-width: thin;">
@@ -480,74 +526,73 @@
                                                                 </td>
                                                         </tr>
                                                         {% endif %}
-                                                        <tr>
+                                                </tbody>
+                                        </table>
+                                        <table class=" table table-sm bordreless">
+                                                <tr >
+                                                        <td class="text-secondary px-2" width = "145">Checklist</td>
+                                                        <td>
+                                                                <span class>
+                                                                        <a type="button"
+                                                                                class="more_attr badge badge-primary text-light"
+                                                                                data-toggle="modal"
+                                                                                data-target="#model_checklist">
+                                                                                View Checklist ->
+                                                                        </a>
 
-                                                                <th class="text-secondary mt-2">Checklist</th>
-                                                                <td>
-                                                                        <span class>
-                                                                                <button type="button"
-                                                                                        class="more_attr btn btn-outline-primary btn-sm rounded"
-                                                                                        data-toggle="modal"
-                                                                                        data-target="#model_checklist">
-                                                                                        View Checklist ->
-                                                                                </button>
-
-                                                                                <!-- Modal -->
-                                                                                <div class="modal fade"
-                                                                                        id="model_checklist"
-                                                                                        tabindex="-1" role="dialog"
-                                                                                        aria-labelledby="exampleModalLabel"
-                                                                                        aria-hidden="true">
-                                                                                        <div class="modal-dialog"
-                                                                                                role="document">
+                                                                        <!-- Modal -->
+                                                                        <div class="modal fade" id="model_checklist"
+                                                                                tabindex="-1" role="dialog"
+                                                                                aria-labelledby="exampleModalLabel"
+                                                                                aria-hidden="true">
+                                                                                <div class="modal-dialog"
+                                                                                        role="document">
+                                                                                        <div class="modal-content">
                                                                                                 <div
-                                                                                                        class="modal-content">
-                                                                                                        <div
-                                                                                                                class="modal-header">
-                                                                                                                <h5 class="modal-title"
-                                                                                                                        id="exampleModalLabel">
-                                                                                                                        Pre
-                                                                                                                        Repair
-                                                                                                                        Checklist
-                                                                                                                </h5>
-                                                                                                                <button type="button"
-                                                                                                                        class="close"
-                                                                                                                        data-dismiss="modal"
-                                                                                                                        aria-label="Close">
-                                                                                                                        <span
-                                                                                                                                aria-hidden="true">&times;</span>
-                                                                                                                </button>
-                                                                                                        </div>
-                                                                                                        <div
-                                                                                                                class="modal-body">
-                                                                                                                <table
-                                                                                                                        class='table table-sm table-borderless'>
-                                                                                                                        <tbody>
-                                                                                                                                <tr>
-                                                                                                                                </tr>
-                                                                                                                                {% for item in check_list %}
-                                                                                                                                <tr>
-                                                                                                                                        <th>{{item.c_list_key}}
-                                                                                                                                        </th>
-                                                                                                                                        <td>{{item.c_list_val}}
-                                                                                                                                        </td>
-
-                                                                                                                                </tr>
-                                                                                                                                {% endfor %}
-                                                                                                                        </tbody>
-                                                                                                                </table>
-
-                                                                                                        </div>
+                                                                                                        class="modal-header">
+                                                                                                        <h5 class="modal-title"
+                                                                                                                id="exampleModalLabel">
+                                                                                                                Pre
+                                                                                                                Repair
+                                                                                                                Checklist
+                                                                                                        </h5>
+                                                                                                        <button type="button"
+                                                                                                                class="close"
+                                                                                                                data-dismiss="modal"
+                                                                                                                aria-label="Close">
+                                                                                                                <span
+                                                                                                                        aria-hidden="true">&times;</span>
+                                                                                                        </button>
                                                                                                 </div>
+                                                                                                <div class="modal-body">
+                                                                                                        <table
+                                                                                                                class='table table-sm table-borderless'>
+                                                                                                                <tbody>
+                                                                                                                        <tr>
+                                                                                                                        </tr>
+                                                                                                                        {% for item in check_list %}
+                                                                                                                        <tr>
+                                                                                                                                <th>{{item.c_list_key}}
+                                                                                                                                </th>
+                                                                                                                                <td>{{item.c_list_val}}
+                                                                                                                                </td>
+
+                                                                                                                        </tr>
+                                                                                                                        {% endfor %}
+                                                                                                                </tbody>
+                                                                                                        </table>
+                                                                                                </div>
+                                                                                                
+                                                                                                       
                                                                                         </div>
                                                                                 </div>
+                                                                        </div>
 
-                                                                        </span>
-                                                                </td>
-                                                        </tr>
+                                                                </span>
+                                                        </td>
+                                                </tr>
 
                                         </table>
-                                        <hr class="my-2">
                                         <div class="d-flex mx-0 px-0">
                                                 <div class="col-md-2 pl-1 mx-0" style="min-width:5rem ;">
                                                         <strong class="mb-0">Problem</strong>
@@ -569,18 +614,23 @@
         <!-- Header -->
         <div class="card">
                 <div class="card-body pt-2 pb-1 px-2">
-                        <div class="header row bg-light py-1 rounded">
+                        <div class="header row bg-light   py-1 rounded">
                                 <div class="col-md-6 my-auto">
-                                        <h4 class="my-auto py-auto text-secondary"><strong> Components Used </strong></h4>
+                                        <h4 class="my-auto py-auto ml-1 text-secondary"><strong> Components Used
+                                                </strong></h4>
                                 </div>
                                 <div class="col-md-6 header_btn">
                                         {% if components %}
-                                        <a class="btn btn-primary btn-sm rounded mx-1"  href="{% url 'list_components' complaint.id %}"><i class="fa-solid fa-gear"></i>
+                                        <a class="btn btn-primary btn-sm rounded mx-1"
+                                                href="{% url 'list_components' complaint.id %}"><i
+                                                        class="fa-solid fa-gear"></i>
                                                 Manage</a>
                                         {% else %}
-                                        <a class="btn btn-primary btn-sm rounded mx-1" href="{% url 'list_components' complaint.id%}"><i class="fa-solid fa-plus"></i>
+                                        <a class="btn btn-primary btn-sm rounded mx-1"
+                                                href="{% url 'list_components' complaint.id%}"><i
+                                                        class="fa-solid fa-plus"></i>
                                                 Add Component
-                                        {% endif %}
+                                                {% endif %}
                                         </a>
                                 </div>
                         </div>
@@ -591,8 +641,8 @@
                                 <table class="table table-sm">
                                         <thead class="bg-secondary text-light pl-2">
                                                 <tr>
-                                                        <th width="240" >Item</th>
-                                                        <th >Description</th>
+                                                        <th width="240">Item</th>
+                                                        <th>Description</th>
                                                         <th width="120" style="text-align:center;">Quantity</th>
                                                         <th width="120" style="text-align:center;">Unit Price</th>
                                                 </tr>
@@ -605,7 +655,7 @@
                                                         <td>{{component.desc}}</td>
                                                         <td style="text-align:center;">{{component.quantity}}</td>
                                                         <td style="text-align:center;">{{component.unit_price}}</td>
-                                                      
+
                                                 </tr>
                                                 {% endfor %}
                                         </tbody>
@@ -614,13 +664,13 @@
                         {% else %}
                         <div class="empty_box d-flex justify-content-center mt-4">
                                 <h3 class="text-secondary">No Components Added yet</h3>
-                                
+
                         </div>
                         <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
-                                Click <a  href="{% url 'list_components' complaint.id%}" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
-                                
+                                Click <a href="{% url 'list_components' complaint.id%}"
+                                        class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
                         </div>
-                        
+
                         {% endif %}
                 </div>
         </div>
@@ -630,45 +680,45 @@
         let children = curr.children;
         complaint_status = "{{complaint.complaint_status}}"
         let rep_stats = document.getElementById("rep_stats");
-        
+
         console.log(rep_stats)
         complaint_status = complaint_status
         complaint_status = parseInt(complaint_status)
 
-        if(complaint_status == 1) {
+        if (complaint_status == 1) {
                 children[0].classList.add("done");
                 children[1].classList.add("current");
         }
-        else if(complaint_status == 2) {
+        else if (complaint_status == 2) {
                 children[0].classList.add("done");
                 children[1].classList.add("done");
                 children[2].classList.add("current");
         }
-        else if(complaint_status == 3) {
+        else if (complaint_status == 3) {
                 children[0].classList.add("done");
                 children[1].classList.add("done");
                 children[2].classList.add("done");
                 children[3].classList.add("current");
         }
-        else if(complaint_status == 4) {
+        else if (complaint_status == 4) {
                 children[0].classList.add("done");
                 children[1].classList.add("done");
                 children[2].classList.add("failed");
                 children[3].classList.add("current");
         }
-        else if(complaint_status == 5 || complaint_status == 6) {
+        else if (complaint_status == 5) {
                 children[0].classList.add("done");
                 children[1].classList.add("done");
                 children[2].classList.add("done");
                 children[3].classList.add("done");
-
-                if(complaint_status ==5){
-                        rep_stats.innerText = "Repaired";
-                }
-                if(complaint_status ==6){
-                        rep_stats.innerText = "Failed to Repair";
-                }
-                
+                rep_stats.innerText = "Repaired";
+        }
+        else if (complaint_status == 6) {
+                children[0].classList.add("done");
+                children[1].classList.add("done");
+                children[2].classList.add("failed");
+                children[3].classList.add("done");
+                rep_stats.innerText = "Failed to Repair";
         }
 
 

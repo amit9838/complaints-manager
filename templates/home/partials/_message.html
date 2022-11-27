@@ -1,16 +1,77 @@
 {% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div{% if message.tags %} id="msg" class=" alert alert-sm alert-{{ message.tags }}"{% endif %}>
-    {{ message }}
-    </div>
-    {% endfor %}
+{% for message in messages %}
+<style>
+    #msg {
+        animation: slidedownFadeIn ease-out .2s running;
+        box-shadow: 0px 2px 10px rgba(128, 128, 128, 0.404);
+    }
+    
+    #alert {
+        right: 1rem;
+        z-index: 10;
+    }
+    
+    @media screen and (max-width:760px) {
+        #alert {
+            right: 1rem;
+            left: 1rem;
+        }
+        
+    }
+
+    @keyframes slidedownFadeIn {
+        from {
+            transform: translateY(-15px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0px);
+            opacity: 1;
+        }
+    }
+    @keyframes slideupFadeOut
+        {
+            from{
+                transform: translateY(0px);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-15px);
+                opacity: 0;
+            }
+        }
+
+</style>
+<div class="msgbox px-2" style="position: relative;"></div>
+<div id="alert" style="position:absolute; max-width: 40rem;">  
 </div>
-<script> 
-    msg = document.getElementById("msg");
-    msg.style.display = "block";
-    setTimeout(function() {
-        msg.style.display = "none";
-    },3000);
+
+
+<script>
+
+    function show_mag(type, msg) {
+        let alertbox = document.getElementById("alert");
+        let alert = `
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert" id="msg">
+        <strong style = "text-transform: uppercase;">{{message.tags}} : </strong> {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="dismiss">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div> `;
+        alertbox.innerHTML = alert;
+        let close = document.getElementById("dismiss");
+        let alt = document.getElementById("msg");
+        function dismiss() {
+            setTimeout(function () {
+                alt.style.animation = "slideupFadeOut ease-in .2s";
+                // dismiss();
+                setTimeout(function () { close.click() }, 200);
+            }, 3000)
+        }
+        setTimeout(dismiss(), 200);
+    }
+    show_mag('success', 'hello');
 </script>
-{% endif %} 
+{% endfor %}
+{% endif %}

@@ -131,6 +131,11 @@
             <div class="card flex-full border rounded" style="height:100% ;">
                 <div class="card-header m-0 p-0 px-1 mt-2 mt-0 align-center my-auto ">
                     <h3 class="card-title p-1 px-2 rounded my-auto py-2 py-auto">Tax Settings</h3>
+                    <form action="{% url 'settings' %}" type="POST">
+                        {% csrf_token %}
+                        {{form_class}}
+                        <input type="submit" value="Save">
+                    </form>
                 </div>
                 <div class="card-body">
 

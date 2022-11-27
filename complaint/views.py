@@ -124,10 +124,9 @@ def deleteComplaint(request,pk):
     if(request.user.is_staff):
         if request.method == 'POST':
             complaint = Complaint.objects.get(id=pk)
-            c_id = complaint.id
             complaint.delete()
             print("deleting complaint...")
-            messages.success(request, f'Complaint with #id {c_id} deleted successfully')
+            messages.success(request, f'Complaint with #id {pk} deleted successfully')
             return redirect('all_complaints')
     else:
         return HttpResponse("You dont't have permission to access this page")
@@ -184,15 +183,14 @@ def close_complaint(request,pk):
         if request.method == "POST":
             complaint = Complaint.objects.get(id=pk)
             complaint.closed_by = request.user
+            complaint.closed_date = datetime.datetime.now()
             
             if complaint.complaint_status == 3:
-                complaint.resolved_date = datetime.datetime.now()
                 complaint.complaint_status = 5;
                 complaint.save()
                 return redirect('print_record', pk)
             
             elif complaint.complaint_status == 4:
-                complaint.resolved_date = datetime.datetime.now()
                 complaint.complaint_status = 6;
                 complaint.save()
                 return redirect('print_record', pk)
@@ -200,7 +198,6 @@ def close_complaint(request,pk):
         return redirect('print_record', pk)
     else:
         return HttpResponse("You dont't have permission to access this page")
-
 
 # View Complaint -----------------------------------------------------------------
 @login_required
@@ -234,7 +231,7 @@ def view_complaint_engg(request,pk):
         complaint = Complaint.objects.get(id = pk)
         component_list = Item.objects.filter(complaint = complaint)
         check_list = CheckList.objects.filter(complaint = complaint)
-
+ 
         # print(engineers)
         context = {
             'components':component_list,
@@ -248,7 +245,7 @@ def view_complaint_engg(request,pk):
             stat = request.POST['cmpStatus']        
             complaint.complaint_status = stat
             complaint.resolved_date = datetime.datetime.now()
-            if int(stat) >= 4 and int   (stat) <= 5:
+            if int(stat) >= 4 and int(stat) <= 5:
                 complaint.resolved_by = request.user
             complaint.save()
             messages.success(request, 'Status updated successfully.')
@@ -310,32 +307,7 @@ def assign_enineer(request,pk):
             complaint.save()
             return redirect('view_complaint', pk)
 
-@login_required
-def close_complaint(request,pk):
-    # print("Status updated")
-    if(request.user.is_staff):
-        if request.method == "POST":
-            complaint = Complaint.objects.get(id=pk)
-            if complaint.complaint_status == 3:
-                complaint.resolved_date = datetime.datetime.now()
-                complaint.complaint_status = 5
-                # print(complaint.complaint_status)
-                complaint.save()
-                # return HttpResponse("Status changed")
-                return redirect('print_record', pk)
-            
-            elif complaint.complaint_status == 4:
-                complaint.resolved_date = datetime.datetime.now()
-                complaint.complaint_status = 6
-                complaint.save()
-                # print(complaint.complaint_status)
-                # return HttpResponse("Status changed")
-                return redirect('print_record', pk)
-            return redirect('print_record', pk)
-        return redirect('print_record', pk)
-    else:
-        return HttpResponse("You dont't have permission to access this page")
- 
+
 
 def list_components(request,pk):
     complaint = Complaint.objects.get(id=pk)
@@ -495,7 +467,7 @@ def resolved_complaints(request):
 def print_record(request,pk):
     if(request.user.is_staff):
         complaint = Complaint.objects.get(id=pk)
-        complaint.resolved_date = datetime.datetime.today
+        # complaint.resolved_date = datetime.datetime.today
 
         components = Item.objects.filter(complaint = complaint)
         subTotal = 0

@@ -8,9 +8,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
 	<meta name="author" content="AdminKit">
-	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<meta name="keywords"
+		content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+		integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<!-- <link rel="canonical" href="https://demo-basic.adminkit.io/pages-blank.html" /> -->
@@ -24,7 +28,7 @@
 	<script src="{% static 'js/main.js' %}"></script>
 
 	<style>
-		.st1::after{
+		.st1::after {
 			content: "Registred";
 			font-size: .8rem;
 			padding: .2rem .8rem;
@@ -32,7 +36,8 @@
 			border-radius: 1rem;
 			background-color: rgb(207, 135, 0);
 		}
-		.st2::after{
+
+		.st2::after {
 			content: "In progress";
 			font-size: .8rem;
 			padding: .2rem .8rem;
@@ -40,8 +45,8 @@
 			border-radius: 1rem;
 			background-color: rgb(0, 90, 142);
 		}
-		
-		.st3::after{
+
+		.st3::after {
 			content: "Repaired";
 			font-size: .8rem;
 			padding: .2rem .8rem;
@@ -49,8 +54,8 @@
 			border-radius: 1rem;
 			background-color: green;
 		}
-		
-		.st4::after{
+
+		.st4::after {
 			content: "Failed";
 			font-size: .8rem;
 			padding: .2rem .8rem;
@@ -58,7 +63,8 @@
 			border-radius: 1rem;
 			background-color: rgb(186, 14, 14);
 		}
-		.st5::after{
+
+		.st5::after {
 			content: "Closed";
 			font-size: .8rem;
 			padding: .2rem .8rem;
@@ -66,8 +72,8 @@
 			border-radius: 1rem;
 			background-color: rgb(1, 102, 82);
 		}
-		
-		.st6::after{
+
+		.st6::after {
 			content: "Closed";
 			font-size: .8rem;
 			padding: .2rem .8rem;
@@ -75,40 +81,41 @@
 			border-radius: 1rem;
 			background-color: rgb(97, 2, 2);
 		}
-	
+
 
 		label {
-			margin-bottom:0rem;
-			font-size:.8rem;
+			margin-bottom: 0rem;
+			font-size: .8rem;
 		}
 
-
-	
+		/* thead{
+			border-radius: .3rem;
+		} */
 	</style>
-	
+
 </head>
 
 <body>
 	<div class="wrapper">
 
 		<!-- --------------------------- -->
-		<nav id="sidebar" class="sidebar js-sidebar"  style="overflow-y: scroll;">
-			<div class="sidebar-content js-simplebar" >
+		<nav id="sidebar" class="sidebar js-sidebar" style="overflow-y: scroll;">
+			<div class="sidebar-content js-simplebar">
 
 				<!-- Sideabr -------------------------------------------->
 
-					
+
 				<a class="sidebar-brand" href="">
 					{% if request.user.is_superuser %}
-					<span class="align-middle"> Admin Dashboard	</span>
+					<span class="align-middle"> Admin Dashboard </span>
 
 					{% elif request.user.is_staff %}
 					<span class="align-middle">Dashboard</span>
-					
-					
+
+
 					{% else %}
 					<span class="align-middle">Engineer Dashboard</span>
-				{% endif %}
+					{% endif %}
 				</a>
 
 				{% if request.user.is_superuser %}
@@ -124,14 +131,14 @@
 
 				{% endif %}
 
-				
-<!-- ------------------------------- -->
+
+				<!-- ------------------------------- -->
 			</div>
 		</nav>
 
-		<div class="main"  style="overflow-y: scroll; height: 100vh	;" >
-			<nav class="navbar navbar-expand navbar-light navbar-bg"  >
-				<a class="sidebar-toggle js-sidebar-toggle" >
+		<div class="main" style="overflow-y: scroll; height: 100vh	;">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
 					<i class="hamburger align-self-center"></i>
 				</a>
 
@@ -141,46 +148,55 @@
 						<!-- navbar ---------------------------------->
 						{% block navbar_content %}
 						{% endblock navbar_content %}
-						
+
 						<li class="nav-item dropdown">
 
 							{% if user.is_authenticated %}
-							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#"
+								data-bs-toggle="dropdown">
 								<i class="fa-solid fa-user-gear"></i>
 							</a>
-							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
+								data-bs-toggle="dropdown">
 								Welcome, <span class="text-dark pl-1">{{request.user.username}}</span>
-							  </a>
+							</a>
 
-							  <div class="dropdown-menu dropdown-menu-end" style="right: 1rem; left: auto;">
-									<div class="name mb-2"><strong class=" bg-light rounded  py-1 pl-3 pr-2 " >{{request.user.get_full_name}}</strong></div>
-								  <a class="dropdown-item" href={% url 'profile' request.user.id %}><i class="align-middle me-1" data-feather="user"></i> Profile</a>
-								  <a class="dropdown-item" href={% url 'dashboard' %}><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
-								  <div class="dropdown-divider"></div>
-								  {% comment %} <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a> {% endcomment %}
-								  <a class="dropdown-item" href="https://amit9838.github.io/portfolio/" target="_blank" ><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
-								  <div class="dropdown-divider"></div>
-
-								  <form  class = "nav-link px-3" action = "{% url "logout" %}" method = "post">
-									{% csrf_token %}
-									<div class = "">
-									  <input  class="btn btn-secondary w-100 " type = "submit" value = 'Sign Out'/ style= "border:none;">
-									</div>
-									
-								  </form>
+							<div class="dropdown-menu dropdown-menu-end" style="right: 1rem; left: auto;">
+								<div class="name mb-2"><strong
+										class=" bg-light rounded  py-1 pl-3 pr-2 ">{{request.user.get_full_name}}</strong>
 								</div>
-								  
-								{% else %}
-								  <!-- <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+								<a class="dropdown-item" href={% url 'profile' request.user.id %}><i
+										class="align-middle me-1" data-feather="user"></i> Profile</a>
+								<a class="dropdown-item" href={% url 'dashboard' %}><i class="align-middle me-1"
+										data-feather="pie-chart"></i> Analytics</a>
+								<div class="dropdown-divider"></div>
+								{% comment %} <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
+										data-feather="settings"></i> Settings & Privacy</a> {% endcomment %}
+								<a class="dropdown-item" href="https://amit9838.github.io/portfolio/" target="_blank"><i
+										class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+								<div class="dropdown-divider"></div>
+
+								<form class="nav-link px-3" action="{% url 'logout' %}" method="post">
+									{% csrf_token %}
+									<div class="">
+										<input class="btn btn-secondary w-100 " type="submit" value='Sign Out' /
+											style="border:none;">
+									</div>
+
+								</form>
+							</div>
+
+							{% else %}
+							<!-- <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
 									<i class="align-middle" data-feather="settings"></i>
 									</a>
 									<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
 									<img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Welcome," /> <span class="text-dark">{{request.user.username}}</span>
 								  </a> -->
-	
-								  <div class="dropdown-menu dropdown-menu-end">
-								  	<a class="dropdown-item w-100" href="#">Log In</a>
-								  </div>
+
+							<div class="dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item w-100" href="#">Log In</a>
+							</div>
 
 
 							{% endif %}
@@ -196,7 +212,7 @@
 			<main class="content p-2 px-sm-5 py-sm-4">
 				<div class="container-fluid p-0">
 					{% block body_content %}
-					
+
 					{% endblock body_content %}
 				</div>
 			</main>
@@ -211,11 +227,12 @@
 						</div>
 						<div class="col-6 text-end">
 							<ul class="list-inline">
-								
+
 								<li class="list-inline-item">
-									<a class="text-muted" href="https://amit9838.github.io/portfolio/" target="_blank">Help Center</a>
+									<a class="text-muted" href="https://amit9838.github.io/portfolio/"
+										target="_blank">Help Center</a>
 								</li>
-						
+
 							</ul>
 						</div>
 					</div>
@@ -229,7 +246,7 @@
 		//Sidebar
 		let sidebar = document.getElementById("sidebar");
 		const hamburger = document.querySelector(".sidebar-toggle");
-		hamburger.addEventListener('click', ()=> {
+		hamburger.addEventListener('click', () => {
 			sidebar.classList.toggle("collapsed");
 		});
 
@@ -237,22 +254,25 @@
 		let prof_menu = document.querySelector(".dropdown-menu");
 		let prof_toggle = document.querySelector(".dropdown");
 		// console.log(prof_toggle);
-		prof_toggle.addEventListener('click', ()=> {
+		prof_toggle.addEventListener('click', () => {
 			// console.log("hello");
 			prof_menu.classList.toggle("show");
 			prof_toggle.classList.toggle("show");
 		});
 
-
-        
-
 	</script>
 
-{% load static %}
-	<!-- <script src="{% static 'js/app.js' %}"></script> -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	{% load static %}
+	<script src="{% static 'js/app.js' %}"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
+		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+		crossorigin="anonymous"></script>
 </body>
 
 </html>

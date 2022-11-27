@@ -129,75 +129,73 @@
                                                                 <td>{{complaint.updated_by}} on {{complaint.updated_on}}
                                                                 </td>
                                                         </tr>
-                                                        {% endif %}
-                                                        <tr>
+                                                        {% endif %} 
+                                                </tbody>
+                                        </table>
 
-                                                                <th class="text-secondary mt-2">Checklist</th>
-                                                                <td>
-                                                                        <span class>
-                                                                                <button type="button"
-                                                                                        class="more_attr btn btn-outline-primary btn-sm rounded"
-                                                                                        data-toggle="modal"
-                                                                                        data-target="#model_checklist">
-                                                                                        View Checklist ->
-                                                                                </button>
-
-                                                                                <!-- Modal -->
-                                                                                <div class="modal fade"
-                                                                                        id="model_checklist"
-                                                                                        tabindex="-1" role="dialog"
-                                                                                        aria-labelledby="exampleModalLabel"
-                                                                                        aria-hidden="true">
-                                                                                        <div class="modal-dialog"
-                                                                                                role="document">
+                                        <table class=" table table-sm bordreless">
+                                                <tr >
+                                                        <td class="text-secondary px-2" width = "145">Checklist</td>
+                                                        <td>
+                                                                <span class>
+                                                                        <a type="button"
+                                                                                class="more_attr badge badge-primary text-light"
+                                                                                data-toggle="modal"
+                                                                                data-target="#model_checklist">
+                                                                                View Checklist ->
+                                                                        </a>
+                                                                        <!-- Modal -->
+                                                                        <div class="modal fade" id="model_checklist"
+                                                                                tabindex="-1" role="dialog"
+                                                                                aria-labelledby="exampleModalLabel"
+                                                                                aria-hidden="true">
+                                                                                <div class="modal-dialog"
+                                                                                        role="document">
+                                                                                        <div class="modal-content">
                                                                                                 <div
-                                                                                                        class="modal-content">
-                                                                                                        <div
-                                                                                                                class="modal-header">
-                                                                                                                <h5 class="modal-title"
-                                                                                                                        id="exampleModalLabel">
-                                                                                                                        Pre
-                                                                                                                        Repair
-                                                                                                                        Checklist
-                                                                                                                </h5>
-                                                                                                                <button type="button"
-                                                                                                                        class="close"
-                                                                                                                        data-dismiss="modal"
-                                                                                                                        aria-label="Close">
-                                                                                                                        <span
-                                                                                                                                aria-hidden="true">&times;</span>
-                                                                                                                </button>
-                                                                                                        </div>
-                                                                                                        <div
-                                                                                                                class="modal-body">
-                                                                                                                <table
-                                                                                                                        class='table table-sm table-borderless'>
-                                                                                                                        <tbody>
-                                                                                                                                <tr>
-                                                                                                                                </tr>
-                                                                                                                                {% for item in check_list %}
-                                                                                                                                <tr>
-                                                                                                                                        <th>{{item.c_list_key}}
-                                                                                                                                        </th>
-                                                                                                                                        <td>{{item.c_list_val}}
-                                                                                                                                        </td>
+                                                                                                        class="modal-header">
+                                                                                                        <h5 class="modal-title"
+                                                                                                                id="exampleModalLabel">
+                                                                                                                Pre
+                                                                                                                Repair
+                                                                                                                Checklist
+                                                                                                        </h5>
+                                                                                                        <button type="button"
+                                                                                                                class="close"
+                                                                                                                data-dismiss="modal"
+                                                                                                                aria-label="Close">
+                                                                                                                <span
+                                                                                                                        aria-hidden="true">&times;</span>
+                                                                                                        </button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">
+                                                                                                        <table
+                                                                                                                class='table table-sm borderless'>
+                                                                                                                <tbody>
+                                                                                                                        <tr>
+                                                                                                                        </tr>
+                                                                                                                        {% for item in check_list %}
+                                                                                                                        <tr>
+                                                                                                                                <th>{{item.c_list_key}}
+                                                                                                                                </th>
+                                                                                                                                <td>{{item.c_list_val}}
+                                                                                                                                </td>
 
-                                                                                                                                </tr>
-                                                                                                                                {% endfor %}
-                                                                                                                        </tbody>
-                                                                                                                </table>
+                                                                                                                        </tr>
+                                                                                                                        {% endfor %}
+                                                                                                                </tbody>
+                                                                                                        </table>
 
-                                                                                                        </div>
                                                                                                 </div>
                                                                                         </div>
                                                                                 </div>
+                                                                        </div>
 
-                                                                        </span>
-                                                                </td>
-                                                        </tr>
-
+                                                                </span>
+                                                        </td>
+                                                </tr>
                                         </table>
-                                        <hr class="my-2">
+
                                         <div class="d-flex mx-0 px-0">
                                                 <div class="col-md-2 pl-1 mx-0" style="min-width:5rem ;">
                                                         <strong class="mb-0">Problem</strong>
@@ -210,6 +208,9 @@
                                 </div>
         
                         </div>
+
+
+                        
                 </div>
         </div>
 
@@ -218,7 +219,7 @@
 <div class="row mx-0">
         <!-- Header -->
         <div class="card">
-                <div class="card-body pt-2 pb-1 px-4">
+                <div class="card-body pt-2 pb-1 px-2">
                         <div class="header row bg-light py-1 rounded">
                                 <div class="col-md-6 my-auto">
                                         <h4 class="my-auto py-auto text-secondary"><strong> Components Used </strong></h4>
@@ -265,10 +266,8 @@
                                 
                         </div>
                         <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
-                                Click <a  href="{% url 'list_components' complaint.id%}" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now
-                                
+                                Click <a  href="{% url 'list_components' complaint.id%}" class="btn btn-link p-0 px-1 mx-1 "> + Add Component </a>to add now         
                         </div>
-                        
                         {% endif %}
                 </div>
         </div>

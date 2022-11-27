@@ -10,7 +10,7 @@
             <div class="cards">
                 <div class="card-body pb-0 pt-2">
                   <div class="d-flex flex-column align-items-center text-center">
-                    {% if user.is_superuser %}
+                    {% if user_passed.is_superuser %}
         
                         <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Admin" class="rounded-circle" width="120">
                         
@@ -60,7 +60,7 @@
 
 
 
-        <!-- Form ------------------->
+        
         <div class="card-body pt-1">
             <div class="fields">
                 <form class="" action="{% url 'update_profile' user_passed.id %}" method = "POST">
@@ -124,8 +124,10 @@
                     </div>
                     {% endif %}
                     
-               
-                    <input class="btn btn-primary" type="submit" value="Save">
+
+                    <a class="btn btn-light mr-3" href="{% url 'profile' user_passed.id %}"><- Back</a>
+
+                    <button class="btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save</button>
                 </form>
             </div>
         </div>

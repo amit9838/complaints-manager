@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import render,redirect
+from django.shortcuts import HttpResponseRedirect, render,redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from store.forms import NewProductFrom
 from django.core.paginator import Paginator
@@ -7,6 +7,7 @@ from .models import *
 from django.db.models import Count
 from django.contrib import messages
 import json
+
 
 
 # Store Page (Start) ---------------------------------------------
@@ -202,10 +203,10 @@ def settings(request):
     
     categories = Category.objects.all()
     context = {
-        'categories':categories
+        'categories':categories,
     }
-
     return render(request, 'store/settings.html',context)
+
 
 def add_category(request):
     if request.POST:
