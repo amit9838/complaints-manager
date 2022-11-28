@@ -17,21 +17,21 @@
 <small>Admin and Employee pages are nearly similar except for the dashboard and some superuser controls.</small>
 
 ###### Admin Dashboard
-<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/dashboard_admin.png" width="720" height="340"/>
+<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/dashboard_admin.png" width="720" height="380"/>
 
 ###### View and control Complaints
-<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/complaint_view_admin.png" width="720" height="340"/>
+<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/complaint_view_admin.png" width="720" height="380"/>
 
 ###### Staff
 <img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/staff_admin.png" width="720" height="340"/>
 
 ###### View Profile
-<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/view_profile.png" width="720" height="340"/>
+<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/view_profile.png" width="720" height="380"/>
 
 ###### Store
 <img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/store_admin.png" width="720" height="340"/>
 
 #### Engineer
-<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/view_complaint_engg.png" width="720" height="340"/>
+<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/view_complaint_engg.png" width="720" height="380"/>
 
 ### Thanks for Visiting!
