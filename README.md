@@ -3,13 +3,14 @@
 
 ## Features
 - 3 user roles (Admin, Enployee, Engineer)
-- Isolated and personilized dashboards for each user.
+- Isolated and personilized dashboards for each user type.
+- Various authorizations based on user type.
 - Complaints grouping based on stage(status) of the complaint.
 - Store - Completly different space for store management.
 - Product and sales analysis from **Store Dashboard**.
 - Personalized dashboards for engineers and employees .
-- Functionality to add products during repairing which are available in the  store.
-- Varify customer during checkout using OTP/email.
+- Attach component available in store (Keeps in sync in realtime).
+- Close complaints on successfull varification of customer with OTP/Email.
 
 ## Screenshots
 
