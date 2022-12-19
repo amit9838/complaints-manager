@@ -3,7 +3,7 @@
 
 ## Features
 - 3 user roles (Admin, Enployee, Engineer)
-- Admin/Engineer can assign Engineer for particular compalint.
+- Admin/Employee can assign Engineer for particular compalint.
 - Only assigned complaints are available to an Engineer.
 - Track complaints in realtime (also available to customer).
 - Isolated and personilized dashboards for each user.
@@ -25,7 +25,7 @@
 <img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/dashboard_admin.png" width="720" height="380"/>
 
 #### View and control Complaints
-- Control complaints status from a single page.
+- Manage complaint status from a single page.
 - Control-options changes dynamically depending on stages of complaint.
 <img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/complaint_view_admin.png" width="720" height="380"/>
 
@@ -43,7 +43,7 @@
 
 #### Engineer
 - Complaints control center for engineer.
-- Only open an assigned complaints can be modified/accessed by Engineer.
+- Only open and assigned complaints can be modified/accessed by engineer.
 <img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/view_complaint_engg.png" width="720" height="380"/>
 
 ### Thanks for Visiting!
