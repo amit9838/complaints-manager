@@ -6,11 +6,16 @@ from . import views
 from .views import Complaints_log_api, print_record
 
 urlpatterns = [
+    # Sidebar
     path('', views.list_complaints, name="all_complaints"),
-    path('in_progress/', views.inProgress_complaints, name="in_progress_compaints"), 
-    path('closing_complaints/', views.closing_complaints, name="closing_compaints"), 
-    path('closed_complaints/', views.closed_complaints, name="closed_compaints"),
+    path('in_progress/', views.inProgress_complaints, name="in_progress_complaints"), 
+    path('unassigned/', views.unassigned_complaints, name="unassigned_complaints"), 
+    path('closing_complaints/', views.closing_complaints, name="closing_complaints"), 
+    path('closed_complaints/', views.closed_complaints, name="closed_complaints"),
     path('new_complaint/', views.register_complaint, name="register_complaint"),
+    path('settings/', views.settings, name="complaint_settings"),
+    
+    # Actions
     path('add_checklist/<int:pk>', views.add_checklist, name="add_checklist"),
     path('update_checklist/<int:pk_cmp>/<int:pk_chk>/', views.update_checklist, name="update_checklist"),
     path('delete_checklist/<int:pk_cmp>/<int:pk_chk>/', views.delete_checklist, name="delete_checklist"),

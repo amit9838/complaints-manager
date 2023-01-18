@@ -6,6 +6,7 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from user.models import *
+from store.models import Category
 import json
 
 
@@ -15,10 +16,18 @@ def register_complaint(request):
     if(request.user.is_staff):
         form_cmp  = ComplaintRegisterForm()
         context = {
-                
                 'complaint_register_form':form_cmp,
             }
         if request.method == "GET":
+            cat = Category.objects.all()
+            categories = []
+            for item in cat:
+                categories.append(item.name)
+            cats = json.dumps(categories)
+            context = {
+                'complaint_register_form':form_cmp,
+                'categories':cats
+            }
             return render(request, 'complaint/new_complaint.html',context) 
         if request.method == "POST":
             form_cmp = ComplaintRegisterForm(request.POST)
@@ -52,6 +61,17 @@ def update_complaint(request,pk):
                     'complaint':complaint
                 }
             if request.method == "GET":
+                cat = Category.objects.all()
+                categories = []
+                for item in cat:
+                    categories.append(item.name)
+                cats = json.dumps(categories)
+                context = {
+                    
+                    'complaint_register_form':form,
+                    'complaint':complaint,
+                    'categories':cats
+                }
                 return render(request, 'complaint/update_complaint.html',context) 
             if request.method == "POST":
                 form = ComplaintRegisterForm(request.POST, instance=complaint)
@@ -147,6 +167,21 @@ def list_complaints(request):
         page_obj = Paginator.get_page(paginator, page_number)
         return render(request, 'complaint/list_complaints.html', {'all_complaints':all_complaints, 'page_obj':page_obj})
 
+
+# Complaints Settings
+def settings(request):
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        context = {
+            'categories':categories,
+        }
+        return render(request, 'complaint/settings.html',context)
+
+
+@login_required
+def unassigned_complaints(request):
+    complaints = Complaint.objects.filter(complaint_status = 1)
+    return render(request, 'complaint/unassigned_complaints.html',{'unassigned_complaints':complaints})
 
 @login_required
 def inProgress_complaints(request):

@@ -1,5 +1,4 @@
 <div class="engineer_dashboard">
-
     <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1>
 
     <div class="row">
@@ -149,44 +148,50 @@
         });
         </script>
 
+<div class="card flex-fill px-0 shadow-sm">
+    <div class="card-header pb-0 d-flex justify-content-between px-3 flex-wrap">
+        <span>
+            <h2 class="card-title">Recents Complaints</h2>
+        </span>
 
-<div class="card flex-fill px-2">
-    <div class="card-header mt-1 py-1 px-1">
-        <h2 class=" my-0 p-1 px-1 card-title"> Recent Complaints </h2>
     </div>
-    <div class="card-body p-0 px-3" style="overflow-x:scroll ;">
 
-        <table class="table table-sm table-striped" style="min-width:50rem;">
-            <thead class="bg-secondary text-light">
-                <tr>
-                    <th>Complaint ID</th>
-                    {% comment %} <th>Customer</th> {% endcomment %}
-                    <th>Product</th>
-                    <th style=" width: 40%;">Problem</th>
-                    <th>Assigned on</th>
-                    <th width= "80" style="min-width:11rem; text-align: center; ">Status</th>
-                    <th>View</th>
-                </tr>
-            </thead>
+<div class="card-body px-0 pt-0" id="table_container" style="overflow-x:scroll ;">
+    <table class="table table-sm table-hover my-0" style="min-width: 50rem;">
+        <thead class="">
+            <tr>
+                <th class="px-3 border-0" width="100">Complaint ID</th>
+                <th class="border-0" width="150">Product</th>
+                <th class="border-0" width="400">Problem</th>
+                <th class="border-0" width="100">Assigned on</th>
+                <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
+                <th class="border-0">View</th>
+            </tr>
+        </thead>
 
-            <tbody>
-                {% for complaint in complaints_assigned %}
-                <tr>
-                    <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
-                    {% comment %} <td>{{complaint.customer_name}}</td> {% endcomment %}
-                    <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
-                    <td>{{complaint.problem}}</td>
-                    <td>{{complaint.assigned_date}}</td>
-                    <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
-                            style="font-size: .9rem;"></span></td>
-                    <td width="40"><a href="{% url 'view_complaint_engg' complaint.id %}">
-                            <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <tbody class="table_body">
+            {% for complaint in complaints_assigned %}
+            <tr>
+                <th class="px-3" scope="row"><span># </span> <span>{{complaint.id}}</span></th>
+                <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
+                <td>{{complaint.problem|truncatewords:5}}</td>
+                <td>{{complaint.assigned_date}}</td>
+                <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
+                        id="status_badge" style="font-size: .9rem;"></span></td>
+                <td class="px-3" width="40">
+                    <a href="{% url 'view_complaint' complaint.id %}">
+                        <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
+                    </a>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 </div>
 
+<script>
+    let lnk = document.getElementById('dashboard-link');
+    lnk.classList.add('active');
+</script>

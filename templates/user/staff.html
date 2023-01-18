@@ -10,13 +10,13 @@
 
 {% block body_content %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+    <ol class="breadcrumb bg-white shadow-sm">
         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">Staff</li>
     </ol>
 </nav>
 
-<div class="card flex-fill px-1 px-sm-3">
+<div class="card flex-fill px-1 px-sm-3 shadow-sm">
     <div class="card-header  d-flex justify-content-between mt-2 flex-wrap px-1 bg-light  px-3  mb-2 py-2 rounded ">
         <span>
             <h2 class="card-title my-auto"> Admins</h2>
@@ -30,10 +30,12 @@
             {% for admin in admins %}
             <div class="col-sm-4"  style="min-width: 16rem;"> 
 
-                <div class="card">
+                <div class="card shadow-sm border">
                     <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-secondary text-light">
                         <div class="px-0">
-                            <strong>{{admin.get_full_name}}</strong> 
+                            <i class="fa-solid fa-user fs-2"></i>
+                            <strong class="fs-3 mx-2">{{admin.get_full_name}}</strong>
+                            
                         </div>
                         <div class="action_bar ">
                             <a href="{% url 'profile' admin.id %}"><span class="btn rounded-circle btn-light btn-sm" title="View Profile"> -> </span></a>
@@ -58,10 +60,7 @@
                                 </tr>
                                
                             </tbody>
-                        </table>
-
-
-                        
+                        </table>  
                     </div>
                 </div>
             </div>
@@ -74,7 +73,7 @@
 
 
 
-<div class="card flex-fill px-1 px-sm-3">
+<div class="card flex-fill px-1 px-sm-3 shadow-sm">
     <div class="d-flex  justify-content-between rounded  bg-light  px-3 py-1 mb-2  align-items-center mt-2 ">
         <span>
             <h2 class="card-title my-auto"> Employees </h2>
@@ -91,10 +90,11 @@
         <div class="row">
             {% for employee in employees %}
             <div class="col-sm-4" style="min-width: 16rem;">
-                <div class="card">
+                <div class="card shadow-sm border">
                     <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-info text-light">
                         <div class="px-0">
-                            <strong>{{employee.user.get_full_name}}</strong> 
+                            <i class="fa-solid fa-user fs-2"></i>
+                            <strong class="mx-2">{{employee.user.get_full_name}}</strong> 
                         </div>
                         <div class="action_bar ">
                             <a href="{% url 'profile' employee.user.id %}"><span class="btn rounded-circle btn-light btn-sm" title="View Profile"> -> </span></a>
@@ -144,7 +144,7 @@
 
 
 <!-- Engineer -->
-<div class="card flex-fill px-1 px-sm-3">
+<div class="card flex-fill px-1 px-sm-3 shadow-sm">
     <div class="d-flex bg-light  px-3 py-1 mb-2 justify-content-between rounded    align-items-center mt-2">
         <span>
             <h2 class="card-title my-auto"> Engineers </h2>
@@ -157,14 +157,21 @@
 
 
     <div class="card-body px-1 py-1" id="table_container">
-
         <div class="row" >
             {% for engineer in engineers %}
             <div class="col-sm-4"  style="min-width: 16rem;">
-                <div class="card">
+                <div class="card shadow-sm border">
                     <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-primary text-light">
-                        <div class="px-0">
-                            <strong>{{engineer.user.get_full_name}}</strong> 
+                        <div class="px-0 d-flex align-items-center">
+                            <div class="left ">
+                                <i class="fa-solid fa-user fs-1"></i>
+                            </div>
+                            <div class="right mx-3">
+                                <strong class="fs-4 my-0 py-0 bg-infos" >{{engineer.user.get_full_name}}</strong> 
+                                <h6 class="my-0 my-0 py-0 text-light" style="font-size: .7rem;">Laptop</h6>
+
+                            </div>
+
                         </div>
                         <div class="action_bar ">
                             <a href="{% url 'profile' engineer.user.id %}"><span class="btn rounded-circle btn-light btn-sm" title="View Profile"> -> </span></a>
@@ -205,9 +212,7 @@
                                 </tr>
                             </tbody>
                         </table>
-
-
-                        
+   
                     </div>
                 </div>
             </div>
@@ -216,5 +221,10 @@
 
     </div>
 </div>
+
+<script>
+    let lnk = document.getElementById('staff-link');
+    lnk.classList.add('active');
+</script>
 
 {% endblock body_content %}

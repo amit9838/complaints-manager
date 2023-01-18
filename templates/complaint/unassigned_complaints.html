@@ -1,47 +1,55 @@
 {% extends 'base_dashboard.html' %}
 
-{% block title %}Unresolved Complaints{% endblock title %}
+{% block title %} In Progress{% endblock title %}
 
 {% block navbar_content %}
+
 {% endblock navbar_content %}
+
 
 {% block body_content %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-white shadow-sm">
-    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Pending Complaints</li>
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active" aria-current="page">In Progress</li>
     </ol>
 </nav>
 
 <div class="card flex-fill px-0 shadow-sm">
-    <div class="card-header pb-0 d-flex justify-content-between px-3 flex-wrap">
+    <div class="card-header pb-0 d-flex justify-content-between flex-wrap">
         <span>
-            <h2 class="card-title">Pending Complaints</h2>
+            <h2 class="card-title">Unassigned Complaints</h2>
         </span>
 
     </div>
 
     <div class="card-body px-0 pt-0" id="table_container" style="overflow-x:scroll ;">
-        {% if unresolved_complaints %}
+        {% if complaints %}
         <table class="table table-sm table-hover my-0" style="min-width: 50rem;">
             <thead class="">
                 <tr>
-                    <th class="px-3 border-0" width="100">Complaint ID</th>
-                    <th class="border-0" width="150">Product</th>
-                    <th class="border-0" width="400">Problem</th>
-                    <th class="border-0" width="100">Assigned on</th>
+                    <th class="px-3 border-0">Complaint ID</th>
+                    <th class="border-0">Customer</th>
+                    <th class="border-0" width="300">Product</th>
+                    {% comment %} <th class="border-0" style=" width: 40%;">Problem</th> {% endcomment %}
+                    <th class="border-0">Registred on</th>
+                    <th class="border-0" width="200">Assigned (By->To)</th>
+                    <th class="border-0">Closed on</th>
                     <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
                     <th class="border-0">View</th>
                 </tr>
             </thead>
 
             <tbody class="table_body">
-                {% for complaint in unresolved_complaints %}
+                {% for complaint in in_progress_complains %}
                 <tr>
                     <th class="px-3" scope="row"><span># </span> <span>{{complaint.id}}</span></th>
+                    <td>{{complaint.customer_name}}</td>
                     <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
-                    <td>{{complaint.problem|truncatewords:5}}</td>
-                    <td>{{complaint.assigned_date}}</td>
+                    {% comment %} <td>{{complaint.problem}}</td> {% endcomment %}
+                    <td>{{complaint.registred_date}}({{complaint.registred_by}})</td>
+                    <td>{{complaint.assigned_date}}({{complaint.assigned_by}}->{{complaint.assigned_to}})</td>
+                    <td>{{complaint.closed_date}}({{complaint.closed_by}})</td>
                     <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
                             id="status_badge" style="font-size: .9rem;"></span></td>
                     <td class="px-3" width="40">
@@ -69,7 +77,7 @@
 
 
 <script>
-    let lnk = document.getElementById('unresolved_c-link');
+    let lnk = document.getElementById('unassigned-link');
     lnk.classList.add('active');
 </script>
 

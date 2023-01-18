@@ -16,7 +16,7 @@
     </ol>
 </nav>
 
-<div class="card flex-fill px-2">
+<div class="card flex-fill px-0">
     <div class="card-header pb-0 d-flex justify-content-between flex-wrap">
         <span>
             <h2 class="card-title"> All Complaints </h2>
@@ -24,32 +24,32 @@
 
     </div>
 
-    <div class="card-body" id="table_container" style="overflow-x:scroll ;">
+    <div class="card-body px-0 py-2" id="table_container" style="overflow-x:scroll ;">
         <div id="all_comlpaints_table">
-            <table class="table table-sm table-striped" style="min-width: 50rem;">
-                <thead class="bg-secondary text-light">
+            <table class="table table-sm table-hover my-0" style="min-width: 50rem;">
+                <thead class="">
                     <tr>
-                        <th>Complaint ID</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th style=" width: 40%;">Problem</th>
-                        <th>Registred on</th>
-                        <th width="100" style="min-width:11rem; text-align: center; ">Status</th>
-                        <th>View</th>
+                        <th class="px-3 border-0" width="100">Complaint ID</th>
+                        <th class="border-0" width="150">Product</th>
+                        <th class="border-0" width="300">Problem</th>
+                        <th class="border-0" width="100">Assigned on</th>
+                        <th class="border-0" width="100">Resolved on</th>
+                        <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
+                        <th class="border-0">View</th>
                     </tr>
                 </thead>
-
-                <tbody class="table_body">
+    
+                <tbody class="table_body px-0">
                     {% for complaint in page_obj %}
                     <tr>
-                        <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
-                        <td>{{complaint.customer_name}}</td>
+                        <th class="px-3" scope="row"><span># </span> <span>{{complaint.id}}</span></th>
                         <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
-                        <td>{{complaint.problem}}</td>
-                        <td>{{complaint.registred_date}}</td>
+                        <td>{{complaint.problem|truncatewords:5}}</td>
+                        <td>{{complaint.assigned_date}}</td>
+                        <td>{{complaint.resolved_date}}</td>
                         <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
                                 id="status_badge" style="font-size: .9rem;"></span></td>
-                        <td>
+                        <td class="px-3" width="40">
                             {% if user.is_staff %}
                             <a href="{% url 'view_complaint' complaint.id %}">
                                 <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
@@ -59,32 +59,35 @@
                                 <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                             </a>
                             {% endif %}
+    
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
+                
             </table>
-        </div>
 
-        <div>
+
+
+        <div class="m-2">
             <nav aria-label="Page navigation example">
                 {% if page_obj.has_previous %}
-                <a class="btn btn-outline-info btn-sm" href="?page=1">First</a>
-                <a class="btn btn-outline-info btn-sm"
+                <a class="btn btn-outline-info btn-sm rounded" href="?page=1">First</a>
+                <a class="btn btn-outline-info btn-sm rounded"
                     href="?page={{ page_obj.previous_page_number }}">Previous</a>
                 {% endif %}
 
                 {% for num in page_obj.paginator.page_range %}
                 {% if page_obj.number == num %}
-                <a class="btn btn-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                <a class="btn btn-info btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
                 {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
-                    class="btn btn-outline-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                    class="btn btn-outline-info btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
                     {% endif %}
                     {% endfor %}
 
                     {% if page_obj.has_next %}
-                    <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
-                    <a class="btn btn-outline-info btn-sm"
+                    <a class="btn btn-outline-info btn-sm rounded" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a class="btn btn-outline-info btn-sm rounded"
                         href="?page={{ page_obj.paginator.num_pages }}">Last</a>
                     {% endif %}
             </nav>
@@ -93,5 +96,9 @@
     </div>
 </div>
 
+<script>
+    let lnk = document.getElementById('resolved_c-link');
+    lnk.classList.add('active');
+</script>
 
 {% endblock body_content %}

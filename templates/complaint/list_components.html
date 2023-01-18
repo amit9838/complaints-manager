@@ -22,7 +22,7 @@
 </style>
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+    <ol class="breadcrumb bg-white shadow-sm">
             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
             {% if not request.user.is_staff %}
@@ -37,11 +37,11 @@
 
 <div class="row mx-0">
     <!-- Header -->
-    <div class="card">
+    <div class="card shadow-sm">
             <div class="card-body pt-2 pb-1 mx-2 px-0">
                 <table>
                         
-                                                <h4 class="py-2">Complaint ID: #{{complaint.id}} </h4>
+                        <h4 class="py-2">Complaint ID: #{{complaint.id}} </h4>
                        
                 </table>
                 <!-- <hr>     -->
@@ -63,7 +63,7 @@
                     </div>
             </div>
             <!-- <hr class="py-0 my-1"> -->
-            <div class="card rounded mt-1 mx-auto " id ="res_box" style="position:absolute; min-width: 65%; display: none;" >
+            <div class="card rounded mt-1 mx-auto " id ="res_box" style="position:absolute; min-width: 60%; display: none;" >
                 <div class="card-body rounded border py-1 px-2">
                         <div class="res_container" id="res_container" style="overflow-y:scroll; overflow-x: hidden; max-height: 70vh;"> 
 
@@ -218,6 +218,9 @@
         }
         res_container.innerHTML = res;
     }
+
+        let lnk = document.getElementById('all_complaints-link');
+        lnk.classList.add('active');
 </script>
 
 {% endblock %}

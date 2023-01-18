@@ -1,15 +1,12 @@
 <div class="Admin_dashboard">
-
-
-
     <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1>
 
-    <div class="row">
-        <div class="col-xl-6 col-xxl-5 d-flex">
+    <div class="row" >
+        <div class="col-xl-6 col-xxl-5">
             <div class="w-100">
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="card">
+                        <div class="card shadow-sm">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col mt-0">
@@ -17,7 +14,7 @@
                                     </div>
 
                                     <div class="col-auto">
-                                        <div class="stat text-secondary" style="font-size:1.2rem ;">
+                                        <div class="stat text-primary" style="font-size:1.2rem ;">
                                             <i class="fa-solid fa-list-ul"></i>
                                         </div>
                                     </div>
@@ -29,7 +26,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card shadow-sm">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col mt-0">
@@ -37,7 +34,7 @@
                                     </div>
 
                                     <div class="col-auto">
-                                        <div class="stat text-secondary" style="font-size:1.2rem ;">
+                                        <div class="stat text-primary" style="font-size:1.2rem ;">
                                             <i class="fa-solid fa-calendar-day"></i>
                                         </div>
                                     </div>
@@ -51,7 +48,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="card">
+                        <div class="card shadow-sm">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col mt-0">
@@ -59,7 +56,7 @@
                                     </div>
 
                                     <div class="col-auto">
-                                        <div class="stat text-danger" style="font-size:1.2rem ;">
+                                        <div class="stat text-primary" style="font-size:1.2rem ;">
                                             <i class="fa-solid fa-exclamation"></i>
                                         </div>
                                     </div>
@@ -71,16 +68,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card shadow-sm">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col mt-0">
                                         <h5 class="card-title">Reapired Today</h5>
                                     </div>
-
+                                    
                                     <div class="col-auto">
                                         <div class="stat text-primary">
-                                            <i class="align-middle" data-feather="shopping-cart"></i>
+                                            <i class="fa-solid fa-gear"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +94,7 @@
         </div>
 
         <div class="col-xl-6 col-xxl-7">
-            <div class="card py-0 my-0 flex-fill w-100">
+            <div class="card py-0 my-0 flex-fill w-100 shadow-sm">
                 <div class="card-header mb-0 pb-0">
                     <h5 class="card-title mb-0">Past 30 days</h5>
                 </div>
@@ -203,36 +200,36 @@
         }
 
     </script>
-    <div class="card flex-fill px-2">
-        <div class="card-header mt-1 py-1 px-1">
+    <div class="card flex-fill shadow-sm mt-2 shadow-sm">
+        <div class="card-header mt-1 py-1 px-2 mb-2">
             <h2 class=" my-0 p-1 px-1 card-title"> Recent Complaints </h2>
         </div>
-        <div class="card-body p-0 px-3" style="overflow-x:scroll ;">
-
-            <table class="table table-sm table-striped" style="min-width:50rem;">
-                <thead class="bg-secondary text-light">
-                    <tr>
-                        <th>Complaint ID</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th style=" width: 40%;">Problem</th>
-                        <th>Registred on</th>
-                        <th width= "80" style="min-width:11rem; text-align: center; ">Status</th>
-                        <th>View</th>
+        
+        <div class="card-body p-0 pb-3 mb-0" style="overflow-x:scroll ;">
+            <table class="table table-sm table-hover my-0" style="min-width:50rem;">
+                <thead>
+                    <tr class="" style=""">
+                        <th class="px-3 border-0">Complaint ID</th>
+                        <th class="border-0">Customer</th>
+                        <th class="border-0">Product</th>
+                        <th class="border-0" style=" width: 40%;">Problem</th>
+                        <th class="border-0">Registred on</th>
+                        <th class="border-0" width= "80" style="min-width:11rem; text-align: center; ">Status</th>
+                        <th class="px-3 border-0">View</th>
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody">
                     {% for complaint in recent_complaints %}
                     <tr>
-                        <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
+                        <th scope="row" class="px-3"><span># </span> <span>{{complaint.id}}</span></th>
                         <td>{{complaint.customer_name}}</td>
                         <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
-                        <td>{{complaint.problem}}</td>
+                        <td>{{complaint.problem|truncatewords:5}}</td>
                         <td>{{complaint.registred_date}}</td>
                         <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
                                 style="font-size: .9rem;"></span></td>
-                        <td width="40"><a href="{% url 'view_complaint' complaint.id %}">
+                        <td class="px-3" width="40"><a href="{% url 'view_complaint' complaint.id %}">
                                 <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                             </a>
                         </td>
@@ -242,3 +239,8 @@
             </table>
         </div>
     </div>
+
+    <script>
+        let lnk = document.getElementById('dashboard-link');
+        lnk.classList.add('active');
+    </script>

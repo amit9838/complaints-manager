@@ -55,12 +55,8 @@
                             <h4 class="text-secondary bg-light py-2 px-1">Product Info</h4>
                             <div class="form-container px-3 pb-2 bg-white w-100">
                                 <label for="category">Category</label>
-                                <select name="category" id="" class="form-control form-control-sm w-50">
-                                    <option value="none" selected>Select Product</option>
-                                    <option value="laptop">Laptop</option>
-                                    <option value="printer">Printer</option>
-                                    <option value="cpu">CPU</option>
-                                    <option value="other">Other</option>
+                                <select name="category" id="category" class="form-control form-control-sm w-50">
+                                        <!-- category goes here -->
                                 </select>
                                 {{complaint_register_form.brand.label_tag}}
                                 {{complaint_register_form.brand}}
@@ -88,8 +84,23 @@
             </form>
     </div>
 
-<script>
+    <script>
+        let cat = document.getElementById('category');
+        catrgories = {{categories|safe}};
     
-</script>
+        str = `<option value="null">Select Category</option>`;
+        if(catrgories.length>0){
+            catrgories.forEach((e) => {
+                str+=`
+                <option value="${e.toLowerCase()}" ${e.toLowerCase()=='{{complaint.category}}' ? `selected`:``} >${e}</option>
+                `
+            });
+            cat.innerHTML = str;
+        }
+        
+            let lnk = document.getElementById('all_complaints-link');
+            lnk.classList.add('active');
 
+    </script>
+    
     {% endblock %}

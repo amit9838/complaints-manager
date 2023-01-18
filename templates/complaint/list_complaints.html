@@ -10,8 +10,8 @@
 
 
 {% block body_content %}
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb bg-white shadow-sm">
         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">All Complaints</li>
     </ol>
@@ -20,63 +20,59 @@
 {% include 'home/partials/_message.html' %}
 
 
-<div class="card flex-fill px-2">
-    <div class="card-header pb-0 d-flex justify-content-between flex-wrap">
+<div class="card flex-fill px-0 shadow-sm">
+    <div class="card-header pl-3 pb-2 d-flex justify-content-between flex-wrap">
         <span>
             <h2 class="card-title"> All Complaints </h2>
         </span>
         <span class="d-flex justify-content-center">
-            <input type="text" id="search_box" class="form-control" name="search_text" placeholder="Search">
-            <div class=" ml-2 btn btn-secondary  py-1" style="font-size: 1rem;" id="search_btn">Search</div>
+            <input type="text" id="search_box" class="form-control form-control-sm rounded" name="search_text" placeholder="Search">
+            <div class=" ml-2 btn btn-primary btn-sm rounded" style="" id="search_btn">Search</div>
         </span>
     </div>
 
-    <div class="card-body" id="table_container" style="overflow-x:scroll ;">
+    <div class="card-body p-0 pb-0 mb-0 " id="table_container" style="overflow-x:scroll ;">
         <div id="all_comlpaints_table">
-            <table class="table table-sm table-striped" style="min-width: 50rem;">
-                <thead class="bg-secondary text-light">
-                    <tr>
-                        <th>Complaint ID</th>
-                        
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th style=" width: 40%;">Problem</th>
+            <table class="table table-sm table-hover my-0" style="min-width:50rem;">
+                <thead>
+                    <tr class="" style=""">
+                        <th class="px-3 border-bottom-0">Complaint ID</th>
                         {% if request.user.is_staff %}
-                        <th>Registred on</th>
+                        <th class="border-bottom-0">Customer</th>
                         {% endif %}
-                        <th width="80" style="min-width:11rem; text-align: center; ">Status</th>
-                        <th>View</th>
+                        <th class="border-bottom-0">Product</th>
+                        <th class="border-bottom-0" style=" width: 40%;">Problem</th>
+                        {% if request.user.is_staff %}
+                        <th class="border-bottom-0">Registred on</th>
+                        {% endif %}
+                        <th class="border-bottom-0" width= "80" style="min-width:11rem; text-align: center; ">Status</th>
+                        <th class="px-3 border-bottom-0">View</th>
                     </tr>
                 </thead>
 
-                <tbody class="table_body">
-                    {% for complaint in page_obj %}
-                    <tr>
-                        <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
-                        <td>{{complaint.customer_name}}</td>
+                <tbody">
+                {% for complaint in page_obj %}
+                <tr>
+                    <th scope="row" class="px-3"><span># </span> <span>{{complaint.id}}</span></th>
+                    {% if request.user.is_staff %}
+                    <td>{{complaint.customer_name}}</td>
+                    {% endif %}
                         <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
-                        <td>{{complaint.problem}}</td>
+                        <td>{{complaint.problem|truncatewords:5}}</td>
                         {% if request.user.is_staff %}
                         <td>{{complaint.registred_date}}</td>
                         {% endif %}
-                        <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
-                                id="status_badge" style="font-size: .9rem;"></span></td>
-                        <td width="40">
-                            {% if user.is_staff %}
-                            <a href="{% url 'view_complaint' complaint.id %}">
-                                <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
+                        <td style="text-align: center; ;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
+                                style="font-size: .9rem;"></span></td>
+                        <td class="px-3" width="40"><a href="{% url 'view_complaint' complaint.id %}">
+                                <div class="btn btn-primary rounded py-0 px-2"> -> </div>
                             </a>
-                            {% else %}
-                            <a href="{% url 'view_complaint_engg' complaint.id %}">
-                                <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
-                            </a>
-                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <div class="pagination-container" style="justify-content:space-between;" id="pagination">
+            <div class="pagination-container m-2" style="justify-content:space-between;" id="pagination">
                 <div>
                     Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
 
@@ -85,22 +81,22 @@
                 <div>
                     <nav aria-label="Page navigation example">
                         {% if page_obj.has_previous %}
-                        <a class="btn btn-outline-info btn-sm" href="?page=1">First</a>
-                        <a class="btn btn-outline-info btn-sm"
+                        <a class="btn btn-outline-primary btn-sm rounded " href="?page=1">First</a>
+                        <a class="btn btn-outline-primary btn-sm rounded"
                             href="?page={{ page_obj.previous_page_number }}">Previous</a>
                         {% endif %}
 
                         {% for num in page_obj.paginator.page_range %}
                         {% if page_obj.number == num %}
-                        <a class="btn btn-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                        <a class="btn btn-primary btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
                         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
-                            class="btn btn-outline-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                            class="btn btn-outline-primary btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
                             {% endif %}
                             {% endfor %}
 
                             {% if page_obj.has_next %}
-                            <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
-                            <a class="btn btn-outline-info btn-sm"
+                            <a class="btn btn-outline-primary btn-sm rounded" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            <a class="btn btn-outline-primary btn-sm rounded"
                                 href="?page={{ page_obj.paginator.num_pages }}">Last</a>
                             {% endif %}
                     </nav>
@@ -114,20 +110,20 @@
             <h5 class="mb-2" id="res_found_msg">
                 Search Results...
             </h5>
-            <table class="table table-sm table-striped" style="min-width: 50rem;">
-                <thead>
-                    <tr>
-                        <th>Complaint ID</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th style=" width: 40%;">Problem</th>
+            <table class="table table-sm table-hover" style="min-width: 50rem;">
+                <!-- <thead>
+                    <tr class="" style=""">
+                        <th class="px-3 border-0">Complaint ID</th>
+                        <th class="border-0">Customer</th>
+                        <th class="border-0">Product</th>
+                        <th class="border-0" style=" width: 40%;">Problem</th>
                         {% if request.user.is_staff %}
-                        <th>Registred on</th>
+                        <th class="border-0">Registred on</th>
                         {% endif %}
-                        <th style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
-                        <th>View</th>
+                        <th class="border-0" width= "80" style="min-width:11rem; text-align: center; ">Status</th>
+                        <th class="px-3 border-0">View</th>
                     </tr>
-                </thead>
+                </thead> -->
 
                 <tbody id="table_body">
 
@@ -166,7 +162,7 @@
             search_res_table.style.display = "none";
         }
         else {
-            let msg = `Showing <strong>(${data.length})</strong> Result(s) for <strong> ${searchVal} ...</strong>`;
+            let msg = `<span class="mx-2 ">Showing <strong>(${data.length})</strong> Result(s) for <strong> ${searchVal} ...</strong></span>`;
             res_found_msg.innerHTML = msg;
             // console.log("results found")
 
@@ -186,7 +182,7 @@
                 }
                 search_res += `
                             <tr>
-                                <th scope="row"><span># </span> <span>${complaint.id}</span></th>
+                                <th scope="row" class="px-3"><span># </span> <span>${complaint.id}</span></th>
                                 <td>${complaint.customer_name}</td>
                                 <td> <span>${complaint.brand}</span> - <span>${complaint.model_no}</span> </td>
                                 <td >${complaint.problem}</td>
@@ -194,7 +190,7 @@
                                 <td>${complaint.registred_date}</td>
                                 {% endif %}
                                 <td style = "text-align: center;"><span class="mx-2 status_badge st${complaint.complaint_status}" id="status_badge" style="font-size: .9rem;"></span></td>
-                                <td>
+                                <td class="px-3 text-end">
                                     {% if user.is_staff %}
                                     <a href=${view_cmp}>
                                         <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
@@ -270,6 +266,11 @@
             populate_res(data);
         });
     }
+
+
+        let lnk = document.getElementById('all_complaints-link');
+        lnk.classList.add('active');
+
 </script>
 
 

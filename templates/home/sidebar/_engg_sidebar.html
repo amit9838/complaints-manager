@@ -3,29 +3,29 @@
     Pages
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id = "dashboard-link">
     <a class="sidebar-link" href={% url 'dashboard' %}>
       <i class="fa-solid fa-sliders"></i> <span class="">Dashboard</span>
     </a>
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id = "all_complaints-link">
     <a class="sidebar-link" href={% url 'all_complaints' %}>
       <i class="fa-solid fa-list-ul"></i> <span class="">All Complaints</span>
     </a>
   </li>
-  <li class="sidebar-item">
+  <li class="sidebar-item" id = "unresolved_c-link">
     <a class="sidebar-link" href={% url 'unresolved_complaints' %}>
       <i class="fa-solid fa-hourglass-end"></i> <span class="">Pending Complaints</span>
     </a>
   </li>
-  <li class="sidebar-item">
+  <li class="sidebar-item" id = "resolved_c-link">
     <a class="sidebar-link" href={% url 'resolved_complaints' %}>
       <i class="fa-solid fa-square-check"></i> <span class="">Resolved Complaints</span>
     </a>
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id = "analytics-link">
     <a class="sidebar-link" href="">
       <i class="fa-solid fa-chart-pie"></i> <span class="">Analytics</span>
     </a>
@@ -39,7 +39,7 @@
     Settings
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id = "profile-link">
     <a class="sidebar-link" href={% url 'profile' request.user.id %}>
       <i class="fa-solid fa-user-gear"></i> <span class="align-middle">Profile</span>
     </a>

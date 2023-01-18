@@ -9,13 +9,13 @@
 
 {% include 'home/partials/_message.html' %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white border">
+    <ol class="breadcrumb bg-white shadow-sm">
         <li class="breadcrumb-item"><a href="{% url 'store' %}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">All Products</li>
     </ol>
 </nav>
 
-<div class="card flex-fill px-2">
+<div class="card flex-fill px-2 shadow-sm">
     <div class="card-header row m-0 p-0 px-1 mt-2">
         <div class="header-left col-sm-8">
             <h3 class="card-title p-1 px-2 rounded">All Products</h3>
@@ -35,12 +35,13 @@
             right: 2rem;
             top: 2.8rem;
             width: 85%; 
-            min-width: 24rem;
+            min-width: 60%;
             display: none;
         }
         @media screen and (max-width:760px) {
             #res_box {
-                right: .3rem;
+                right: .2rem;
+                min-width: 95vw;
                 top:4.8rem;
             }
         }
@@ -48,9 +49,8 @@
     </style>
 
     <div class="card rounded mt-1 mx-auto " id ="res_box" >
-
         <div class="card-body rounded border py-1 px-2">
-                <div class="res_container" id="res_container" style="overflow-y:scroll; overflow-x: hidden; max-height: 60vh;"> 
+                <div class="res_container py-2" id="res_container" style="overflow-y:scroll; overflow-x: hidden; max-height: 60vh;"> 
 
                 </div>
         </div>
@@ -158,7 +158,7 @@
                         "X-CSRFToken": token,
                 }     
         }).then((res)=>res.json()).then((data)=>{
-                console.log(data);
+                // console.log(data);
                 populate_data(data);
         })
     }
@@ -180,16 +180,16 @@
                         let itemID = item.id;
                         let view_product = "{% url 'store' %}view-product/attr/".replace('attr', itemID);
                         res+=`
-                                <div class="row bg-light p-2 mb-2 rounded mx-1">
+                                <div class="row bg-light p-2 mb-2 rounded mx-1 "">
                                         <div class="col-md-10">
                                                 <div class="header d-flex my-0 pb-0">
                                                         <h5 class="my-auto">
                                                                 ${item.brand} - ${item.name} | 
                                                         </h5>
-                                                        <div class="badge mb-">     
-                                                                <span class="badge badge-primary">${item.category}</span>
-                                                                <span class="badge badge-info">${item.warrenty} months warrenty</span>
-                                                                ${item.quantity<1? `</span> <span class="badge badge-danger">Not Available</span>`:`</span> <span class="badge badge-success">Available</span>`}
+                                                        <div class="badge d-flex flex-wrap">     
+                                                                <span class="badge badge-primary m-1">${item.category}</span>
+                                                                <span class="badge badge-info m-1">${item.warrenty} months warrenty</span>
+                                                                ${item.quantity<1? `</span> <span class="badge badge-danger m-1">Not Available</span>`:`</span> <span class="badge badge-success m-1">Available</span>`}
                                                         </div>
                                                 </div>
 

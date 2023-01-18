@@ -310,25 +310,25 @@
 </style>
 
 <nav aria-label="breadcrumb ">
-        <ol class="breadcrumb bg-white border">
+        <ol class="breadcrumb bg-white shadow-sm">
                 <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
                 <li class="breadcrumb-item active" aria-current="page">View Complaint</li>
         </ol>
 </nav>
 
-<div class="card flex-fill mb-2 mt-2">
-        <div class="card-body row  py-3">
-                <div class="col-md-6">
+<div class="card flex-fill mb- mt-2 shadow-sm">
+        <div class="card-body row  py-2">
+                <div class="col-md-8 my-auto">
                         <h2 class="title text-secondary align-center my-auto">Complaint ID: <strong>
                                         #{{complaint.id}}</strong></h2>
                 </div>
-                <div class="col-md-6 header_btn">
-                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-outline-primary mx-1"><i
+                <div class="col-md-4 header_btn btn-group">
+                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-secondary"><i
                                         class="fa-solid fa-pencil"></i> Edit</a>
 
 
-                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modal_delete_complaint">
+                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal_delete_complaint">
                                         <i class="fa-solid fa-trash-can"></i> Delete
                                 </button>
                                         
@@ -358,13 +358,13 @@
                                 </div>
 
                         
-                        <a href="" class="btn btn-outline-info mx-1"><i class="fa-brands fa-whatsapp"></i> Share</a>
-                        <a href="{% url 'print_record' complaint.id %}" class="btn btn-outline-primary mx-1"><i
+                        <a href="" class="btn btn-secondary "><i class="fa-brands fa-whatsapp"></i> Share</a>
+                        <a href="{% url 'print_record' complaint.id %}" class="btn btn-secondary "><i
                                         class="fa-solid fa-print"></i> Print</a>
                 </div>
         </div>
 </div>
-<div class="card flex-fill mb-2" style="height:fit-content;">
+<div class="card flex-fill mb-2 shadow-sm" style="height:fit-content;">
         <!-- <h3 class="status pl-1 pt-2 ml-4 mt-1 text-secondary"> <strong> Status </strong></h3> -->
         <div class="main2">
                 <div class="mainchild" id="progress{{complaint.complaint_status}}">
@@ -453,7 +453,7 @@
 
 <div class="row mb-2">
         <div class="col-md-6">
-                <div class="costomer-info card flex-fill mb-2" style="min-height:17rem;">
+                <div class="costomer-info card flex-fill mb-2 shadow-sm" style="min-height:17rem;">
                         <div class="card-body p-2 hide_scrollbar" style="overflow-x:scroll ; scrollbar-width: thin;">
                                 <h4 class="bg-light px-2 py-1 rounded text-secondary"><strong>Customer Details </strong>
                                 </h4>
@@ -489,7 +489,7 @@
         </div>
 
         <div class="col-md-6">
-                <div class="product-info card flex-fill mb-2 hide_scrollbar"
+                <div class="product-info card flex-fill mb-2 hide_scrollbar shadow-sm"
                         style="min-height:17rem; overflow-x:scroll ; scrollbar-width: thin;">
                         <div class="card-body p-2">
                                 <h4 class="bg-light px-2 py-1 rounded text-secondary"><strong>Product Details </strong>
@@ -612,7 +612,7 @@
 <!-- Components Used -->
 <div class="row mx-0">
         <!-- Header -->
-        <div class="card">
+        <div class="card shadow-sm">
                 <div class="card-body pt-2 pb-1 px-2">
                         <div class="header row bg-light   py-1 rounded">
                                 <div class="col-md-6 my-auto">
@@ -721,7 +721,8 @@
                 rep_stats.innerText = "Failed to Repair";
         }
 
-
+        let lnk = document.getElementById('all_complaints-link');
+        lnk.classList.add('active');
 
 </script>
 

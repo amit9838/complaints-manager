@@ -9,52 +9,62 @@
     Pages
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id="dashboard-link">
     <a class="sidebar-link" href={% url 'dashboard' %}>
       <i class="fa-solid fa-sliders"></i> <span class="">Dashboard</span>
     </a>
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id="all_complaints-link">
     <a class="sidebar-link" href={% url 'all_complaints' %}>
       <i class="fa-solid fa-list-ul"></i> <span class="">All Complaints</span>
     </a>
   </li>
-  <li class="sidebar-item">
-    <a class="sidebar-link" href={% url 'in_progress_compaints' %}>
+  <li class="sidebar-item" id="unassigned-link">
+    <a class="sidebar-link" href={% url 'unassigned_complaints' %}>
+      <i class="fa-solid fa-hourglass"></i> <span class="">Unassigned</span>
+    </a>
+  </li>
+  <li class="sidebar-item" id="in_progress-link">
+    <a class="sidebar-link" href={% url 'in_progress_complaints' %}>
       <i class="fa-solid fa-screwdriver-wrench"></i> <span class="">In Progress</span>
     </a>
   </li>
 
-  <li class="sidebar-item">
-    <a class="sidebar-link" href={% url 'closing_compaints' %}>
+  <li class="sidebar-item" id="closing_c-link">
+    <a class="sidebar-link" href={% url 'closing_complaints' %}>
       <i class="fa-solid fa-hourglass-end"></i> <span class="">Closing Complaints</span>
     </a>
   </li>
-  <li class="sidebar-item">
-    <a class="sidebar-link" href={% url 'closed_compaints' %}>
+  <li class="sidebar-item" id="closed_c-link">
+    <a class="sidebar-link" href={% url 'closed_complaints' %}>
       <i class="fa-solid fa-square-check"></i> <span class="">Closed Complaints</span>
     </a>
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id="analytics-link">
     <a class="sidebar-link" href="">
       <i class="fa-solid fa-chart-pie"></i> <span class="">Analytics</span>
     </a>
   </li>
 
-  <li class="sidebar-header">
-    Settings
+  <li class="sidebar-header" >
+    Preferences
   </li>
 
-  <li class="sidebar-item">
+  <li class="sidebar-item" id="profile-link">
     <a class="sidebar-link" href={% url 'profile' request.user.id %}>
       <i class="fa-solid fa-user-gear"></i> <span class="align-middle">Profile</span>
     </a>
   </li>
-  <li class="sidebar-item">
+  <li class="sidebar-item" id="staff-link">
     <a class="sidebar-link" href="{% url 'list_staff' %}">
       <i class="fa-solid fa-id-card"></i> <span class="">Staff</span>
+    </a>
+  </li>
+  <li class="sidebar-item" id="c_settings-link">
+    <a class="sidebar-link" href="{% url 'complaint_settings' %}">
+      <i class="fa-solid fa-gear"></i> <span class="">Settings</span>
     </a>
   </li>
 

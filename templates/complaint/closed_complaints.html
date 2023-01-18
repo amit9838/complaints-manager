@@ -9,44 +9,48 @@
 
 {% block body_content %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+    <ol class="breadcrumb bg-white sadow-sm">
     <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
     <li class="breadcrumb-item active" aria-current="page">Closed Complaints</li>
     </ol>
 </nav>
 
-<div class="card flex-fill px-2">
-    <div class="card-header pb-0 d-flex justify-content-between flex-wrap">
+<div class="card flex-fill px-0 shadow-sm">
+    <div class="card-header pb-0 d-flex justify-content-between px-3 flex-wrap">
         <span>
                 <h2 class="card-title"> Closed Complaints </h2>
             </span>
         </div>
         
-        <div class="card-body" id="table_container" style="overflow-x:scroll ;">
+        <div class="card-body p-0 pb-0 mb-0 " id="table_container" style="overflow-x:scroll ;">
             <div id="all_comlpaints_table">
-            <table class="table table-sm table-striped" style = "min-width: 50rem;">
-                <thead class="bg-secondary text-light">
+            <table class="table table-sm table-hover my-0" style = "min-width: 50rem;">
+                <thead class="">
                     <tr>
-                        <th>Complaint ID</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th style=" width: 40%;">Problem</th>
-                        <th>Registred on</th>
-                        <th style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
-                        <th>View</th>
+                        <th class="px-3 border-0">Complaint ID</th>
+                        <th class="border-0">Customer</th>
+                        <th class="border-0" width="300">Product</th>
+                        {% comment %} <th class="border-0" style=" width: 40%;">Problem</th> {% endcomment %}
+                        <th class="border-0">Registred on</th>
+                        <th class="border-0" width="200">Assigned (By->To)</th>
+                        <th class="border-0">Closed on</th>
+                        <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
+                        <th class="border-0">View</th>
                     </tr>
                 </thead>
             
                 <tbody class="table_body">
                     {% for complaint in page_obj %}
                         <tr>
-                            <th scope="row"><span># </span> <span>{{complaint.id}}</span></th>
+                            <th class="px-3" scope="row"><span># </span> <span>{{complaint.id}}</span></th>
                             <td>{{complaint.customer_name}}</td>
                             <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
-                            <td>{{complaint.problem}}</td>
-                            <td>{{complaint.registred_date}}</td>
+                            {% comment %} <td>{{complaint.problem}}</td> {% endcomment %}
+                            <td>{{complaint.registred_date}}({{complaint.registred_by}})</td>
+                            <td>{{complaint.assigned_date}}({{complaint.assigned_by}}->{{complaint.assigned_to}})</td>
+                            <td>{{complaint.closed_date}}({{complaint.closed_by}})</td>
                             <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge" style="font-size: .9rem;"></span></td>
-                            <td width="40">
+                            <td class="px-3" width="40">
                                 <a href="{% url 'view_complaint' complaint.id %}">
                                     <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                                 </a>
@@ -59,32 +63,34 @@
         </div>
                 
 
-        <div>
+        <div class="m-2">
             <nav aria-label="Page navigation example">
                 {% if page_obj.has_previous %}
-                <a class="btn btn-outline-info btn-sm" href="?page=1">First</a>
-                <a class="btn btn-outline-info btn-sm"
+                <a class="btn btn-outline-info btn-sm rounded" href="?page=1">First</a>
+                <a class="btn btn-outline-info btn-sm rounded"
                     href="?page={{ page_obj.previous_page_number }}">Previous</a>
                 {% endif %}
 
                 {% for num in page_obj.paginator.page_range %}
                 {% if page_obj.number == num %}
-                <a class="btn btn-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                <a class="btn btn-info btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
                 {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a
-                    class="btn btn-outline-info btn-sm" href="?page={{ num }}">{{ num }}</a>
+                    class="btn btn-outline-info btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
                     {% endif %}
                     {% endfor %}
 
                     {% if page_obj.has_next %}
-                    <a class="btn btn-outline-info btn-sm" href="?page={{ page_obj.next_page_number }}">Next</a>
-                    <a class="btn btn-outline-info btn-sm"
+                    <a class="btn btn-outline-info btn-sm rounded" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a class="btn btn-outline-info btn-sm rounded"
                         href="?page={{ page_obj.paginator.num_pages }}">Last</a>
                     {% endif %}
             </nav>
         </div>
-
-
     </div>
 </div>
+<script>
+    let lnk = document.getElementById('closed_c-link');
+    lnk.classList.add('active');
+</script>
 
 {% endblock %}
