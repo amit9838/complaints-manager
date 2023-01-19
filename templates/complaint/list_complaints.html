@@ -64,9 +64,16 @@
                         {% endif %}
                         <td style="text-align: center; ;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
                                 style="font-size: .9rem;"></span></td>
-                        <td class="px-3" width="40"><a href="{% url 'view_complaint' complaint.id %}">
-                                <div class="btn btn-primary rounded py-0 px-2"> -> </div>
+                        <td class="px-3" width="40">
+                            {% if user.is_staff %}
+                            <a href="{% url 'view_complaint' complaint.id %}">
+                                <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                             </a>
+                            {% else %}
+                            <a href="{% url 'view_complaint_engg' complaint.id %}">
+                                <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
+                            </a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

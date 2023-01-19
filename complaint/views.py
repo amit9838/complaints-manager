@@ -267,7 +267,7 @@ def view_complaint_engg(request,pk):
         component_list = Item.objects.filter(complaint = complaint)
         check_list = CheckList.objects.filter(complaint = complaint)
  
-        # print(engineers)
+        print(complaint.complaint_status)
         context = {
             'components':component_list,
             'check_list':check_list,

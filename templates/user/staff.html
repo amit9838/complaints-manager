@@ -33,8 +33,8 @@
                 <div class="card shadow-sm border">
                     <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-secondary text-light">
                         <div class="px-0">
-                            <i class="fa-solid fa-user fs-2"></i>
-                            <strong class="fs-3 mx-2">{{admin.get_full_name}}</strong>
+                            <i class="fa-solid fa-user fs-3"></i>
+                            <strong class="fs-4 mx-2">{{admin.get_full_name}}</strong>
                             
                         </div>
                         <div class="action_bar ">
@@ -93,8 +93,8 @@
                 <div class="card shadow-sm border">
                     <div class="header d-flex align-items-center justify-content-between py-2 card-header bg-info text-light">
                         <div class="px-0">
-                            <i class="fa-solid fa-user fs-2"></i>
-                            <strong class="mx-2">{{employee.user.get_full_name}}</strong> 
+                            <i class="fa-solid fa-user fs-3"></i>
+                            <strong class="mx-2 fs-4">{{employee.user.get_full_name}}</strong> 
                         </div>
                         <div class="action_bar ">
                             <a href="{% url 'profile' employee.user.id %}"><span class="btn rounded-circle btn-light btn-sm" title="View Profile"> -> </span></a>

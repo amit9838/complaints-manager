@@ -24,14 +24,14 @@
 
 {% include 'home/partials/_message.html' %}
 <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
+        <ol class="breadcrumb bg-white shadow-sm">
         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
         <li class="breadcrumb-item active" aria-current="page">View Complaint</li>
         </ol>
         </nav>
 
-<div class="card flex-fill">
+<div class="card flex-fill shadow-sm">
 
         <div class="card-body">
                 <div class="titlebar d-flex bg-light mb-1  w-100 align-items-center rounded flex-wrap" >
@@ -220,7 +220,7 @@
 <!-- Components Used -->
 <div class="row mx-0">
         <!-- Header -->
-        <div class="card">
+        <div class="cardn">
                 <div class="card-body pt-2 pb-1 px-2">
                         <div class="header row bg-light py-1 rounded">
                                 <div class="col-md-6 my-auto">
