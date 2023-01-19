@@ -96,7 +96,4 @@ class Anylitics_API(APIView):
                 'total_earning' : total_earning 
             }
             return Response(data)
-
-
-
-# Adding comment for test
+            
