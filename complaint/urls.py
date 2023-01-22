@@ -29,7 +29,8 @@ urlpatterns = [
     path('update_checklist/<int:pk_cmp>/<int:pk_chk>/', views.update_checklist, name="update_checklist"),
     path('delete_checklist/<int:pk_cmp>/<int:pk_chk>/', views.delete_checklist, name="delete_checklist"),
 
-    path('add_component/<int:pk_cmp>/q', views.add_component, name="add_component"),
+    path('add_component/<int:pk_cmp>/', views.add_component, name="add_component"),
+    path('add_component_manual/<int:pk_cmp>/', views.add_component_manual, name="add_component_manual"),
     path('update_component/<int:pk>/', views.update_component, name="update_component"),
     path('delete_component/<int:pk>', views.deleteComponent, name="delete_component"),
     path('list_components/<int:pk>/', views.list_components, name="list_components"),

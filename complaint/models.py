@@ -12,11 +12,11 @@ class Item(models.Model):
     complaint = models.ForeignKey("complaint.Complaint", on_delete=models.CASCADE)
     name = models.CharField(max_length=256)
     brand = models.CharField(max_length=64 ,blank=True)
-    category = models.CharField(max_length=32)
-    warrenty = models.PositiveIntegerField()  # In months
+    category = models.CharField(max_length=32,blank=True)
+    warrenty = models.PositiveIntegerField(blank=True)  # In months
     desc = models.CharField(max_length=3000,blank=True)
-    unit_price = models.PositiveIntegerField()
-    quantity = models.PositiveIntegerField()
+    unit_price = models.PositiveIntegerField(blank=True)
+    quantity = models.PositiveIntegerField(blank=True)
 
     def link_complaint(self,new_complaint):
         return self.complaint.cr(new_complaint)

@@ -59,13 +59,13 @@
                                 <div class="control_bar  bg-light  mt-2 py-2 align-items-center mx-auto  rounded" style=" width: 95%; border: 1px solid rgb(235, 234, 234); "> 
                                         <h5 class="text-center" style="text-decoration:underline rgb(203, 203, 203);"> <strong>Complaint Status</strong></h5>
                                         
-                                        {% if complaint.complaint_status > 4 %}
-                                        <h3 class="text-center text-secondary bg-white py-3 mx-4 rounded "><i class="fa-solid fa-lock"></i>  Complaint Closed</h3>
+                                        {% if complaint.complaint_status > 4 or complaint.complaint_status < 2  %}
+                                        <h3 class="text-center text-secondary bg-white py-3 mx-4 rounded "><i class="fa-solid fa-lock"></i>  Complaint Locked</h3>
                                         <div class="sub_warning w-100 d-flex justify-content-center">
                                                 <small class="text-secondary"><i class="bi bi-exclamation-circle"></i> You can acces the complaint when it is open</small>
                                         </div>
                                         {% else %}
-                                        <form  action = "" method = "post" class="w-100">
+                                        <form  action = "{% url 'set_complaint_status' complaint.id %}" method = "post" class="w-100">
                                                 {% csrf_token %}
                                                 <div class="form_container w-100 d-flex justify-content-around">
 

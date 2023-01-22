@@ -7,7 +7,7 @@ from .models import CheckList, Complaint, Item
 
 # admin.site.register(Complaint)
 # admin.site.register(CheckList)
-# admin.site.register(Item)
+admin.site.register(Item)
 
 admin.site.site_header = "Marca Admin"
 admin.site.site_title = "Marca Admin Area"

@@ -10,14 +10,20 @@
         display: flex;
         justify-content: end;
     }
-
+    #add_manually {
+            width: fit-content;
+        }
+        
     @media screen and (max-width:760px) {
-        .header_btn {
-
-            margin-top: 1rem;
-            display: flex;
-            justify-content: start;
-    }
+            .header_btn {
+                    
+                    margin-top: 1rem;
+                    display: flex;
+                    justify-content: start;
+                }
+                #add_manually {
+                        width: 100%;
+                }
     }
 </style>
 
@@ -48,11 +54,11 @@
                 <div class="header row bg-light py-1 rounded">
                             <div class="col-md-6 my-auto d-flex">
                                 {% if complaint.complaint_status < 5  and complaint.complaint_status > 1 %}
-                                    <input type="search" class="form-control form-control w-50" id="search_input" placeholder="Type to Search" >
+                                    <input type="search" class="form-control form-control w-50" id="search_input" placeholder="Search for products" >
                                     <button class="mx-1 btn btn-secondary" disabled id="clearText">Clear</button>
                                 {% else %}        
                                         <input type="search" class="form-control form-control w-50" id="search_input" placeholder="Type to Search" disabled>
-                                        <span class="my-auto  px-2 py-auto text-muted mx-2" > <i class="fa-solid fa-lock"></i>  Complaint Closed </span>
+                                        <span class="my-auto  px-2 py-auto text-muted mx-2" > <i class="fa-solid fa-lock"></i>  Complaint Locked </span>
                                 {% endif %}
                             </div>
                             <div class="col-md-6 header_btn">
@@ -73,7 +79,7 @@
             <div class="px-1 mt-1">
                     
                     {% if components %}
-                    <div class="table-container px-0">
+                    <div class="table-container px-0"  style="overflow-x: scroll;">
 
                             <table class="table table-sm table-striped rounded">
                                     <thead class="bg-secondary text-light">
@@ -81,7 +87,7 @@
                                                     <th width="220" class=" mx-auto pl-2">Item</th>
                                                     <th >Description</th>
                                                     <th width="60" >Quantity</th>
-                                                    <th width="60" >Action</th>
+                                                    <th width="110" class="text-center" >Action</th>
                                             </tr>
                                     </thead>
 
@@ -90,34 +96,55 @@
                                             {% for component in components %}
                                             <tr>
                                                     <td>{{component.brand}}-{{component.name}}</td>
-                                                    <td>{{component.desc}}</td>
+                                                    <td>{{component.desc|truncatewords:10}}</td>
                                                     <td style="text-align:center ;">{{component.quantity}}</td>
                                                     <td style="text-align:center ;">
-                                                        {% if complaint.complaint_status < 5 %}
-                                                        <form action="{% url 'delete_component' component.id %}" method="POST"  >
-                                                                {% csrf_token %}
-                                                                <button type="submit" title="Remove" class="btn btn-outline-danger btn-sm py-0 rounded"><i class="fa-solid fa-xmark"></i></button>
-                                                        </form>
+                                                        {% if component.product %}
+                                                        {% if complaint.complaint_status < 5 and complaint.complaint_status > 2 %}
+                                                                <form action="{% url 'delete_component' component.id %}" method="POST"  >
+                                                                        {% csrf_token %}
+                                                                        <button type="submit" title="Remove" class="btn btn-danger  py-0 rounded"><i class="fa-solid fa-xmark"></i></button>
+                                                                </form>
                                                         {% else %}
-                                                        <button type="submit" title="Remove" class="btn btn-outline-danger btn-sm py-0 rounded" disabled><i class="fa-solid fa-xmark"></i></button>
+                                                        <button type="submit" title="Remove" class="btn btn-danger py-0 rounded" disabled><i class="fa-solid fa-xmark"></i></button>
                                                         {% endif %}
-                                                    </td>
-                                            </tr>
+                                                        {% else %}
+                                                        {% if complaint.complaint_status < 5 and complaint.complaint_status > 2  %}
+                                                        <div class="btn-group">
+                                                                <a href="{% url 'update_component' component.id%}" title="Update" class="btn btn-primary py-0 rounded"><i class="fa-solid fa-pencil"></i></a>
+                                                                <form action="{% url 'delete_component' component.id %}" method="POST"  >
+                                                                        {% csrf_token %}
+                                                                        <button type="submit" title="Remove" class="btn btn-danger  py-0 rounded mx-1"><i class="fa-solid fa-xmark"></i></button>
+                                                                </form>
+                                                        </div>
+                                                        {% else %}
+                                                        {% endif %}
+                                                                <button title="Update" class="btn btn-primary py-0 rounded" disabled><i class="fa-solid fa-pencil" ></i></button>
+                                                                <button type="submit" title="Remove" class="btn btn-danger  py-0 rounded mx-1" disabled><i class="fa-solid fa-xmark"></i></button>
+                                                        {% endif %}
+                                                        </td>
+                                        </tr>
                                             {% endfor %}
                                     </tbody>
                             </table>
-                    </div>
-                    {% else %}
-                    <div class="empty_box d-flex justify-content-center mt-4">
-                            <h3 class="text-secondary">No Components Added yet</h3>
-                            
-                    </div>
-                    <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
-                            Type in search box to search for components
-                            
-                    </div>
-                    
-                    {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="empty_box d-flex justify-content-center mt-4">
+                                <h3 class="text-secondary">No Components Added yet</h3>
+                                
+                        </div>
+                        <div class="empty_box d-flex justify-content-center mb-4 text-secondary">
+                                Type in search box to search for components
+                                
+                        </div>
+                        
+                        {% endif %}
+                        {% if complaint.complaint_status < 5 %}
+                        <a href="{% url 'add_component_manual' complaint.id %}" class="btn btn-primary mb-2" id="add_manually" >+ Add Manually</a>
+                        
+                        {% else %}
+                        {% endif %}
+
             </div>
     </div>
 </div>

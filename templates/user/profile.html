@@ -146,8 +146,10 @@
           <div class="col-sm-9">
             <h6 class="mb-0">
               {{user_passed.email}}
-              <a class="badge badge-primary ml-4" href="mailto:{{user_passed.email}}"><i class="fa-solid fa-envelope"></i> Send Email</a>
-            </h6>
+              {% if user_passed != request.user %}
+                <a class="badge badge-primary ml-4" href="mailto:{{user_passed.email}}"><i class="fa-solid fa-envelope"></i> Send Email</a>
+              {% endif %}
+              </h6>
           </div>
         </div>
         <hr>

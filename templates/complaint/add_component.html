@@ -6,13 +6,13 @@
 {% block body_content %}
 <style>
     .form-control {
-        margin-top: -.5rem;
+        margin-top: -.1rem;
         margin-bottom: .5rem;
     }
 </style>
 
 
-<div class="card flex-fill w-sm-50 mx-auto">
+<div class="card flex-fill w-sm-50 mx-auto mx-auto">
     <div class="card-header mb-0 pb-0">
         <h3 class="card-titlse text-center bg-light py-2 rounded text-dark"> New Component </h3>
 
@@ -20,12 +20,10 @@
 
     <div class="card-body">
         {% include 'home/partials/_message.html' %}
-        
         <div class="form-container  m-auto px-4 py-2 rounded">
             <form action="" method="post">
                 {% csrf_token %}
                 {{form}}
-                <input type="text" name="complaint" value={{complaint.id}} hidden> 
                 <input type="submit" class="btn btn-primary" value="Add Component" >
             </form>
         </div>
