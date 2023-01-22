@@ -141,13 +141,25 @@ def delete_checklist(request, pk_cmp,pk_chk):
 
 
 def deleteComplaint(request,pk):
-    if(request.user.is_staff):
-        if request.method == 'POST':
-            complaint = Complaint.objects.get(id=pk)
+    if request.method == 'POST' and request.user.is_staff:
+        usr = request.user
+        complaint = Complaint.objects.get(id=pk)
+        sent_password = request.POST['password']
+        if usr.check_password(sent_password):
             complaint.delete()
             print("deleting complaint...")
             messages.success(request, f'Complaint with #id {pk} deleted successfully')
             return redirect('all_complaints')
+        
+        elif sent_password == "":
+            messages.error(request, "Please enter password to delete complaint!")
+            return redirect('complaint_settings',pk)
+
+        else:
+            messages.error(request, "Incorrect Password !")
+            return redirect('complaint_settings',pk)
+
+
     else:
         return HttpResponse("You dont't have permission to access this page")
 
@@ -288,6 +300,17 @@ def view_complaint_engg(request,pk):
     except Complaint.DoesNotExist:
         return redirect('all_complaints')
 
+@login_required
+def complaint_settings(request,pk):
+    complaint = Complaint.objects.get(id=pk)
+    
+    if request.method == 'GET':
+        context = {
+            "complaint":complaint
+        }
+        return render(request,'complaint/complaint_settings.html',context)
+
+
 
 @login_required
 def set_complaint_status(request,pk):
@@ -324,13 +347,12 @@ def set_complaint_status(request,pk):
 
 
 @login_required
-def assign_enineer(request,pk):
+def assign_engineer(request,pk):
     complaint = Complaint.objects.get(id = pk)
     if request.method == "POST":
         engg_id = request.POST['assign_engineer']
         if engg_id == "-1":
-            complaint.complaint_status = 2
-            complaint.save()
+            messages.error(request, 'Please select a valid input.')
             return redirect('view_complaint', pk)
         else:
             selected_engg = User.objects.get(id = engg_id)
@@ -341,6 +363,26 @@ def assign_enineer(request,pk):
             messages.success(request, 'Engineer assigned successfully')
             complaint.save()
             return redirect('view_complaint', pk)
+
+@login_required
+def reset_complaint_progress(request,pk):
+    complaint = Complaint.objects.get(id = pk)
+    if request.method == "POST" and request.user.is_staff:
+        complaint.complaint_status = 1
+        complaint.assigned_by = None
+        complaint.assigned_date = None
+        complaint.updated_by = None
+        complaint.updated_date = None
+        complaint.resolved_by = None
+        complaint.resolved_date = None
+        complaint.closed_by = None
+        complaint.closed_date = None
+        complaint.updated_by = request.user
+        complaint.updated_date = datetime.datetime.now()
+        complaint.save()
+        messages.success(request, 'Complaint progress has been reset successfully.')
+        return redirect('complaint_settings', pk)
+
 
 
 

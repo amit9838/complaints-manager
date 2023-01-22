@@ -1,0 +1,86 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Settings{% endblock title %}
+
+{% block navbar_content %}
+
+{% endblock navbar_content %}
+
+
+{% block body_content %}
+
+{% include 'home/partials/_message.html' %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-white">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'view_complaint' complaint.id %}">View Complaint</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Complaint Settings</li>
+    </ol>
+</nav>
+
+<div class="card flex-fill px-2 shadow-sm ">
+    <div class="advanced-setting my-3">
+        <h4 class="fs-4 text-muted mx-2">Advanced</h4>
+        <hr class="my-2">
+       
+        <div class="settings-content mx-3 my-3 border rounded py-2 px-3">
+            <h6 class="fs-5">Reset Complaint Progress</h6>
+            <div class="un-assign-setting  d-flex align-items-center justify-content-between rounded border bg-light" style="min-width: 16rem; width: fit-content;">
+                <div class=" mx-2 ">{{complaint.complaint_status}}</div> 
+                <form action="{% url 'reset_complaint_progress' complaint.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary btn-sm rounded h-100" value="Reset">
+                </form>
+            </div>
+            <small class="text-muted"> Current status of complaint is <strong>{{complaint.complaint_status}}.</strong> This option will set current status to <strong>Registred (1)</strong> .</small>
+        </div>
+
+
+    </div>
+
+    <div class="danger-setting my-3">
+        <h4 class="fs-4 mx-2 text-danger">Danger Zone</h4>
+        <hr class="my-2">
+        <div class="settings-content mx-3 my-3 border rounded py-2 px-3 " >
+            <h6 class="fs-5">Delete Complaint</h6>
+            <div class="table bg-light" style="min-width: 16rem; width: fit-content;">
+                <table class="table table-sm border">
+                    <tr>
+                        <td>Complaintd Id</dh>
+                        <th>{{complaint.id}}</th>
+                    </tr>
+                    <tr>
+                        <td>Customer Name</dh>
+                        <th>{{complaint.customer_name}}</th>
+                    </tr>
+                    <tr>
+                        <td>Product</dh>
+                        <th>{{complaint.brand}}-{{complaint.model_no}}</th>
+                    </tr>
+                </table>
+            </div>
+            <label for="password">Enter Your Password</label>
+            <form action="{% url 'delete_complaint' complaint.id %}" method="POST">
+                {% csrf_token %}
+                <div class="un-assign-setting  d-flex align-items-center justify-content-between flex-wrap" style="min-width: 16rem; width: fit-content;">
+                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name = "password">
+                    <button type="submit" class="btn btn-danger btn-sm rounded ">Delete Complaint</button>
+                </div>
+            </form>
+            <small class="text-muted">! This action is irreversible.
+        </div>
+       
+       
+
+
+    </div>
+
+</div>
+<script>
+    let lnk = document.getElementById('c_settings-link');
+    lnk.classList.add('active');
+</script>
+
+{% endblock %}
