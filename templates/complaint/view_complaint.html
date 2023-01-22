@@ -317,7 +317,7 @@
         </ol>
 </nav>
 
-<div class="card flex-fill mb- mt-2 shadow-sm">
+<div class="card flex-fill  shadow-sm">
         <div class="card-body row  py-2">
                 <div class="col-md-8 my-auto">
                         <h2 class="title text-secondary align-center my-auto">Complaint ID: <strong>
@@ -423,11 +423,12 @@
 </div>
 
 <div class="row mb-2">
-        <div class="col-md-6">
+        <div class="col-md-5">
                 <div class="costomer-info card flex-fill mb-2 shadow-sm" style="min-height:17rem;">
-                        <div class="card-body p-2 hide_scrollbar" style="overflow-x:scroll ; scrollbar-width: thin;">
-                                <h4 class="bg-light px-2 py-1 rounded text-secondary"><strong>Customer Details </strong>
+                        <div class="card-body p-2 hide_scrollbar border p-1 m-2 rounded" style="overflow-x:scroll ; scrollbar-width: thin;">
+                                <h4 class="px-2 py-1 text-secondary"><strong>Customer Details </strong>
                                 </h4>
+                                <hr class="my-0">
                                 <div class="contents px-2  py-2">
                                         <table class=" borderless table-sm">
                                                 <tbody>
@@ -459,12 +460,13 @@
 
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-7">
                 <div class="product-info card flex-fill mb-2 hide_scrollbar shadow-sm"
                         style="min-height:17rem; overflow-x:scroll ; scrollbar-width: thin;">
-                        <div class="card-body p-2">
-                                <h4 class="bg-light px-2 py-1 rounded text-secondary"><strong>Product Details </strong>
+                        <div class="card-body p-2 hide_scrollbar border p-1 m-2 rounded">
+                                <h4 class="px-2 py-1  text-secondary"><strong>Product Details </strong>
                                 </h4>
+                                <hr class="m-0">
                                 <div class="contents px-2  py-1 ">
                                         <table class=" borderless">
                                                 <tbody>
@@ -583,14 +585,14 @@
 <!-- Components Used -->
 <div class="row mx-0">
         <!-- Header -->
-        <div class="card shadow-sm">
-                <div class="card-body pt-2 pb-1 px-2">
-                        <div class="header row bg-light   py-1 rounded">
-                                <div class="col-md-6 my-auto">
+        <div class="card shadow-sm px-0">
+                <div class="card-body pt-2 pb-1 px-0">
+                        <div class="header d-flex justify-content-between align-items-center flex-wrap py-1 px-2">
+                                <div class="my-auto">
                                         <h4 class="my-auto py-auto ml-1 text-secondary"><strong> Components Used
                                                 </strong></h4>
                                 </div>
-                                <div class="col-md-6 header_btn">
+                                <div class="header_btn my-auto">
                                         {% if components %}
                                         <a class="btn btn-primary btn-sm rounded mx-1"
                                                 href="{% url 'list_components' complaint.id %}"><i
@@ -605,24 +607,26 @@
                                         </a>
                                 </div>
                         </div>
+                        <!-- <hr class="m-0"> -->
                 </div>
-                <div class="px-1 mt-1">
+                <div class="px-0 mt-1" >
+                        <hr class="m-0">
                         {% if components %}
-                        <div class="table-container px-2">
-                                <table class="table table-sm">
-                                        <thead class="bg-secondary text-light pl-2">
+                        <div class="table-container px-0" style="overflow-x: scroll;">
+                                <table class="table table-sm" style="min-width: 30rem;">
+                                        <thead class=" pl-">
                                                 <tr>
-                                                        <th width="240">Item</th>
-                                                        <th>Description</th>
-                                                        <th width="120" style="text-align:center;">Quantity</th>
-                                                        <th width="120" style="text-align:center;">Unit Price</th>
+                                                        <th class="px-3" width="140" style="border: none;" >Item</th>
+                                                        <th style="border: none;" width = "340">Description</th>
+                                                        <th width="120" style="text-align:center; border: none;">Quantity</th>
+                                                        <th width="120" style="text-align:center; border: none;">Unit Price</th>
                                                 </tr>
                                         </thead>
 
                                         <tbody>
                                                 {% for component in components %}
                                                 <tr>
-                                                        <td>{{component.brand}}-{{component.name}}</td>
+                                                        <td class="px-3">{{component.brand}}-{{component.name}}</td>
                                                         <td>{{component.desc}}</td>
                                                         <td style="text-align:center;">{{component.quantity}}</td>
                                                         <td style="text-align:center;">{{component.unit_price}}</td>
