@@ -18,22 +18,27 @@
                 <i class="fa-solid fa-user-shield"></i>
             </div>
             <form action="" method="post">
-                {% csrf_token %}    
+                {% csrf_token %}
                 <div class="mb-3">
-                    <label class="form-label">Usernane</label>   
-                    <input type="text" class="form-control" placeholder="Username" name="username">              
-                  </div>
+                    <label class="form-label">Usernane</label>
+                    <input type="text" class="form-control" placeholder="Username" name="username">
+                </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Password" name = "password" >
+                    <input type="password" class="form-control" placeholder="Password" name="password">
                     <!-- <a href="index.html">Forgot password?</a> -->
-                </small>
-            </div>
-            
-            <div class="text-center w-100 mt-3">
-                    <input type = "submit" class = "btn btn-primary-sm btn-primary w-100 mt-3" value = "Sign In">                    <small>
+                    </small>
+                </div>
+
+                <div class="text-center w-100 mt-3">
+                    <input type="submit" class="btn btn-primary-sm btn-primary w-100 mt-3" value="Sign In"> <small>
                 </div>
             </form>
+            <div class="form-group my-2">
+                <!-- <small class="text-muted ml-2"> -->
+                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                <!-- </small> -->
+            </div>
         </div>
     </div>
 </div>

@@ -78,6 +78,9 @@ def analytics(request):
     if request.method == 'GET':
         pass
     
+def about(request):
+    if request.method == 'GET':
+        return render(request, 'home/about.html')
 
 
 from rest_framework.views import APIView

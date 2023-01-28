@@ -6,13 +6,27 @@
 
 {% endblock navbar_content %}
 
-
 {% block body_content %}
 
 {% include 'home/partials/_message.html' %}
 
-<div class="card flex-fill shadow-sm">
-    About page  
+<div class="card flex-fill shadow-sm w-75 mx-auto" style="min-width: 22rem;">
+    <div class="card-body">
+        <h1 class="text-center bg-light py-2 rounded text-dark"> <strong>Marca</strong></h1>
+        <div class="information my-4 mx-auto border rounded p-2">
+            <table>
+                <tr class="fs-5">
+                    <td width="100">Developer</td>
+                    <th>Amit Chaudhary</th>
+                </tr>
+                <tr class="fs-10">
+                    <td width="100">Report Issue</td>
+                    <th><a href="https://github.com/amit9838/complaints-manager/issues"><i class="fa-brands fa-github"></i> Github</a></th>
+                </tr>
+            </table>
+        </div>
+        <small class="text-muted">Simple and smart complaint manager built to leverage simplicity.</small>
+    </div>
 </div>
 
 {% endblock %}

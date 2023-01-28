@@ -100,7 +100,7 @@
                                                     <td style="text-align:center ;">{{component.quantity}}</td>
                                                     <td style="text-align:center ;">
                                                         {% if component.product %}
-                                                        {% if complaint.complaint_status < 5 and complaint.complaint_status > 2 %}
+                                                        {% if complaint.complaint_status < 5 and complaint.complaint_status > 1 %}
                                                                 <form action="{% url 'delete_component' component.id %}" method="POST"  >
                                                                         {% csrf_token %}
                                                                         <button type="submit" title="Remove" class="btn btn-danger  py-0 rounded"><i class="fa-solid fa-xmark"></i></button>
@@ -109,7 +109,7 @@
                                                         <button type="submit" title="Remove" class="btn btn-danger py-0 rounded" disabled><i class="fa-solid fa-xmark"></i></button>
                                                         {% endif %}
                                                         {% else %}
-                                                        {% if complaint.complaint_status < 5 and complaint.complaint_status > 2  %}
+                                                        {% if complaint.complaint_status < 5 and complaint.complaint_status > 1  %}
                                                         <div class="btn-group">
                                                                 <a href="{% url 'update_component' component.id%}" title="Update" class="btn btn-primary py-0 rounded"><i class="fa-solid fa-pencil"></i></a>
                                                                 <form action="{% url 'delete_component' component.id %}" method="POST"  >
@@ -118,9 +118,9 @@
                                                                 </form>
                                                         </div>
                                                         {% else %}
-                                                        {% endif %}
                                                                 <button title="Update" class="btn btn-primary py-0 rounded" disabled><i class="fa-solid fa-pencil" ></i></button>
                                                                 <button type="submit" title="Remove" class="btn btn-danger  py-0 rounded mx-1" disabled><i class="fa-solid fa-xmark"></i></button>
+                                                        {% endif %}
                                                         {% endif %}
                                                         </td>
                                         </tr>

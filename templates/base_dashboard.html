@@ -172,8 +172,8 @@
 								<div class="dropdown-divider"></div>
 								{% comment %} <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
 										data-feather="settings"></i> Settings & Privacy</a> {% endcomment %}
-								<a class="dropdown-item" href="https://amit9838.github.io/portfolio/" target="_blank"><i
-										class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+								<a class="dropdown-item" href="{% url 'about' %}"><i
+										class="align-middle me-1" data-feather="help-circle"></i>About</a>
 								<div class="dropdown-divider"></div>
 
 								<form class="nav-link px-3" action="{% url 'logout' %}" method="post">
@@ -217,7 +217,7 @@
 				</div>
 			</main>
 
-			<footer class="footer">
+			<!-- <footer class="footer">
 				<div class="container-fluid">
 					<div class="row text-muted">
 						<div class="col-6 text-start">
@@ -237,7 +237,7 @@
 						</div>
 					</div>
 				</div>
-			</footer>
+			</footer> -->
 		</div>
 	</div>
 
