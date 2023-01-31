@@ -109,14 +109,10 @@
 
         <div class="page-tools">
             <div class="action-buttons">
-                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
-                    <i class="mr-1 fa fa-print text-primary-m1 text-120 w-2"></i>
-                    Print
-                </a>
-                <button class="btn bg-white btn-light mx-1px text-95" onclick="print_pdf()" href="#" data-title="PDF">
+                <a href="{% url 'generate_invoice' complaint.id %}" class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
                     <i class="mr-1 fa fa-file-pdf-o text-danger-m1 text-120 w-2"></i>
                     Export
-                </button>
+                </a>
             </div>
         </div>
 
@@ -128,8 +124,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="text-center  text-150">
-                            <i class="fa fa-laptop fa-2x text-success-m2 mr-1"></i>
-                            <span class="text-default-d3">SkyNet Computer</span>
+                            {% comment %} <i class="fa fa-laptop fa-2x text-success-m2 mr-1"></i> {% endcomment %}
+                            <span class="text-default-d3"></span>
                         </div>
                     </div>
                 </div>

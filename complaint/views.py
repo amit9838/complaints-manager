@@ -755,3 +755,206 @@ def import_data(request):
 
 
     return render(request, 'complaint/export_import.html') 
+
+
+# Generate Invoice ************************************************************************************
+
+
+
+from reportlab.pdfgen import canvas
+from django.http import FileResponse
+import io
+
+
+def generate_invoice(request,pk):
+    
+    complaint = Complaint.objects.get(id=pk)
+    components = Item.objects.filter(complaint = pk)
+
+    current_day = datetime.datetime.now().date()
+    formatted_date_str = datetime.date.strftime(current_day,"%d/%m/%Y")
+
+
+    # Sample Data 
+    item = []
+    warrenty=[]  # in months
+    unit_price = []
+    qty = []
+    tax = []
+
+    for i in components:
+        item.append(i.brand+" - "+i.name)
+        warrenty.append(i.warrenty)
+        unit_price.append(i.unit_price)
+        qty.append(i.quantity)
+        tax.append(0)
+
+    discount = 100  # If no disount is applicabe,  put 'discount = 0'
+    service_charge = 500   # If no service charge is applicabe,  put 'discount = 0'
+
+    # Store data in object for simplicity
+    objects = []
+    class Product:
+        def __init__(self,item,warrenty,unit_price,tax,quantity):
+            if len(item) > 28 :
+                self.item = item[0:28]+"..."
+            else:
+                self.item = item
+            self.unit_price = unit_price
+            self.warrenty = warrenty
+            self.tax = tax
+            self.quantity = quantity
+            self.t_price = unit_price*quantity
+            
+    # Append object containing data into objects array
+    for x in range(len(item)):
+        obj = Product(item[x],warrenty[x],unit_price[x],tax[x],qty[x])
+        objects.append(obj);
+
+
+    # Y offsets
+    y_offset = 0   # Header section y-offset (above Invoice,company) 
+    cust_offset = 50 #Customersection y-offset
+    table_offset = 0   #Table section y-offset
+    sub_total_y_offset = -5  # Subtotal/total section offset
+
+
+    # initializing variables with values
+    formatted_date_str_for_title = datetime.date.strftime(current_day,"%d-%m-%Y")
+    fileName = f'Invoice-{str(pk)}__{formatted_date_str_for_title}.pdf'
+    print(fileName)
+    title = "Invoice-"+str(pk) + "-" +formatted_date_str
+
+    # Create pdf canvas 
+    buffer = io.BytesIO()  # buffer
+    pdf = canvas.Canvas(buffer)
+    pdf.setTitle(title)
+
+    # Start font-formating  
+    pdf.setFont("Helvetica-Bold", 36)
+    pdf.setFillColorRGB(.3,.3,.3)  # Start Font Color 
+    pdf.drawString(40,(735-y_offset), "INVOICE")
+    pdf.setFont("Helvetica", 13)   # Now Resume Default Font-Formatting
+    pdf.setFillColorRGB(0,0,0)  # Resume font color (black, zero-illumination) 
+
+    pdf.drawRightString(550,(750-y_offset), "The New Square")
+    pdf.drawRightString(550,(730-y_offset), "Delhi,India")
+    pdf.drawRightString(550,(710-y_offset), "support@square.in")
+    pdf.drawRightString(550,(690-y_offset), "+9180xxxxxxxx")
+
+    # Offset between complany and customer section
+    y_offset = y_offset + cust_offset
+
+    # Customer Section - left
+    left_offset_y = 0  # adds y offset to "Billed To" setion
+    y_offset = y_offset + left_offset_y
+    pdf.setFont("Helvetica-Bold", 13)
+    pdf.drawString(40,(680-y_offset), "Billed To:")
+    pdf.setFont("Helvetica", 13)
+    pdf.drawString(40,(660-y_offset), complaint.customer_name)
+    # pdf.drawString(40,(640-y_offset), "amitchaudhary0539@gmail.com")
+    pdf.drawString(40,(640-y_offset), "+91"+complaint.customer_mob)
+    pdf.drawString(40,(620-y_offset), complaint.customer_address)
+    y_offset = y_offset - left_offset_y
+
+    # Customer Section - right
+    right_offset_y = 0   # adds y offset to "Status/invoice" setion
+    y_offset = y_offset + right_offset_y 
+    pdf.drawRightString(550,(660-y_offset), "Invoice : #"+ str(pk))
+    pdf.drawRightString(550,(640-y_offset), "Issued on : "+ formatted_date_str)
+    pdf.drawRightString(550,(620-y_offset), "Payment Status : Paid")
+    y_offset = y_offset - right_offset_y
+
+
+    y_offset = y_offset + table_offset
+    # Items list header
+
+    unit_price_x_pos = 370  #Default 370
+    warrenty_x_pos = 280  #Default 280
+    qty_x_pos = 470  #Default 470
+    price_x_pos = 550  #Default 550
+
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.setLineWidth(.2)
+    pdf.line(40,(600-y_offset),550,(600-y_offset))
+    pdf.drawString(40,585-y_offset, "Item")
+    pdf.drawString(warrenty_x_pos,585-y_offset, "Warrenty")
+    pdf.line(40,(580-y_offset),550,(580-y_offset))
+    # pdf.drawString(100,585, "Description")
+    pdf.drawString(unit_price_x_pos,(585-y_offset), "Unit Price")
+    pdf.drawCentredString(qty_x_pos,(585-y_offset), "Qty")
+    pdf.drawRightString(price_x_pos,(585-y_offset), "Price")
+    pdf.setFont("Helvetica", 13)
+
+    # Calculate total cost of a product -> Unit_price * quantity * tax_amt  
+    i=0;
+    for i in range(len(objects)):
+        pdf.drawString(40,(565-y_offset-20*i), objects[i].item)
+        if objects[i].warrenty: # If there is any warrenty of the product
+            pdf.drawString(warrenty_x_pos,(565-y_offset-20*i), str(objects[i].warrenty))
+            pdf.setFont("Helvetica", 10)
+            pdf.drawString(warrenty_x_pos+18,(565-y_offset-20*i), "Months")
+            pdf.setFont("Helvetica", 13)
+    
+        pdf.drawRightString(unit_price_x_pos+40,(565-y_offset-20*i), str(objects[i].unit_price)+".0")
+        if(objects[i].tax):
+            pdf.setFont("Helvetica", 10)
+            pdf.drawString(unit_price_x_pos+45,(565-y_offset-20*i), "+Tax")
+            pdf.setFont("Helvetica", 13)
+        pdf.drawString(qty_x_pos,(565-y_offset-20*i), str(objects[i].quantity))
+        pdf.drawRightString(price_x_pos,(565-y_offset-20*i), str(objects[i].t_price)+".0")
+
+    pdf.line(40,(565-y_offset-20*i-5),556,(565-y_offset-20*i-5))
+
+    # Calculate total tax
+    total_tax=0;
+    for i in range(len(objects)):
+        try:
+            if(objects[i].tax):
+                total_tax += objects[i].t_price*objects[i].tax
+        except IndexError:
+            pass
+
+    # Calculate Sub total
+    sub_total = 0
+    for i in range(len(objects)):
+        sub_total += objects[i].t_price
+        
+
+    # Calculate Gross Total
+    y_offset = y_offset+sub_total_y_offset #  Gross total offset
+
+    labels_x_pos = 480  #default 480
+    pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-25),  "Sub Total : ")
+    pdf.drawRightString(550,(565-y_offset-20*i-25),str(sub_total)+".0")
+
+    pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-40), "Tax : ")
+    pdf.drawRightString(550,(565-y_offset-20*i-40),"+ "+str(total_tax))
+
+
+    if(service_charge):  # If service charge is applicable
+        y_offset = y_offset+10 # Service Charge offset
+        pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-45), "Service Charge : ")
+        pdf.drawRightString(550,(565-y_offset-20*i-45), "+ "+str(service_charge)+".0")
+        y_offset = y_offset+5 # Service Charge offset
+
+
+    if(discount):  # I any discount is applicable 
+        y_offset = y_offset+10 # discount Charge offset
+        pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-45), "Discount : ")
+        pdf.drawRightString(550,(565-y_offset-20*i-45), "- "+str(discount)+".0")
+        y_offset = y_offset+5 # Service Charge offset
+
+
+    pdf.line(380,(565-y_offset-20*i-45),556,(565-y_offset-20*i-45))
+    pdf.setFont("Helvetica-Bold", 15)
+    pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-63), "Total : ")
+    pdf.drawRightString(550,(565-y_offset-20*i-63), str(sub_total+total_tax+service_charge-discount)+".0")
+    pdf.line(380,(565-y_offset-20*i-70),556,(565-y_offset-20*i-70))
+    pdf.setFont("Helvetica", 13)
+
+    pdf.drawString(40,(505-y_offset-20*i), "Thanks for visiting")
+    pdf.save()
+    buffer.seek(0) # end buffer
+
+    return FileResponse(buffer, as_attachment=True,filename=fileName)
