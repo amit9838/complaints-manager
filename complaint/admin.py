@@ -3,6 +3,9 @@ from django.contrib import admin
 
 from user.models import Engineer
 from .models import CheckList, Complaint, Item
+# from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ImportExportModelAdmin
+from .resources import ComplaintResource
 # Register your models here.
 
 # admin.site.register(Complaint)
@@ -17,7 +20,9 @@ admin.site.index_title = "Welcome to the Marca Admin Area"
 #     model = Item
 #     extra = 1
 
-class ComplaintAdmin(admin.ModelAdmin):
+class ComplaintAdmin(ImportExportModelAdmin):
+    resource_classes = [ComplaintResource]
+
     model = Complaint
     list_display=['product', 'id', 'registred_By','assigned_To', 'complaint_status']
     # inlines= [ItemInline]
@@ -35,4 +40,5 @@ class ComplaintAdmin(admin.ModelAdmin):
         else:
             return "-"
 
-admin.site.register(Complaint, ComplaintAdmin)
+
+admin.site.register(Complaint,ComplaintAdmin)

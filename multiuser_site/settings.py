@@ -30,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["192.168.0.110","127.0.0.1"]
 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # Application definition
 
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'import_export',
+    
  
 ]
 

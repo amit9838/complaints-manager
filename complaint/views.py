@@ -689,3 +689,69 @@ class Complaints_log_api(APIView):
             'resolved':complaints_rep
         }
         return Response(data)
+
+
+# Export/Import Data ***********************************************
+
+from tablib import Dataset
+from .resources import ComplaintResource
+
+def export_data(request):
+    if request.method == 'POST':
+        # Get selected option from the form
+        file_foramt = request.POST['file-format']
+        complaint_resource = ComplaintResource()
+        dataset = complaint_resource.export()
+        file_name = "complaint_"+str(datetime.datetime.now())
+
+        if(file_foramt=='CSV'):
+            response = HttpResponse(dataset.csv, content_type = 'text/csv')
+            response['Content-Disposition'] = f'attachement; filename = "{file_name}.csv"'
+            return response
+        
+        elif(file_foramt=='JSON'):
+            response = HttpResponse(dataset.json, content_type = 'application/json')
+            response['Content-Disposition'] = f'attachement; filename = "{file_name}.json"'
+            return response
+        
+        elif(file_foramt=='XLS (Excel)'):
+            response = HttpResponse(dataset.xls, content_type = 'application/vnd.ms-excel')
+            response['Content-Disposition'] = f'attachement; filename = "{file_name}.xls"'
+            return response
+    return render(request, 'complaint/export_import.html')
+
+
+def import_data(request):
+    if request.method == "POST":
+        file_format = request.POST['file-format']
+        complaint_resource = ComplaintResource()
+        dataset = Dataset()
+        new_compalaints = request.FILES['importData']
+
+        if file_format == 'CSV':
+            imported_data = dataset.load(new_compalaints.read().decode('utf-8'),format='csv')
+            result = complaint_resource.import_data(dataset, dry_run=True)  
+
+            if not result.has_errors():
+                # Import now
+                complaint_resource.import_data(dataset, dry_run=False)
+                messages.success(request, 'Imported Successfully!.')
+            else:
+                messages.error(request, 'Failed to Import!.')
+
+
+        elif file_format == 'JSON':
+            imported_data = dataset.load(new_compalaints.read().decode('utf-8'),format='json')
+            # Testing data import
+            result = complaint_resource.import_data(dataset, dry_run=True) 
+
+            if not result.has_errors():
+                # Import now
+                complaint_resource.import_data(dataset, dry_run=False)
+                messages.success(request, 'Imported Successfully!.')
+            else:
+                messages.error(request, 'Failed to Import!.')
+
+
+
+    return render(request, 'complaint/export_import.html') 

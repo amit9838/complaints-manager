@@ -46,4 +46,8 @@ urlpatterns = [
     path('complaints_log/', Complaints_log_api.as_view(), name="complaints_log"),
     path('close_complaint/<int:pk>', views.close_complaint, name="close_complaint"),
     path('print_record/<int:pk>', views.print_record, name="print_record"),
+    #Export/Import
+    path('export/', views.export_data, name="export_data"),
+    path('import/', views.import_data, name="import_data"),
+
 ]

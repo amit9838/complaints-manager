@@ -11,6 +11,7 @@
 
 {% include 'home/partials/_message.html' %}
 
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-white border">
         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
@@ -133,7 +134,7 @@
                     
                 </div>
                 <div class="card-body">
-
+                    <a class="btn btn-primary btn-sm rounded mx-2 " href="{% url 'export_data' %}">Export / Import</a>
                 </div>
             </div>
 

@@ -1,0 +1,57 @@
+{% extends 'base_dashboard.html' %}</p>
+
+{% block body_content %}
+
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb bg-white shadow-sm">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'c_settings' %}">Settings</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Import/Export</li>
+    </ol>
+</nav>
+
+{% include 'home/partials/_message.html' %}
+
+
+
+<div class="card">
+    <div class="card-body row p-0">
+        <div class="col-md-6 ">
+            <div class="left-container border rounded py-2  m-2 p-2 pb-0" >
+                <h3>Import Data</h3>
+                <h6 class="text-muted">Importing to database</h6>
+                <hr class="m-0 ">
+            <form action="{% url 'import_data' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}<br />
+                <input type="file" name="importData"></p>
+                <p>Please select format of file.</p>
+                <p> <select name="file-format" class="form-control my-3">
+                        <option selected>Choose format...</option>
+                        <option>CSV</option>
+                        <option>JSON</option>
+                    </select><br />
+                    <button class="btn btn-primary" type="submit">Import</button><br />
+            </form>
+        </div>
+    </div>
+        <div class="col-md-6">
+            <div class="right_container border rounded py-2 m-2 p-2 pb-0">
+                <h3>Export Data</h3>
+                <h6 class="text-muted">Exporting from database</h6>
+                <hr class="m-0 p-0">
+            <form action="{% url 'export_data' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}</p>
+                <p>Please select format of file.</p>
+                <p> <select name="file-format" class="form-control my-3">
+                        <option selected>Choose format...</option>
+                        <option>CSV</option>
+                        <option>JSON</option>
+                        <option>XLS (Excel)</option>
+                    </select><br />
+                    <button class="btn btn-primary" type="submit">Export</button><br />
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}<br />
