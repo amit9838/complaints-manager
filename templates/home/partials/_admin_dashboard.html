@@ -1,7 +1,7 @@
 <div class="Admin_dashboard">
     <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1>
 
-    <div class="row" >
+    <div class="row">
         <div class="col-xl-6 col-xxl-5">
             <div class="w-100">
                 <div class="row">
@@ -74,7 +74,7 @@
                                     <div class="col mt-0">
                                         <h5 class="card-title">Reapired Today</h5>
                                     </div>
-                                    
+
                                     <div class="col-auto">
                                         <div class="stat text-primary">
                                             <i class="fa-solid fa-gear"></i>
@@ -95,11 +95,12 @@
 
         <div class="col-xl-6 col-xxl-7">
             <div class="card py-0 my-0 flex-fill w-100 shadow-sm">
-                <div class="card-header mb-0 pb-0">
-                    <h5 class="card-title mb-0">Past 30 days</h5>
+                <div class="card-header mb-0 pb-0 d-flex justify-content-between">
+                    <h5 class="card-title mb-0">Complaints Registred </h5>
+                    <h6 class="text-muted">Past 30 days</h6>
                 </div>
                 <div class="card-body px-2">
-                    <div class="chart chart-sm">
+                    <div class="chart chart-sm px-2" style="min-height: 16rem;">
                         <canvas id="myChart" width="40vw" height="13vh"></canvas>
                     </div>
                 </div>
@@ -158,45 +159,60 @@
 
         // Plotting Chart
         function plot_chart1(reg_dates, reg_count) {
+            const ctx = document.getElementById('myChart');
 
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const myChart = new Chart(ctx, {
+            new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: reg_dates,
                     datasets: [{
                         label: 'Complaints Registred',
                         data: reg_count,
-                        backgroundColor: [
-                            'rgba(59, 172, 182, .7)',
-                        ],
-                        borderColor: [
-                            'rgba(59, 172, 182, 1)',
-                            // 'rgba(255, 99, 132, 1)',
-                        ],
-                        borderWidth: 2,
-                        tension: .2,
+                        borderWidth: 1,
+                        borderRadius: 5,
                     }]
                 },
                 options: {
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            type: 'linear',
+                            grace: '0%',
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: false,
+                                text: 'Complaints Registred'
+                            },
+                            grid: {
+                                // display:false
+                            }
                         },
-                        grid:{
-                            display:false
+                        x: {
+                            grid: {
+                                display: false,
+                            }
                         }
+
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Bar Chart'
                     },
                     plugins: {
                         legend: {
-                            display: false,
-        
+                            display: false
                         }
                     },
                     responsive: true,
                     maintainAspectRatio: false
+
+
                 }
             });
+
+
         }
 
     </script>
@@ -204,17 +220,17 @@
         <div class="card-header mt-1 py-1 px-2 mb-2">
             <h2 class=" my-0 p-1 px-1 card-title"> Recent Complaints </h2>
         </div>
-        
+
         <div class="card-body p-0 pb-3 mb-0" style="overflow-x:scroll ;">
             <table class="table table-sm table-hover my-0" style="min-width:50rem;">
                 <thead>
                     <tr class="" style=""">
-                        <th class="px-3 border-0">Complaint ID</th>
+                        <th class=" px-3 border-0">Complaint ID</th>
                         <th class="border-0">Customer</th>
                         <th class="border-0">Product</th>
                         <th class="border-0" style=" width: 40%;">Problem</th>
                         <th class="border-0">Registred on</th>
-                        <th class="border-0" width= "80" style="min-width:11rem; text-align: center; ">Status</th>
+                        <th class="border-0" width="80" style="min-width:11rem; text-align: center; ">Status</th>
                         <th class="px-3 border-0">View</th>
                     </tr>
                 </thead>
@@ -227,15 +243,15 @@
                         <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                         <td>{{complaint.problem|truncatewords:5}}</td>
                         <td>{{complaint.registred_date}}</td>
-                        <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}" id="status_badge"
-                                style="font-size: .9rem;"></span></td>
+                        <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
+                                id="status_badge" style="font-size: .9rem;"></span></td>
                         <td class="px-3" width="40"><a href="{% url 'view_complaint' complaint.id %}">
                                 <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                             </a>
                         </td>
                     </tr>
                     {% endfor %}
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
