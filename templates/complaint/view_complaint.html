@@ -318,15 +318,28 @@
 </nav>
 
 <div class="card flex-fill  shadow-sm">
-        <div class="card-body row  py-2">
-                <div class="col-md-8 my-auto">
-                        <h2 class="title text-secondary align-center my-auto">Complaint ID: <strong>
-                                        #{{complaint.id}}</strong></h2>
+        <div class="card-body row  py-2 px-2">
+                <div class="col-md-7 my-auto">
+                        <div class=" d-flex align-items-center fs-5">
+                                <h3 class="title text-secondary align-center my-auto">Complaint<strong>
+                                                #{{complaint.id}} |&nbsp;</strong></h3>
+                                <span style="letter-spacing: -.5px;">
+                                        {% if complaint.updated_by %}
+                                        <span class="text-secondary">Last Updated: {{complaint.updated_date}}</span>
+                                        {% else %}
+                                        <span class="text-secondary">Last Updated: {{complaint.registred_date}}</span>
+                                        {% endif %}
+                                </span>
+                        </div>
+
                 </div>
-                <div class="col-md-4 header_btn btn-group">
+                <div class="col-md-5 header_btn btn-group">
+                        <a href="{% url 'user_comment' complaint.id %}" class="btn btn-secondary"><i
+                                        class="bi bi-chat-square"></i> Comment</a>
+
                         <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-secondary"><i
                                         class="fa-solid fa-pencil"></i> Edit</a>
-                        
+
                         <a href="" class="btn btn-secondary "><i class="fa-brands fa-whatsapp"></i> Share</a>
                         <a href="{% url 'print_record' complaint.id %}" class="btn btn-secondary "><i
                                         class="fa-solid fa-print"></i> Print</a>
@@ -416,7 +429,7 @@
                                                                 </h5>
                                                         </div>
 
-                                                {% endif %}
+                                                        {% endif %}
                         </div>
                 </div>
         </div>
@@ -425,7 +438,8 @@
 <div class="row mb-2">
         <div class="col-md-5">
                 <div class="costomer-info card flex-fill mb-2 shadow-sm" style="min-height:17rem;">
-                        <div class="card-body p-2 hide_scrollbar border p-1 m-2 rounded" style="overflow-x:scroll ; scrollbar-width: thin;">
+                        <div class="card-body p-2 hide_scrollbar border p-1 m-2 rounded"
+                                style="overflow-x:scroll ; scrollbar-width: thin;">
                                 <h4 class="px-2 py-1 text-secondary"><strong>Customer Details </strong>
                                 </h4>
                                 <hr class="my-0">
@@ -495,15 +509,16 @@
                                                         {% if complaint.updated_by %}
                                                         <tr>
                                                                 <td class="text-secondary ">Updated</td>
-                                                                <td>{{complaint.updated_by}} ({{complaint.updated_date}})
+                                                                <td>{{complaint.updated_by}}
+                                                                        ({{complaint.updated_date}})
                                                                 </td>
                                                         </tr>
                                                         {% endif %}
                                                 </tbody>
                                         </table>
                                         <table class=" table table-sm bordreless">
-                                                <tr >
-                                                        <td class="text-secondary px-2" width = "145">Checklist</td>
+                                                <tr>
+                                                        <td class="text-secondary px-2" width="145">Checklist</td>
                                                         <td>
                                                                 <span class>
                                                                         <a type="button"
@@ -555,8 +570,8 @@
                                                                                                                 </tbody>
                                                                                                         </table>
                                                                                                 </div>
-                                                                                                
-                                                                                                       
+
+
                                                                                         </div>
                                                                                 </div>
                                                                         </div>
@@ -609,17 +624,19 @@
                         </div>
                         <!-- <hr class="m-0"> -->
                 </div>
-                <div class="px-0 mt-1" >
+                <div class="px-0 mt-1">
                         <hr class="m-0">
                         {% if components %}
                         <div class="table-container px-0" style="overflow-x: scroll;">
                                 <table class="table table-sm" style="min-width: 30rem;">
                                         <thead class=" pl-">
                                                 <tr>
-                                                        <th class="px-3" width="140" style="border: none;" >Item</th>
-                                                        <th style="border: none;" width = "340">Description</th>
-                                                        <th width="120" style="text-align:center; border: none;">Quantity</th>
-                                                        <th width="120" style="text-align:center; border: none;">Unit Price</th>
+                                                        <th class="px-3" width="140" style="border: none;">Item</th>
+                                                        <th style="border: none;" width="340">Description</th>
+                                                        <th width="120" style="text-align:center; border: none;">
+                                                                Quantity</th>
+                                                        <th width="120" style="text-align:center; border: none;">Unit
+                                                                Price</th>
                                                 </tr>
                                         </thead>
 

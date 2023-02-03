@@ -4,8 +4,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from complaint.models import Complaint ,Item
 from user.models import *
+from .models import *
 from django. contrib.auth. decorators import login_required
 from django.db.models import Count
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+
 
 def home(request):
     return redirect('dashboard')
@@ -100,3 +105,33 @@ class Anylitics_API(APIView):
             }
             return Response(data)
             
+
+@login_required
+def user_comment(request,pk):
+    complaint = Complaint.objects.get(id=pk)
+    if request.method == 'GET':
+        comments = Comment.objects.filter(complaint = complaint)
+        context = {
+            "complaint":complaint,
+            "comments":comments
+        }
+        return render(request, 'complaint/comments.html',context);
+
+    if request.method == 'POST':
+        message = request.POST['message'];
+        Comment.objects.create(complaint = complaint, user = request.user, user_comment = message)
+        messages.success(request, 'Comment added successfully!.')
+        return redirect('user_comment', pk)
+
+
+def delete_comment(request,pk):
+    if request.method == 'POST':
+        comment = Comment.objects.get(id=pk)
+        cmp_id = request.POST['cmp_id'];
+
+        comment.delete()
+        messages.success(request, 'Deleted successfully!.')
+
+        return redirect('user_comment', cmp_id)
+
+    

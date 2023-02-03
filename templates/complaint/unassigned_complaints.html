@@ -24,7 +24,7 @@
     </div>
 
     <div class="card-body px-0 pt-0" id="table_container" style="overflow-x:scroll ;">
-        {% if complaints %}
+        {% if unassigned_complaints %}
         <table class="table table-sm table-hover my-0" style="min-width: 50rem;">
             <thead class="">
                 <tr>
@@ -34,22 +34,24 @@
                     {% comment %} <th class="border-0" style=" width: 40%;">Problem</th> {% endcomment %}
                     <th class="border-0">Registred on</th>
                     <th class="border-0" width="200">Assigned (By->To)</th>
-                    <th class="border-0">Closed on</th>
                     <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
                     <th class="border-0">View</th>
                 </tr>
             </thead>
 
             <tbody class="table_body">
-                {% for complaint in in_progress_complains %}
+                {% for complaint in unassigned_complaints %}
                 <tr>
                     <th class="px-3" scope="row"><span># </span> <span>{{complaint.id}}</span></th>
                     <td>{{complaint.customer_name}}</td>
                     <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                     {% comment %} <td>{{complaint.problem}}</td> {% endcomment %}
                     <td>{{complaint.registred_date}}({{complaint.registred_by}})</td>
-                    <td>{{complaint.assigned_date}}({{complaint.assigned_by}}->{{complaint.assigned_to}})</td>
-                    <td>{{complaint.closed_date}}({{complaint.closed_by}})</td>
+                    <td>
+                        {% if complaint.assigned_to %}
+                        {{complaint.assigned_date}}({{complaint.assigned_by}}->{{complaint.assigned_to}})
+                        {% endif %}
+                    </td>
                     <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
                             id="status_badge" style="font-size: .9rem;"></span></td>
                     <td class="px-3" width="40">

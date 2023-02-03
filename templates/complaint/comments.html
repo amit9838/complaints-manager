@@ -1,0 +1,105 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}All Complaints{% endblock title %}
+
+
+{% block body_content %}
+{% include 'home/partials/_message.html' %}
+
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb bg-white shadow-sm">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Comments</li>
+    </ol>
+</nav>
+
+<style>
+    .card-header {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .card-header img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .card-header strong {
+        margin-left: 10px;
+    }
+
+    .card-body {
+        padding: 0.75rem 1.25rem;
+    }
+</style>
+
+<div class="card shadow-sm">
+    <div class="card-header  border bg-light ">
+        <h4 class="my-auto">{{complaint}}</h4>
+    </div>
+    <div class="card-body">
+        {% for comment in comments %}
+
+        <div class="card shadow-none bg-light py-0 mb-3 border  mx-auto rounded ">
+            <div class="card-header bg-light py-1 px-1 d-flex justify-content-between">
+                <!-- <img src="https://via.placeholder.com/50x50" class="rounded-circle mr-2" alt="User Image"> -->
+                <span class="d-flex align-items-center">
+                    <strong>{{comment.user.get_full_name}} |</strong>
+                    <small class="ml-2">Commented:{{comment.date_added|date:' M-d-Y'}}</small>
+                </span>
+                <div class="d-flex">
+                    {% if comment.user.is_superuser %}
+                    <span class="badge text-dark border bg-white rounded-pill px-2">Admin</span>
+                    
+					{% elif comment.user.is_staff %}
+                    <span class="badge text-dark border bg-white rounded-pill px-2">Staff</span>
+                    
+                    
+					{% else %}
+                    <span class="badge text-dark border bg-white rounded-pill px-2">Engineer</span>
+					{% endif %}
+                    <!-- <a class="badge text-dark border bg-white rounded px-2">:</a> -->
+                    <div class="dropdown dropstart">
+                        <a class="badge bg-white border  text-dark px-1 py-1 mx-2" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                    </a>
+                        <ul class="dropdown-menu mt-4" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <form action="{% url 'delete_comment' comment.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="text" name="cmp_id" id="" value={{complaint.id}} hidden>
+                                <button  class="dropdown-item" type="submit">Delete</button>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body bg-white">
+                <p class="card-text">{{comment.user_comment}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    
+        <hr class="my-1">
+        <div class="px-1 py-1">
+            <form action="{% url 'user_comment' complaint.id %}" class="bg-light py-2 px-0 border rounded" method="post">
+                {% csrf_token %}
+                <div class="mb-2 mx-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Write Your Comment Here</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message" placeholder="Leave a message..."></textarea>
+                  </div>
+                  <div class="d-flex justify-content-end mx-3">
+                      <button class="btn btn-primary" type="submit">
+                          Comment
+                        </button>
+                    </div>
+              </form>
+        </div>
+</div>
+</div>
+
+
+{% endblock %}

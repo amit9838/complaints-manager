@@ -4,6 +4,7 @@ from django.urls.conf import include
 from django.views.decorators.csrf import csrf_exempt
 from . import views
 from .views import Complaints_log_api, print_record
+from home.views import Comment
 
 urlpatterns = [
     # Sidebar
@@ -51,4 +52,5 @@ urlpatterns = [
     path('import/', views.import_data, name="import_data"),
 
     path('invoice/<int:pk>/', views.generate_invoice, name="generate_invoice"),
+
 ]

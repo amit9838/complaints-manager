@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from user.models import *
 from store.models import Category
+from home.models import Comment
 import json
 
 

@@ -70,7 +70,7 @@ class Complaint(models.Model):
 
 
     def __str__(self):
-        return   self.brand.upper() +"-" + self.model_no + "  ("+ self.customer_name + ")" + "  [" + self.category + "] " 
+        return   str(self.id)+"-"+ self.brand.upper() +"-" + self.model_no + "  ("+ self.customer_name + ")" + "  [" + self.category + "] " 
         
 
 

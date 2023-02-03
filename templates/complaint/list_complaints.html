@@ -41,7 +41,7 @@
                         <th class="border-bottom-0">Customer</th>
                         {% endif %}
                         <th class="border-bottom-0">Product</th>
-                        <th class="border-bottom-0" style=" width: 40%;">Problem</th>
+                        <th class="border-bottom-0" width=400>Problem</th>
                         {% if request.user.is_staff %}
                         <th class="border-bottom-0">Registred on</th>
                         {% endif %}
@@ -92,7 +92,7 @@
                         <a class="btn btn-outline-primary btn-sm rounded"
                             href="?page={{ page_obj.previous_page_number }}">Previous</a>
                         {% endif %}
-
+                        
                         {% for num in page_obj.paginator.page_range %}
                         {% if page_obj.number == num %}
                         <a class="btn btn-primary btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
@@ -100,7 +100,7 @@
                             class="btn btn-outline-primary btn-sm rounded" href="?page={{ num }}">{{ num }}</a>
                             {% endif %}
                             {% endfor %}
-
+                            
                             {% if page_obj.has_next %}
                             <a class="btn btn-outline-primary btn-sm rounded" href="?page={{ page_obj.next_page_number }}">Next</a>
                             <a class="btn btn-outline-primary btn-sm rounded"
