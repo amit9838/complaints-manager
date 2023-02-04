@@ -13,7 +13,7 @@
 - **Store Section** - Completly different space for management of components used in repairing (Accessible to Admin Only).
 - Product and sales analysis from **Store Dashboard**.
 - Complaints statstics from **Complaints Dashboard**.
-- Personalized dashboards for engineers and employees .
+- Personalized dashboards for engineers and employees.
 - Attach components to a complaint available in store (Keeps in sync in realtime).
 - Close complaints on successfull varification of customer with OTP/Email.
 
@@ -29,12 +29,13 @@
 - Manage complaint status from a single page.
 - Control-options changes dynamically depending on stages of complaint.
 <img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/complaint_view_admin.png" width="724" />
+
 - Complaint Settings
 <img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/complaint_settings.png" width="724" />
 
 ###### Staff
 - View and control staff activity.
-<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/staff_admin.png" width="724" height="340"/>
+<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/staff_admin.png" width="724"/>
 
 ###### Profile Page
 - View Profile of a user.
@@ -42,7 +43,7 @@
 
 #### Store
 - Manage components(parts) which are to be used during repair of a product.
-<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/store_admin.png" width="724" height="340"/>
+<img src="https://github.com/amit9838/complaints-manager/blob/master/screenshots/store_admin.png" width="724"/>
 
 #### Engineer
 - Complaints control center for engineer.
