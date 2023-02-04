@@ -30,12 +30,11 @@
                 <tr>
                     <th class="px-3 border-0">Complaint ID</th>
                     <th class="border-0">Customer</th>
-                    <th class="border-0" width="300">Product</th>
+                    <th class="border-0" width="400">Product</th>
                     {% comment %} <th class="border-0" style=" width: 40%;">Problem</th> {% endcomment %}
                     <th class="border-0">Registred on</th>
-                    <th class="border-0" width="200">Assigned (By->To)</th>
-                    <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
-                    <th class="border-0">View</th>
+                    <th class="border-0" style="width: 10rem; min-width:7rem; text-align: center; ">Status</th>
+                    <th class="border-0 text-center">View</th>
                 </tr>
             </thead>
 
@@ -47,11 +46,7 @@
                     <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                     {% comment %} <td>{{complaint.problem}}</td> {% endcomment %}
                     <td>{{complaint.registred_date}}({{complaint.registred_by}})</td>
-                    <td>
-                        {% if complaint.assigned_to %}
-                        {{complaint.assigned_date}}({{complaint.assigned_by}}->{{complaint.assigned_to}})
-                        {% endif %}
-                    </td>
+               
                     <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
                             id="status_badge" style="font-size: .9rem;"></span></td>
                     <td class="px-3" width="40">

@@ -11,162 +11,171 @@
         <div class="container rounded border bg-light p-1 py-1">
 
             <h4 class="text-secondary bg-light py-2 px-3">Complain Information</h4>
-        <div class="form-container px-2 mx-3 rounded bg-white py-2">
-            <strong>
-                <h4>Complaint Details</h4>
-            </strong>
-            <div class="details-container" id="details_container">
+            <div class="form-container px-2 mx-3 rounded bg-white py-2">
+                <strong>
+                    <h4>Complaint Details</h4>
+                </strong>
+                <div class="details-container" id="details_container">
 
 
-                <table class='table  table-sm table-borderless table-striped'>
-                    <thead>
-                  
-                    </thead>
-                    <tbody>
-                        <tr></tr>
-                        <tr>
-                            <th width="200">Customer Name</th>
-                            <td>{{complaint.customer_name}}</td>
-                        </tr>
-                        <tr>
-                            <th>Mobile Number</th>
-                            <td>{{complaint.customer_mob}}</td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td>{{complaint.customer_email}}</td>
-                        </tr>
-                        <tr>
-                            <th>Address</th>
-                            <td>{{complaint.customer_address}}</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Product Type</th>
-                            <td>{{complaint.category}}</td>
-                        </tr>
-                        <tr>
-                            <th>Brand</th>
-                            <td>{{complaint.brand}}</td>
-                        </tr>
-                        <tr>
-                            <th>Model</th>
-                            <td>{{complaint.model_no}}</td>
-                        </tr>
-                        <tr>
-                            <th>Serail No</th>
-                            <td>{{complaint.serial_no}}</td>
-                        </tr>
-                        <tr>
-                            <th>Physical Condition</th>
-                            <td>{{complaint.physical_condition}}</td>
-                        </tr>
-                        <tr>
-                            <th>Problem</th>
-                            <td>{{complaint.problem}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class='table  table-sm table-borderless table-striped'>
+                        <thead>
+
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                            <tr>
+                                <th width="200">Customer Name</th>
+                                <td>{{complaint.customer_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Mobile Number</th>
+                                <td>{{complaint.customer_mob}}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{complaint.customer_email}}</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>{{complaint.customer_address}}</td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Product Type</th>
+                                <td>{{complaint.category}}</td>
+                            </tr>
+                            <tr>
+                                <th>Brand</th>
+                                <td>{{complaint.brand}}</td>
+                            </tr>
+                            <tr>
+                                <th>Model</th>
+                                <td>{{complaint.model_no}}</td>
+                            </tr>
+                            <tr>
+                                <th>Serail No</th>
+                                <td>{{complaint.serial_no}}</td>
+                            </tr>
+                            <tr>
+                                <th>Physical Condition</th>
+                                <td>{{complaint.physical_condition}}</td>
+                            </tr>
+                            <tr>
+                                <th>Problem</th>
+                                <td>{{complaint.problem}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="action-bar d-flex ml-3">
+                <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-primary my-2 "><i
+                        class="fa-solid fa-pencil"></i> Edit</a>
             </div>
         </div>
-        <div class="action-bar d-flex ml-3">
-            <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-primary my-2 "><i class="fa-solid fa-pencil"></i> Edit</a>
-        </div>
     </div>
-</div>
 
 
     <div class="container col-md-5">
         <div class="container bg-light  border rounded">
 
-        <h4 class="text-secondary bg-light py-2 px-1">Pre Repair Checklist</h4>
-        <div class="form-container px-2 py-1 rounded bg-white py-2">
-            <strong>
-                <h4>Checklist</h4>
-            </strong>
-            <div class="arrtibute-container" id="attribute_container">
+            <h4 class="text-secondary bg-light py-2 px-1">Pre Repair Checklist</h4>
+            <div class="form-container px-2 py-1 rounded bg-white py-2">
+                <strong>
+                    <h4>Pre Repair Checklist</h4>
+                </strong>
+                <hr class="my-0">
+                <div class="arrtibute-container" id="attribute_container">
 
-                <table class='table  table-sm table-borderless' >
-                    <thead>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                        <th>Action</th>
-                    </thead>
-                    <tbody>
-                        <tr></tr>
-                        {% for item in check_list %}
-                        <tr>
-                            <th>{{item.c_list_key}}</th>
-                            <td>{{item.c_list_val}}</td>
-                            <td width="100">
-                                <span class>
-                                    <button type="button" class="more_attr btn btn-primary btn-sm rounded"
-                                        data-toggle="modal" data-target="#model_update{{item.id}}">
-                                        <i class="fa-solid fa-pencil"></i>
-                                    </button>
+                    <table class='table  table-sm table-borderless'>
+                        <thead>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                            {% for item in check_list %}
+                            <tr>
+                                <th>{{item.c_list_key}}</th>
+                                <td>{{item.c_list_val}}</td>
+                                <td width="100">
+                                    <span class>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="model_update{{item.id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Update Attribute</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
 
-                                                    <form id="add_attr_form"
-                                                        action="{% url 'update_checklist' complaint.id  item.id %}" method='post'>
-                                                        {% csrf_token %}
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                                <label for="attr_key">Name</label>
-                                                                <input type="key" class="form-control" id="attr_key"
-                                                                    placeholder="Key" name="key" value="{{item.c_list_key}}">
+                                        <button type="button" class="btn btn-primary btn-sm rounded"
+                                            data-bs-toggle="modal" data-bs-target="#update{{item.id}}"
+                                            style="font-size: .7rem;">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="update{{item.id}}" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel"> Pre Repair
+                                                            Checklist</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="add_attr_form"
+                                                            action="{% url 'update_checklist' complaint.id  item.id %}"
+                                                            method='post'>
+                                                            {% csrf_token %}
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="attr_key">Name</label>
+                                                                    <input type="key" class="form-control" id="attr_key"
+                                                                        placeholder="Key" name="key"
+                                                                        value="{{item.c_list_key}}">
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="attr_val">Property</label>
+                                                                    <input type="value" class="form-control"
+                                                                        id="attr_val" placeholder="Value" name="val"
+                                                                        value="{{item.c_list_val}}">
+                                                                </div>
                                                             </div>
-                                                            <div class="form-group col-md-6">
-                                                                <label for="attr_val">Property</label>
-                                                                <input type="value" class="form-control" id="attr_val"
-                                                                    placeholder="Value" name="val" value="{{item.c_list_val}}">
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-primary"
+                                                                    data-dismiss="modaxl">Update Attribute</button>
                                                             </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Cancel</button>
-                                                            <button type="submit" class="btn btn-primary"
-                                                            data-dismiss="modaxl">Update Attribute</button>
-                                                        </div>
+                                                    </div>
                                                     </form>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
                                     <a class="btn btn-danger btn-sm rounded" href="{% url  'delete_checklist' complaint.id  item.id %}">
                                         <i class="fa-solid fa-xmark"></i></a>
-                                </span>
+                            </span>
                             </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
+                      </tr>
+                  {% endfor %}
+                </tbody>
                 </table>
             </div>
             <!-- Button trigger modal -->
-            <button type="button" class="more_attr btn btn-primary btn-sm w-100 rounded" data-toggle="modal"
-                data-target="#exampleModal">
+
+
+            <button type="button" class="more_attr btn btn-primary btn-sm w-100 rounded " data-bs-toggle="modal"
+                data-bs-target="#add" style="font-size: .7rem;">
                 + Add Attribute
             </button>
 
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Add Part</h5>
@@ -175,14 +184,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-
                             <form id="add_attr_form" action="{% url 'add_checklist' complaint.id %}" method='post'>
                                 {% csrf_token %}
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="attr_key">Name</label>
-                                        <input type="key" class="form-control" id="attr_key" placeholder=""
-                                            name="key">
+                                        <input type="key" class="form-control" id="attr_key" placeholder="" name="key">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="attr_val">Value</label>
@@ -206,7 +213,7 @@
         </div>
     </div>
 
-    </div>
+</div>
 </div>
 
 

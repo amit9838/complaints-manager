@@ -34,11 +34,17 @@
 <div class="card flex-fill shadow-sm">
 
         <div class="card-body">
-                <div class="titlebar d-flex bg-light mb-1  w-100 align-items-center rounded flex-wrap w-100 mx-0">
-                        <h3 class="pl-2 my-2 px-2 text-secondary rounded"> Complaint ID #{{complaint.id}}</h3>
-                        <span class="badge mx-2" id="status_badge"
+                <div class="titlebar row bg-light ">
+                        <div class="col-sm-9 left d-flex bg-light mb-1   align-items-center rounded flex-wrap  mx-0">
+                                <h3 class="pl-2 my-2 px-2 text-secondary rounded"> Complaint ID #{{complaint.id}}</h3>
+                                <span class="badge mx-2" id="status_badge"
                                 style="font-size: .9rem;">{{complaint.complaint_status}}</span>
-                        <!-- <h3 class="px-2 py-2 text-right bg-white my-2 text-secondary w-25 ">Status: </h3> -->
+                                <!-- <h3 class="px-2 py-2 text-right bg-white my-2 text-secondary w-25 ">Status: </h3> -->
+                        </div>
+                        <div class="right col-sm-2 my-auto" style="min-width: 10rem; max-width: 12rem; position: relative; ">
+                                <a href="{% url 'user_comment' complaint.id %}" class="btn btn-secondary"><i
+                                        class="bi bi-chat-square"></i> Comment({{comment_count}})</a>
+                        </div>
                 </div>
 
 
@@ -317,9 +323,9 @@
 
 <script>
         complaint_opt = document.getElementsByClassName("cmpStatus");
-        console.log(complaint_opt)
+        // console.log(complaint_opt)
         let cmp_selected = "{{complaint.complaint_status}}"
-        console.log(cmp_selected)
+        // console.log(cmp_selected)
         let a = Array.from(complaint_opt);
         Array.from(complaint_opt).forEach(element => {
                 if (element.value == cmp_selected) {

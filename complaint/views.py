@@ -254,7 +254,7 @@ def view_complaint(request,pk):
         try:
             complaint = Complaint.objects.get(id = pk)
             check_list = CheckList.objects.filter(complaint = complaint)
-
+            comment_count = Comment.objects.filter(complaint=complaint).count
             component_list = Item.objects.filter(complaint = complaint)
             complaint_status_form = ChangeComplaintStatusForm()
             engineers = Engineer.objects.all()
@@ -265,6 +265,7 @@ def view_complaint(request,pk):
                 'complaint':complaint,
                 'complaint_status_form':complaint_status_form,
                 'engineers' : engineers,
+                'comment_count':comment_count
             }
             return render(request, 'complaint/view_complaint.html', context)
         except Complaint.DoesNotExist:
@@ -280,12 +281,15 @@ def view_complaint_engg(request,pk):
         if complaint.assigned_to == request.user:
             component_list = Item.objects.filter(complaint = complaint)
             check_list = CheckList.objects.filter(complaint = complaint)
-    
+            comment_count = Comment.objects.filter(complaint=complaint).count
+
             print(complaint.complaint_status)
             context = {
                 'components':component_list,
                 'check_list':check_list,
                 'complaint':complaint,
+                'comment_count':comment_count
+
             }
             if request.method == 'GET':
                 return render(request, 'complaint/view_complaint_e.html', context)
@@ -463,8 +467,8 @@ def update_component(request,pk):
     form_component  = AddComponentForm_manual(instance=item)
     cat = Category.objects.all()
     complaint = item.complaint
-    print(complaint.id)
-    print(item.id)
+    # print(complaint.id)
+    # print(item.id)
     categories = []
     for i in cat:
         categories.append(i.name)
@@ -823,7 +827,7 @@ def generate_invoice(request,pk):
     # initializing variables with values
     formatted_date_str_for_title = datetime.date.strftime(current_day,"%d-%m-%Y")
     fileName = f'Invoice-{str(pk)}__{formatted_date_str_for_title}.pdf'
-    print(fileName)
+    # print(fileName)
     title = "Invoice-"+str(pk) + "-" +formatted_date_str
 
     # Create pdf canvas 

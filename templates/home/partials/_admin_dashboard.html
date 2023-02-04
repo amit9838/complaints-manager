@@ -215,8 +215,41 @@
 
 
         }
-
     </script>
+
+    <style>
+        .comment_link {
+            display: none;
+            transition: ease-in-out .2s;
+            /* direction: none; */
+        }
+        .comment_link:link {
+            text-decoration: none;
+        }
+        .show {
+            display: block;
+        }
+        .show:hover{
+            color: rgb(18, 96, 175);
+            font-weight: 600;
+            border-radius: .1rem;
+            transform: scale(1.05);
+            /* background-color: rgb(218, 233, 255); */
+    
+        }
+        .comment_num{
+            position: relative;
+            padding: 0 .18rem;
+            font-size: .65rem;
+            font-weight:600 ;
+            top: 3px;
+            left: -5px;
+            border-radius:5rem;
+            border: 1px solid rgb(158, 198, 238);
+        }
+    </style>
+
+
     <div class="card flex-fill shadow-sm mt-2 shadow-sm">
         <div class="card-header mt-1 py-1 px-2 mb-2">
             <h2 class=" my-0 p-1 px-1 card-title"> Recent Complaints </h2>
@@ -229,9 +262,10 @@
                         <th class=" px-3 border-0">Complaint ID</th>
                         <th class="border-0">Customer</th>
                         <th class="border-0">Product</th>
-                        <th class="border-0" style=" width: 40%;">Problem</th>
+                        <th class="border-0" width=400>Problem</th>
                         <th class="border-0">Registred on</th>
-                        <th class="border-0" width="80" style="min-width:11rem; text-align: center; ">Status</th>
+                        <th class="text-center border-0"  style="min-width:3rem ;"></th>
+                        <th class="border-0" width="80" style="min-width:8rem; text-align: center; ">Status</th>
                         <th class="px-3 border-0">View</th>
                     </tr>
                 </thead>
@@ -239,11 +273,14 @@
                 <tbody">
                     {% for complaint in recent_complaints %}
                     <tr>
-                        <th scope="row" class="px-3"><span># </span> <span>{{complaint.id}}</span></th>
+                        <th scope="row" class="px-3"><span># </span> <span class="complaint_id">{{complaint.id}}</span></th>
                         <td>{{complaint.customer_name}}</td>
                         <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                         <td>{{complaint.problem|truncatewords:5}}</td>
                         <td>{{complaint.registred_date}}</td>
+                        <td class="text-center">
+                            <a href="{% url 'user_comment' complaint.id %}" class="comment_link" ><i class="bi bi-chat-square"></i> <span class="comment_num text-center m-auto">0</span> </a>
+                        </td>
                         <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
                                 id="status_badge" style="font-size: .9rem;"></span></td>
                         <td class="px-3" width="40"><a href="{% url 'view_complaint' complaint.id %}">
@@ -260,4 +297,27 @@
     <script>
         let lnk = document.getElementById('dashboard-link');
         lnk.classList.add('active');
+
+        let complaint_id = document.getElementsByClassName("complaint_id");
+        let comment_link = document.getElementsByClassName("comment_link");
+
+        comment_link_arr = Array.from(comment_link);
+
+        Array.from(complaint_id).forEach(async (e,i) => {
+            let hasComment = await get_comment_info(e.innerText);
+            if (hasComment) {        
+                comment_link[i].classList.add('show');
+                comment_link[i].children[1].innerText = hasComment
+            }
+        });
+        // console.log(complaint_id);
+
+
+        async function get_comment_info(id) {
+                url = `{% url 'has_comments' 121%}`
+                url = url.replace('121',id)
+                const response = await fetch(url);
+                res = await response.text();
+                return Number(res.slice(1,-1));
+            }
     </script>
