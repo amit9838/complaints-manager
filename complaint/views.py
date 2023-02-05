@@ -44,8 +44,7 @@ def register_complaint(request):
                 return redirect('add_checklist',obj.id)
             messages.error(request, 'Complaint not registred! Please provide valid input.')
             return render(request, 'complaint/new_complaint.html',context)
-    else:
-        return HttpResponse("You dont't have permission to access this page")
+    return HttpResponse("You dont't have permission to access this page")
 
 
 @login_required
@@ -86,19 +85,12 @@ def update_complaint(request,pk):
                 return render(request, 'complaint/update_complaint.html',context)
         except Complaint.DoesNotExist:
             return redirect('all_complaints')
-
-
-    else:
-        return HttpResponse("You dont't have permission to access this page")
+    return HttpResponse("You dont't have permission to access this page")
 
 # Using above complaint id to attach product checklist of  the the product.
 # Add Check List --------------------------------------------------------
 def add_checklist(request, pk):
     complaint = Complaint.objects.get(id=pk)
-    if request.method == 'GET':
-        check_list = CheckList.objects.filter(complaint = complaint)
-        # print(complaint.get_fields())
-        return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
 
     if request.method == 'POST':
         key = request.POST['key']
@@ -111,13 +103,11 @@ def add_checklist(request, pk):
             messages.success(request, 'Checklist Updated')
             return redirect('add_checklist',pk)
         messages.error(request, 'Could not add!')
+    check_list = CheckList.objects.filter(complaint = complaint)
+    return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
 
 def update_checklist(request, pk_cmp,pk_chk):
     complaint = Complaint.objects.get(id=pk_cmp)
-    if request.method == 'GET':
-        check_list= CheckList.objects.get(id = pk_chk)
-        # print(check_list)
-        return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
 
     if request.method == 'POST':
         key = request.POST['key']
@@ -131,6 +121,9 @@ def update_checklist(request, pk_cmp,pk_chk):
             messages.success(request, 'Checklist Updated')
             return redirect('add_checklist',pk_cmp)
         messages.error(request, 'Could not add!')
+
+    check_list= CheckList.objects.get(id = pk_chk)
+    return render(request, 'complaint/add_checklist.html', {'complaint':complaint, 'check_list':check_list})
 
 
 def delete_checklist(request, pk_cmp,pk_chk):
@@ -183,12 +176,11 @@ def list_complaints(request):
 
 # Complaints Settings
 def settings(request):
-    if request.method == 'GET':
-        categories = Category.objects.all()
-        context = {
-            'categories':categories,
-        }
-        return render(request, 'complaint/settings.html',context)
+    categories = Category.objects.all()
+    context = {
+        'categories':categories,
+    }
+    return render(request, 'complaint/settings.html',context)
 
 
 @login_required
@@ -308,16 +300,15 @@ def view_complaint_engg(request,pk):
             
     except Complaint.DoesNotExist:
         return redirect('all_complaints')
+    return redirect('all_complaints')
 
 @login_required
 def complaint_settings(request,pk):
     complaint = Complaint.objects.get(id=pk)
-    
-    if request.method == 'GET':
-        context = {
-            "complaint":complaint
-        }
-        return render(request,'complaint/complaint_settings.html',context)
+    context = {
+        "complaint":complaint
+    }
+    return render(request,'complaint/complaint_settings.html',context)
 
 
 
@@ -361,6 +352,7 @@ def assign_engineer(request,pk):
             messages.success(request, 'Engineer assigned successfully')
             complaint.save()
             return redirect('view_complaint', pk)
+    return redirect('view_complaint', pk)
 
 @login_required
 def reset_complaint_progress(request,pk):
@@ -381,6 +373,7 @@ def reset_complaint_progress(request,pk):
         complaint.save()
         messages.success(request, 'Complaint progress has been reset successfully.')
         return redirect('complaint_settings', pk)
+    return redirect('complaint_settings', pk)
 
 
 
@@ -454,9 +447,10 @@ def add_component_manual(request,pk_cmp):
             formdata.save();
             messages.success(request, 'Component has been successfully added.')
             return redirect('list_components',pk_cmp)
-        else:
-            messages.error(request, 'Please provide valid input.')
-            return render(request, 'complaint/list_components.html',context)     
+        
+        messages.error(request, 'Please provide valid input.')
+        return render(request, 'complaint/list_components.html',context)     
+    return redirect('dashboard')     
         
 
 
@@ -498,9 +492,9 @@ def update_component(request,pk):
             form_component.save();
             messages.success(request, 'Component has been successfully updated.')
             return redirect('list_components', complaint.id)
-        else:
-            messages.error(request, 'Please provide valid input.')
-            return render(request, 'complaint/list_components.html',context)
+        messages.error(request, 'Please provide valid input.')
+        return render(request, 'complaint/list_components.html',context)
+    return redirect('dashboard')     
 
 
 def deleteComponent(request,pk):
@@ -520,17 +514,14 @@ def deleteComponent(request,pk):
         
         messages.success(request, 'Item removed successfully.')
         if request.user.is_superuser:
-            return redirect('list_components', cmp_id)
-        else:
-            return redirect('list_components', cmp_id)
+            return redirect('list_components', cmp_id)   
+        return redirect('list_components', cmp_id)
+    return redirect('dashboard')
 
 
 # Search Compalints Global ------------------------------------------------------------
 @login_required
 def search_complaints_global(request):
-    if(request.method == 'GET'):
-        return HttpResponse("hello there")
-
     if(request.method == 'POST'):
         user = request.user
         search_str = json.loads(request.body).get('searchText')
@@ -564,6 +555,7 @@ def search_complaints_global(request):
             results = with_id | with_c_name | with_c_email | with_c_mob | with_c_add | with_p_brand | with_p_model | with_p_cond |with_p_prob
             data = results.values()
             return JsonResponse(list(data),safe=False)
+    return JsonResponse({"data":"Invalid querry!"},safe=False)
 
 
 # For Engineer --------------------------------------------------------------------------
@@ -601,8 +593,8 @@ def print_record(request,pk):
         components = Item.objects.filter(complaint = complaint)
         subTotal = 0
         for item in components:
-            item.total = item.unit_price * item.quantity
-            subTotal = subTotal + item.total
+            total = item.unit_price * item.quantity
+            subTotal = subTotal + total
         # print(components)
 
         tax_percent = 18
@@ -677,6 +669,7 @@ def check_complaint_status(request):
                 'type':stat_type
             }
             return render(request,'home/check_status.html',context)
+    return render(request,'home/check_status.html')
 
 
 from rest_framework.views import APIView

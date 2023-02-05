@@ -75,6 +75,7 @@ def dashboard(request):
 
             }
         return render(request, 'home/dashboard.html', context)
+    return redirect('login')
 
 
 def analytics(request):
@@ -82,8 +83,7 @@ def analytics(request):
         pass
     
 def about(request):
-    if request.method == 'GET':
-        return render(request, 'home/about.html')
+    return render(request, 'home/about.html')
 
 
 from rest_framework.views import APIView
@@ -123,6 +123,7 @@ def user_comment(request,comp_pk):
             return redirect('user_comment', comp_pk)
         messages.warning(request, 'Please write something!')
         return redirect('user_comment', comp_pk)
+    return redirect('user_comment', comp_pk)
         
 
 def delete_comment(request,pk):
@@ -132,6 +133,7 @@ def delete_comment(request,pk):
         comment.delete()
         messages.success(request, 'Deleted successfully!')
         return redirect('user_comment', cmp_id)
+    return redirect('dashboard')
 
 def update_comment(request,pk):
     if request.method == 'POST':
@@ -150,6 +152,7 @@ def update_comment(request,pk):
         else:
             messages.error(request, "You don't have permission to edit this comment.")
             return redirect('user_comment', cmp_id)
+    return redirect('dashboard')
 
 import json
 def has_comments(request,pk):
