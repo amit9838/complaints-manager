@@ -2,7 +2,7 @@ from itertools import count
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from complaint.models import Complaint ,Item
+from complaint.models import Complaint ,Item, ComplaintOTP
 from user.models import *
 from .models import *
 from django. contrib.auth. decorators import login_required
@@ -10,7 +10,7 @@ from django.db.models import Count
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, JsonResponse
-
+import datetime
 
 def home(request):
     return redirect('dashboard')
@@ -160,3 +160,75 @@ def has_comments(request,pk):
     comments = Comment.objects.filter(complaint = complaint)
     count_comments = json.dumps(len(comments))
     return JsonResponse(count_comments,safe=False)
+
+
+# OTP varification
+import os
+import random
+from twilio.rest import Client
+import pytz
+from decouple import config
+
+
+def OTP_verification(request,pk):
+    complaint = Complaint.objects.get(id=pk)
+    all_otps = ComplaintOTP.objects.filter(complaint = complaint)
+    if request.method == 'GET':
+        mobile = '+918808648008'
+        expires_in= 1  #calculate time in minutes
+        otp = random.randint(1001,9999)
+        expiry_time = datetime.datetime.utcnow() +  datetime.timedelta(minutes=expires_in)
+        expiry_time = expiry_time.replace(tzinfo=pytz.UTC)
+        if len(all_otps) > 0:
+            # otp_item.append(all_otps[0])
+            otp_obj = all_otps[0]
+            print(otp_obj)
+            otp_obj.otp = str(otp)
+            otp_obj.expires_at = expiry_time
+            otp_obj.save()
+            # print("old otp found")
+
+        else:
+            ComplaintOTP.objects.create(complaint = complaint,otp = otp,expires_at = expiry_time)
+            # print("otp not found")
+            
+        message = "Your OTP for compalint verification is: " + str(otp) +" is vaild for " + str(expires_in) +" minutes. Do not share your otp with anyone."
+        account_sid = config('ACCOUNT_SID')
+        auth_token = config('AUTH_TOKEN')
+        client = Client(account_sid, auth_token) 
+        
+        message = client.messages.create(
+                                from_='+14305407688',
+                                body=message,
+                                to=mobile,
+                            ) 
+        # print("otp sent!")
+        # print(message.sid)
+        return JsonResponse({"message":"otp sent successfully!", "statuss":"success"},safe=False)
+    
+    if request.method == 'POST':
+        recived_otp = request.POST['recived_otp']
+        otp_obj = all_otps[0]
+        # print("otp found")
+        # print(otp_obj.otp)
+        # print(recived_otp)
+        if recived_otp == otp_obj.otp:
+            # print("otp matched")
+            # print(otp_obj.expires_at)
+            
+            print(datetime.datetime.utcnow().replace(tzinfo=pytz.UTC))
+            if  datetime.datetime.utcnow().replace(tzinfo=pytz.UTC) < otp_obj.expires_at:
+                # print("otp not expired")
+                complaint.is_verified = True;
+                otp = random.randint(10011,99991)
+                otp_obj.otp = str(otp)
+                otp_obj.save()
+                complaint.save()
+                messages.success(request, "Verification Successful!")
+                return redirect('view_complaint',pk)
+            messages.error(request, "OTP Expired!")
+            return redirect('view_complaint',pk)
+        print("otp not matched")
+        messages.error(request, "Invalid OTP!")
+    messages.error(request, "Incorrect OTP!")
+    return redirect('view_complaint',pk)

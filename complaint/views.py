@@ -250,14 +250,15 @@ def view_complaint(request,pk):
             component_list = Item.objects.filter(complaint = complaint)
             complaint_status_form = ChangeComplaintStatusForm()
             engineers = Engineer.objects.all()
-            # print(engineers)
+            otps = ComplaintOTP.objects.filter(complaint=complaint)
             context = {
                 'components':component_list,
                 'check_list':check_list,
                 'complaint':complaint,
                 'complaint_status_form':complaint_status_form,
                 'engineers' : engineers,
-                'comment_count':comment_count
+                'comment_count':comment_count,
+                'otp_obj':otps[0] if len(otps) > 0 else None
             }
             return render(request, 'complaint/view_complaint.html', context)
         except Complaint.DoesNotExist:
@@ -285,16 +286,6 @@ def view_complaint_engg(request,pk):
             }
             if request.method == 'GET':
                 return render(request, 'complaint/view_complaint_e.html', context)
-
-            if request.method == 'POST':
-                stat = request.POST['cmpStatus']        
-                complaint.complaint_status = stat
-                complaint.resolved_date = datetime.datetime.now()
-                if int(stat) >= 4 and int(stat) <= 5:
-                    complaint.resolved_by = request.user
-                complaint.save()
-                messages.success(request, 'Status updated successfully.')
-                return redirect('view_complaint_engg', pk)
         else:
             return HttpResponse("You dont't have permission to access this page")
             
@@ -319,6 +310,7 @@ def set_complaint_status(request,pk):
     if request.method == "POST":
         status = request.POST['cmpStatus']
         complaint.complaint_status = status
+        complaint.resolved_date = datetime.datetime.now()
         complaint.resolved_by = user
         complaint.save()
         messages.success(request, 'Status updated successfully.')

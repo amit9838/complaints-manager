@@ -55,6 +55,7 @@ class Complaint(models.Model):
     resolved_by = models.ForeignKey(User, db_column="resolved_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "resolved_by" ,verbose_name = "Resolved_By")
     resolved_date = models.DateField(null=True, blank=True)
 
+    is_verified = models.BooleanField(default=False, db_column="is_verified_on_close")
     closed_by = models.ForeignKey(User, db_column="closed_by",blank=True,null=True,on_delete=models.SET_NULL,related_name = "closed_by" ,verbose_name = "Closed_By")
     closed_date = models.DateField(null=True, blank=True)
 
@@ -63,7 +64,7 @@ class Complaint(models.Model):
     category = models.CharField(max_length=256,null=True, blank=True) # Select category   
     brand = models.CharField(max_length=256,null=True, blank=True)
     model_no = models.CharField(max_length=256,null=True, blank=True)
-    serial_no = models.CharField(max_length=256, null=True,  blank=True)
+    serial_no = models.CharField(max_length=128, null=True,  blank=True)
     physical_condition = models.CharField(max_length=2048 ,null=True, blank=True)
     problem = models.CharField(max_length=5000)
 
@@ -72,6 +73,13 @@ class Complaint(models.Model):
     def __str__(self):
         return   str(self.id)+"-"+ self.brand.upper() +"-" + self.model_no + "  ("+ self.customer_name + ")" + "  [" + self.category + "] " 
         
+
+class ComplaintOTP(models.Model):
+    complaint = models.ForeignKey(Complaint,null=True,blank=True,on_delete=models.CASCADE)
+    otp = models.CharField(max_length=10)
+    expires_at = models.DateTimeField(null=True, blank=True)
+    def __str__(self):
+        return "OTP for "+ str(self.complaint) + "is: " + str(self.otp)
 
 
 class CheckList(models.Model):

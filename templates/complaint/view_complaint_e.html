@@ -167,66 +167,46 @@
                                                         <td class="text-secondary px-2" width="145">Checklist</td>
                                                         <td>
                                                                 <span class>
-                                                                        <a type="button"
-                                                                                class="more_attr badge badge-primary text-light"
-                                                                                data-toggle="modal"
-                                                                                data-target="#model_checklist">
+                                                                        <button type="button" class="btn btn-primary px-2 py-0 my-auto mx-1 border rounded-pill  "
+                                                                                data-bs-toggle="modal" data-bs-target="#update{{comment.id}}" style="font-size: .7rem;">
                                                                                 View Checklist ->
-                                                                        </a>
+                                                                        </button>
+
                                                                         <!-- Modal -->
-                                                                        <div class="modal fade" id="model_checklist"
-                                                                                tabindex="-1" role="dialog"
-                                                                                aria-labelledby="exampleModalLabel"
-                                                                                aria-hidden="true">
-                                                                                <div class="modal-dialog"
-                                                                                        role="document">
-                                                                                        <div class="modal-content">
-                                                                                                <div
-                                                                                                        class="modal-header">
-                                                                                                        <h5 class="modal-title"
-                                                                                                                id="exampleModalLabel">
-                                                                                                                Pre
-                                                                                                                Repair
-                                                                                                                Checklist
-                                                                                                        </h5>
-                                                                                                        <button type="button"
-                                                                                                                class="close"
-                                                                                                                data-dismiss="modal"
-                                                                                                                aria-label="Close">
-                                                                                                                <span
-                                                                                                                        aria-hidden="true">&times;</span>
-                                                                                                        </button>
-                                                                                                </div>
-                                                                                                <div class="modal-body">
-                                                                                                        <table
-                                                                                                                class='table table-sm borderless'>
-                                                                                                                <tbody>
-                                                                                                                        <tr>
-                                                                                                                        </tr>
-                                                                                                                        {%
-                                                                                                                        for
-                                                                                                                        item
-                                                                                                                        in
-                                                                                                                        check_list
-                                                                                                                        %}
-                                                                                                                        <tr>
-                                                                                                                                <th>{{item.c_list_key}}
-                                                                                                                                </th>
-                                                                                                                                <td>{{item.c_list_val}}
-                                                                                                                                </td>
-
-                                                                                                                        </tr>
-                                                                                                                        {%
-                                                                                                                        endfor
-                                                                                                                        %}
-                                                                                                                </tbody>
-                                                                                                        </table>
-
-                                                                                                </div>
+                                                                        <div class="modal fade" id="update{{comment.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                                        aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                                <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                                <h1 class="modal-title fs-5" id="exampleModalLabel"> Pre Repair Checklist</h1>
+                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                                                aria-label="Close"></button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                                <table
+                                                                                                class='table table-sm table-borderless'>
+                                                                                                <tbody>
+                                                                                                        <tr>
+                                                                                                        </tr>
+                                                                                                        {% for item in check_list %}
+                                                                                                        <tr>
+                                                                                                                <th>{{item.c_list_key}}
+                                                                                                                </th>
+                                                                                                                <td>{{item.c_list_val}}
+                                                                                                                </td>
+                                                                                                        </tr>
+                                                                                                        {% endfor %}
+                                                                                                </tbody>
+                                                                                        </table>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                                <button type="button" class="btn btn-secondary"
+                                                                                                data-bs-dismiss="modal">Close</button>
+                                                                                                <button type="submit" class="btn btn-primary">Save changes</button>
                                                                                         </div>
                                                                                 </div>
+                                                                                </div>
                                                                         </div>
-
                                                                 </span>
                                                         </td>
                                                 </tr>

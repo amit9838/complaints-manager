@@ -2,14 +2,14 @@ from typing import final
 from django.contrib import admin
 
 from user.models import Engineer
-from .models import CheckList, Complaint, Item
+from .models import CheckList, Complaint, Item,ComplaintOTP
 # from import_export.admin import ImportExportModelAdmin
 from import_export.admin import ImportExportModelAdmin
 from .resources import ComplaintResource
 # Register your models here.
 
 # admin.site.register(Complaint)
-# admin.site.register(CheckList)
+admin.site.register(ComplaintOTP)
 admin.site.register(Item)
 
 admin.site.site_header = "Marca Admin"

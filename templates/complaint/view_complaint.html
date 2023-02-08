@@ -309,6 +309,7 @@
         }
 </style>
 
+<!-- breadcrumb --------------------------------------------------------------------------------->
 <nav aria-label="breadcrumb ">
         <ol class="breadcrumb bg-white shadow-sm">
                 <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
@@ -317,6 +318,7 @@
         </ol>
 </nav>
 
+<!-- Header --------------------------------------------------------------------------------->
 <div class="card flex-fill  shadow-sm">
         <div class="card-body row  py-2 px-2">
                 <div class="col-md-7 my-auto">
@@ -331,7 +333,7 @@
                                         {% endif %}
                                 </span>
                         </div>
-
+                        
                 </div>
                 <div class="col-md-5 header_btn btn-group">
                         <a href="{% url 'user_comment' complaint.id %}" class="btn btn-secondary px-1"><i
@@ -343,6 +345,7 @@
                 </div>
         </div>
 </div>
+<!-- Status Bar --------------------------------------------------------------------------------->
 <div class="card flex-fill mb-2 shadow-sm" style="height:fit-content;">
         <!-- <h3 class="status pl-1 pt-2 ml-4 mt-1 text-secondary"> <strong> Status </strong></h3> -->
         <div class="main2">
@@ -358,7 +361,7 @@
                                 {% if complaint.complaint_status == 1 %}
                                 <h3>Assign Engineer</h3>
                                 <form action="{% url 'assign_engineer' complaint.id %}" class="" id="assign_engineer"
-                                        method="post">
+                                method="post">
                                         {% csrf_token %}
                                         <select name="assign_engineer"
                                                 class="form-control form-control-sm p-0 px-2 my-0 rounded w-75"
@@ -370,9 +373,9 @@
                                                 {% endfor %}
                                                 <input class="btn btn-primary rounded btn-sm py-0 mx-auto "
                                                         type="submit" value='Assign' />
-                                        </select>
+                                                </select>
                                 </form>
-
+                                
                                 {% elif complaint.complaint_status > 1 %}
                                 <h3>Assigned</h3>
                                 <div class="date">
@@ -384,7 +387,7 @@
                                 </div>
                                 {% endif %}
                         </div>
-
+                        
                         <div class="child">
                                 <h3 id="rep_stats"></h3>
                                 {% if complaint.complaint_status < 3 %} <h3>In Progress</h3>
@@ -403,7 +406,11 @@
                         </div>
                         <div class="child ">
                                 {% if complaint.complaint_status < 3 %} <h3>To be Closed</h3>
-                                        {% elif complaint.complaint_status < 5 %} <h3>Waiting to Close</h3>
+                                {% elif complaint.complaint_status < 5 %}
+                                                <h3>Waiting to Close</h3>
+                                                
+                                                {% if complaint.is_verified %}
+                                                <div class="text-center  d-flex justify-content-center"><i class="bi bi-check-circle text-success"></i> <span>&nbsp;Verified</span></div>                        
                                                 <div class="" id="close_and_checkout">
                                                         <div class="form-container" id="print_checkout">
                                                                 <form class=""
@@ -414,9 +421,47 @@
                                                                                 class="btn btn-sm rounded btn-success mx-auto py-1 px-2 "
                                                                                 value="Close & Checkout">
                                                                 </form>
+                                                                </div>
                                                         </div>
-                                                </div>
-
+                                                        </div>
+                                                        
+                                                        {% else %}
+                                                                <!-- Button trigger modal -->
+                                                                <div class="d-flex justify-content-center">
+                                                                        <button type="button" class="btn btn-primary"   data-bs-toggle="modal" data-bs-target="#verify_customer">
+                                                                                Verify
+                                                                        </button>
+                                                                </div>
+                                                        
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="verify_customer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Customer Verification</h5>
+                                                                        <button type="button"  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                        <form class=""
+                                                                        action="{% url 'OTP_verification' complaint.id %}"
+                                                                        method="post">
+                                                                        {% csrf_token %}
+                                                                        <h5 class="text-start">Enter OTP</h5>
+                                                                        <div class="d-flex align-items-center">
+                                                                                <input type="text" name='recived_otp'>
+                                                                                <button type="button" class="btn btn-primary btn-sm rounded mx-2" id="verify_btn">Send OTP</button>
+                                                                        </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                                        </form>
+                                                                        </div>
+                                                                </div>
+                                                                </div>
+                                                        </div>
+                                                {% endif %}
+                                                
                                                 {% elif complaint.complaint_status <= 6 %} <h3>Complaint Closed</h3>
                                                         <div class="date">
                                                                 <h5>{{complaint.closed_date}}</h5>
@@ -430,13 +475,14 @@
         </div>
 </div>
 
+<!-- Customer Section --------------------------------------------------------------------------------->
 <div class="row mb-2">
         <div class="col-md-5">
                 <div class="costomer-info card flex-fill mb-2 shadow-sm" style="min-height:17rem;">
                         <div class="card-body p-2 hide_scrollbar border p-1 m-2 rounded"
-                                style="overflow-x:scroll ; scrollbar-width: thin;">
-                                <h4 class="px-2 py-1 text-secondary"><strong>Customer Details </strong>
-                                </h4>
+                        style="overflow-x:scroll ; scrollbar-width: thin;">
+                        <h4 class="px-2 py-1 text-secondary"><strong>Customer Details </strong>
+                        </h4>
                                 <hr class="my-0">
                                 <div class="contents px-2  py-2">
                                         <table class=" borderless table-sm">
@@ -695,6 +741,25 @@
 
         let lnk = document.getElementById('all_complaints-link');
         lnk.classList.add('active');
+
+        verify_btn = document.getElementById('verify_btn');
+
+        verify_btn.addEventListener('click',
+                async function send_otp(){
+                        console.log("otp sent!")
+                        id = "{{complaint.id}}"
+                        url = `{% url 'OTP_verification' 121%}`
+                        url = url.replace('121',id)
+                        const response = await fetch(url);
+                        res = await response.text();
+                        verify_btn.disabled = true; 
+                        setTimeout(()=>{
+                                verify_btn.disabled = false;
+                                verify_btn.innerText = 'Resend OTP'
+                        },20000)
+                        return res;
+                }
+        )
 
 </script>
 
