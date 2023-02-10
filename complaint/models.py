@@ -16,6 +16,7 @@ class Item(models.Model):
     warrenty = models.PositiveIntegerField(blank=True)  # In months
     desc = models.CharField(max_length=3000,blank=True)
     unit_price = models.PositiveIntegerField(blank=True)
+    tax = models.FloatField(default=0)
     quantity = models.PositiveIntegerField(blank=True)
 
     def link_complaint(self,new_complaint):

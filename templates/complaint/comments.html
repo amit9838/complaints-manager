@@ -60,7 +60,11 @@
         {% for comment in comments %}
 
         <div class="card shadow-none bg-light py-0 mb-3 border  mx-auto rounded ">
-            <div class="card-header bg-light py-1 px-1 d-flex justify-content-between">
+                {% if comment.user == request.user %}
+                    <div class="card-header py-1 px-1 d-flex justify-content-between" style = "background-color:rgb(203, 216, 234);">
+                {% else %}
+                    <div class="card-header bg-light py-1 px-1 d-flex justify-content-between">
+                {% endif %}
                 <!-- <img src="https://via.placeholder.com/50x50" class="rounded-circle mr-2" alt="User Image"> -->
                 <span class="comment_header_left">
                     <strong >{{comment.user.get_full_name}} </strong>

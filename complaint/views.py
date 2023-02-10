@@ -400,7 +400,7 @@ def add_component(request,pk_cmp):
             is_listed_pro1[0].save()
             product.save()
         else:
-            Item.objects.create(product = product, complaint = complaint_item, brand=product.brand, name =product.name, category = product.category, desc = product.desc, warrenty = product.warrenty, unit_price = product.unit_price, quantity = 1)
+            Item.objects.create(product = product, complaint = complaint_item, brand=product.brand, name =product.name, category = product.category, desc = product.desc, warrenty = product.warrenty, unit_price = product.unit_price,tax=product.tax, quantity = 1)
             product.quantity -= 1
             product.save()
         messages.success(request, 'Component added successfully.')
@@ -748,16 +748,11 @@ def import_data(request):
 
 
 # Generate Invoice ************************************************************************************
-
-
-
 from reportlab.pdfgen import canvas
-from django.http import FileResponse
 import io
-
+from django.http import FileResponse
 
 def generate_invoice(request,pk):
-    
     complaint = Complaint.objects.get(id=pk)
     components = Item.objects.filter(complaint = pk)
 
@@ -776,11 +771,11 @@ def generate_invoice(request,pk):
         item.append(i.brand+" - "+i.name)
         warrenty.append(i.warrenty)
         unit_price.append(i.unit_price)
-        qty.append(i.quantity)
-        tax.append(0)
+        qty.append(i.quantity if i.quantity > 0 else 1)
+        tax.append(i.tax)
 
-    discount = 100  # If no disount is applicabe,  put 'discount = 0'
-    service_charge = 500   # If no service charge is applicabe,  put 'discount = 0'
+    discount = 0  # If no disount is applicabe,  put 'discount = 0'
+    service_charge = 0   # If no service charge is applicabe,  put 'discount = 0'
 
     # Store data in object for simplicity
     objects = []
@@ -792,9 +787,9 @@ def generate_invoice(request,pk):
                 self.item = item
             self.unit_price = unit_price
             self.warrenty = warrenty
-            self.tax = tax
+            self.tax = tax/100
             self.quantity = quantity
-            self.t_price = unit_price*quantity
+            self.t_price = unit_price*quantity + unit_price*quantity*tax/100
             
     # Append object containing data into objects array
     for x in range(len(item)):
@@ -882,28 +877,28 @@ def generate_invoice(request,pk):
         pdf.drawString(40,(565-y_offset-20*i), objects[i].item)
         if objects[i].warrenty: # If there is any warrenty of the product
             pdf.drawString(warrenty_x_pos,(565-y_offset-20*i), str(objects[i].warrenty))
-            pdf.setFont("Helvetica", 10)
+            pdf.setFont("Helvetica", 9)
             pdf.drawString(warrenty_x_pos+18,(565-y_offset-20*i), "Months")
             pdf.setFont("Helvetica", 13)
     
-        pdf.drawRightString(unit_price_x_pos+40,(565-y_offset-20*i), str(objects[i].unit_price)+".0")
+        pdf.drawRightString(unit_price_x_pos+40,(565-y_offset-20*i), str(objects[i].unit_price))
         if(objects[i].tax):
-            pdf.setFont("Helvetica", 10)
-            pdf.drawString(unit_price_x_pos+45,(565-y_offset-20*i), "+Tax")
+            pdf.setFont("Helvetica", 9)
+            pdf.drawString(unit_price_x_pos+45,(565-y_offset-20*i), "+"+str(objects[i].tax*100)+"%" )
             pdf.setFont("Helvetica", 13)
         pdf.drawString(qty_x_pos,(565-y_offset-20*i), str(objects[i].quantity))
-        pdf.drawRightString(price_x_pos,(565-y_offset-20*i), str(objects[i].t_price)+".0")
+        pdf.drawRightString(price_x_pos,(565-y_offset-20*i), str(objects[i].t_price))
 
     pdf.line(40,(565-y_offset-20*i-5),556,(565-y_offset-20*i-5))
 
     # Calculate total tax
     total_tax=0;
-    for i in range(len(objects)):
-        try:
-            if(objects[i].tax):
-                total_tax += objects[i].t_price*objects[i].tax
-        except IndexError:
-            pass
+    # for i in range(len(objects)):
+    #     try:
+    #         if(objects[i].tax):
+    #             total_tax += objects[i].t_price*objects[i].tax
+    #     except IndexError:
+    #         pass
 
     # Calculate Sub total
     sub_total = 0
@@ -916,11 +911,12 @@ def generate_invoice(request,pk):
 
     labels_x_pos = 480  #default 480
     pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-25),  "Sub Total : ")
-    pdf.drawRightString(550,(565-y_offset-20*i-25),str(sub_total)+".0")
+    pdf.drawRightString(550,(565-y_offset-20*i-25),str(sub_total))
 
-    pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-40), "Tax : ")
-    pdf.drawRightString(550,(565-y_offset-20*i-40),"+ "+str(total_tax))
+    # pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-40), "Tax : ")
+    # pdf.drawRightString(550,(565-y_offset-20*i-40),"+ "+str(total_tax))
 
+    y_offset = y_offset-15
 
     if(service_charge):  # If service charge is applicable
         y_offset = y_offset+10 # Service Charge offset
@@ -939,12 +935,11 @@ def generate_invoice(request,pk):
     pdf.line(380,(565-y_offset-20*i-45),556,(565-y_offset-20*i-45))
     pdf.setFont("Helvetica-Bold", 15)
     pdf.drawRightString(labels_x_pos,(565-y_offset-20*i-63), "Total : ")
-    pdf.drawRightString(550,(565-y_offset-20*i-63), str(sub_total+total_tax+service_charge-discount)+".0")
+    pdf.drawRightString(550,(565-y_offset-20*i-63), str(sub_total+total_tax+service_charge-discount))
     pdf.line(380,(565-y_offset-20*i-70),556,(565-y_offset-20*i-70))
     pdf.setFont("Helvetica", 13)
 
     pdf.drawString(40,(505-y_offset-20*i), "Thanks for visiting")
     pdf.save()
     buffer.seek(0) # end buffer
-
     return FileResponse(buffer, as_attachment=True,filename=fileName)

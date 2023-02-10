@@ -22,6 +22,7 @@ class NewProductFrom(ModelForm):
     )
     warrenty = forms.CharField(
         label='Warrenty (in months)',
+        required=False,
         widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
     )
     quantity = forms.CharField(
@@ -32,7 +33,12 @@ class NewProductFrom(ModelForm):
         label='Unit Price',
         widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
     )
+    tax = forms.CharField(
+        label='Tax',
+        required=False,
+        widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':'Skip this if not applicable'})
+    )
 
     class Meta:
         model = Product
-        fields = ['name','brand','desc','category','warrenty','quantity','unit_price']
+        fields = ['name','brand','desc','category','warrenty','quantity','unit_price','tax']
