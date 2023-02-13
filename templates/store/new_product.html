@@ -10,7 +10,7 @@
 {% block body_content %}
 {% include 'home/partials/_message.html' %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white border">
+    <ol class="breadcrumb bg-white shadow-sm">
         <li class="breadcrumb-item"><a href="{% url 'store' %}">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">New Product</li>
     </ol>
@@ -18,49 +18,83 @@
 
 <style>
     .form-control {
-        /* margin-top: .5rem; */
+        margin-top: -.1rem;
         margin-bottom: .5rem;
     }
+    input,textarea{
+        border-radius: .2rem !important;
+    }
+
+    label{
+        font-size: .8rem;
+        color: grey;
+     }
 </style>
 
-<div class="card w-50 mx-auto p-2 pt-0">
-    <div class="card-header pb-0 my-0">
-        <h3 class="text-secondary  px-2 py-1 " > New Product</h3>
-        <!-- <hr class="my-1">     -->
-    </div>
 
-    <div class="card-body rounded  mt-0 pb-2" >
-        <form action={% url 'new_product' %} method="post">
-            {% csrf_token %}
-            <div class="w-75 mx-auto">
-                {{form.name.label}}
-                {{form.name}}
-                {{form.brand.label}}
-                {{form.brand}}
-                <label for="category">Category</label>
-                <select name="category" id="category" class="form-control form-control-sm ">
-                    <!-- category goes here -->
-                </select>
-                {{form.desc.label}}
-                {{form.desc}}
-                {{form.warrenty.label}}
-                {{form.warrenty}}
-                {{form.quantity.label}}
-                {{form.quantity}}
-                {{form.unit_price.label}}
-                {{form.unit_price}}
-                {{form.tax.label}}(%)
-                {{form.tax}}
-            </div>
-            <!-- {{complaint_register_form}} -->
-            <div class="submit-btn border-top mt-4 py-0">
-                <div class="btn-container col-sm-2 float-right mt-2 mr-0 pr-0" style="min-width:10rem;">
-                    <button type="submit" class="btn btn-primary btn-block"> Save</button>
+<div class="card flex-fill w-sm-50 mx-auto mx-auto shadow-sm">
+    <div class="card-header mb-0 pb-0">
+        <h3 class="card-titlse text-center py-2 rounded text-dark"> New Product </h3>
+    </div>
+    <hr class="my-0">
+    <div class="card-body">
+        {% include 'home/partials/_message.html' %}
+        <div class="form-container  m-auto px-4 py-2 rounded">
+            <form action="{% url 'new_product' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="component_name">Product Name</label>
+                        {{form.name}}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="component_name">Brand</label>
+                        {{form.brand}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="component_name">Description</label>
+                        {{form.desc}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="component_name">Unit Prince</label>
+                        {{form.unit_price}}
+                        <label for="component_name">Quantity</label>
+                        {{form.quantity}}
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div >
+                            <label for="category">Category</label>
+                            <select name="category" id="category" class="form-control form-control-sm ">
+                                <!-- category goes here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="component_name">Warrenty</label>
+                        {{form.warrenty}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="component_name">Tax %</label>
+                        {{form.tax}}
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+        <hr class="my-1">
+        <div class="row">
+            <div class="col-sm-9"></div>
+            <input type="submit" class="btn btn-primary mt-2 col-sm-2 my-2 mx-auto text-center" style="max-width: 18rem;" value="Add Component" >
+        </div>
+    </form>
 </div>
+
 
 
 <script>

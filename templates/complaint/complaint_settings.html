@@ -24,17 +24,51 @@
     <div class="advanced-setting my-3">
         <h4 class="fs-4 text-muted mx-2">Advanced</h4>
         <hr class="my-2">
-       
         <div class="settings-content mx-3 my-3 border rounded py-2 px-3">
             <h6 class="fs-5">Reset Complaint Progress</h6>
-            <div class="un-assign-setting  d-flex align-items-center justify-content-between rounded border bg-light" style="min-width: 16rem; width: fit-content;">
-                <div class=" mx-2 ">{{complaint.complaint_status}}</div> 
+            <div class="un-assign-setting  d-flex align-items-center justify-content-between rounded border bg-light"
+                style="min-width: 16rem; width: fit-content;">
+                <div class=" mx-2 ">{{complaint.complaint_status}}</div>
                 <form action="{% url 'reset_complaint_progress' complaint.id %}" method="POST">
                     {% csrf_token %}
                     <input type="submit" class="btn btn-primary btn-sm rounded h-100" value="Reset">
                 </form>
             </div>
-            <small class="text-muted"> Current status of complaint is <strong>{{complaint.complaint_status}}.</strong> This option will set current status to <strong>Registred (1)</strong> .</small>
+            <small class="text-muted"> For <strong>{{complaint.complaint_status}}.</strong> This option will set current
+                status to <strong>Registred (1)</strong> .</small>
+        </div>
+
+
+
+        <div class="ettings-content mx-3 my-3 border rounded py-2 px-3">
+
+            <h4 class="my-0">Close Forcefully</h4>
+            <h6 class="my-0 text-muted" style="font-size: .7rem;">Close the complaint forcefully</h6>
+            <hr class="my-2">
+
+            <form action="{% url 'force_close_complaint' complaint.id %}" method="POST">
+                <label>Select status</label>
+                <small>(Default selection - Repaired)</small>
+                <br>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-primary btn-sm active">
+                        <input type="radio" value= 5 name="status" id="option1" autocomplete="off"> Repaired
+                    </label>
+                    <label class="btn btn-primary btn-sm">
+                        <input type="radio" value= 6 name="status" id="option2" autocomplete="off"> Not Repaired
+                    </label>
+                </div>
+                <br>
+
+                <label class="mt-2" for="password">Enter Admin Password</label>
+                {% csrf_token %}
+                <div class="un-assign-setting  d-flex align-items-center justify-content-between flex-wrap"
+                    style="min-width: 16rem; width: fit-content;">
+                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name="password">
+                    <button type="submit" class="btn btn-primary btn-sm rounded ">Force Close</button>
+                </div>
+            </form>
+            <small class="text-muted">! This action is irreversible.
         </div>
 
 
@@ -43,7 +77,7 @@
     <div class="danger-setting my-3">
         <h4 class="fs-4 mx-2 text-danger">Danger Zone</h4>
         <hr class="my-2">
-        <div class="settings-content mx-3 my-3 border rounded py-2 px-3 " >
+        <div class="settings-content mx-3 my-3 border rounded py-2 px-3 ">
             <h6 class="fs-5">Delete Complaint</h6>
             <div class="table bg-light" style="min-width: 16rem; width: fit-content;">
                 <table class="table table-sm border">
@@ -61,20 +95,17 @@
                     </tr>
                 </table>
             </div>
-            <label for="password">Enter Your Password</label>
+            <label for="password">Enter Admin Password</label>
             <form action="{% url 'delete_complaint' complaint.id %}" method="POST">
                 {% csrf_token %}
-                <div class="un-assign-setting  d-flex align-items-center justify-content-between flex-wrap" style="min-width: 16rem; width: fit-content;">
-                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name = "password">
+                <div class="un-assign-setting  d-flex align-items-center justify-content-between flex-wrap"
+                    style="min-width: 16rem; width: fit-content;">
+                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name="password">
                     <button type="submit" class="btn btn-danger btn-sm rounded ">Confirm Delete</button>
                 </div>
             </form>
             <small class="text-muted">! This action is irreversible.
         </div>
-       
-       
-
-
     </div>
 
 </div>

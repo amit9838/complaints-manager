@@ -139,7 +139,7 @@ class AddComponentForm_manual(ModelForm):
     tax = forms.CharField(
         label='Tax',
         required=False,
-        widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':'Skip this if not applicable'})
+        widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':'Skip if not applicable'})
     )
 
     class Meta:

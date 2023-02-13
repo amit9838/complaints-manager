@@ -9,30 +9,80 @@
         margin-top: -.1rem;
         margin-bottom: .5rem;
     }
+    input,textarea{
+        border-radius: .2rem !important;
+    }
+
+    label{
+        font-size: .8rem;
+        color: grey;
+     }
 </style>
 
 
 <div class="card flex-fill w-sm-50 mx-auto mx-auto">
     <div class="card-header mb-0 pb-0">
-        <h3 class="card-titlse text-center bg-light py-2 rounded text-dark"> New Component </h3>
-
+        <h3 class="card-titlse text-center py-2 rounded text-dark"> Add Component </h3>
     </div>
-
+    <hr class="my-0">
     <div class="card-body">
         {% include 'home/partials/_message.html' %}
         <div class="form-container  m-auto px-4 py-2 rounded">
             <form action="" method="post">
                 {% csrf_token %}
-                {{form}}
-                <input type="submit" class="btn btn-primary" value="Add Component" >
-            </form>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="component_name">Component Name</label>
+                        {{form.name}}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="component_name">Brand</label>
+                        {{form.brand}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="component_name">Description</label>
+                        {{form.desc}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="component_name">Unit Prince</label>
+                        {{form.unit_price}}
+                        <label for="component_name">Quantity</label>
+                        {{form.quantity}}
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div >
+                            <label for="category">Category</label>
+                            <select name="category" id="category" class="form-control form-control-sm ">
+                                <!-- category goes here -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="component_name">Warrenty</label>
+                        {{form.warrenty}}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="component_name">Tax %</label>
+                        {{form.tax}}
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+        <hr class="my-1">
+        <div class="row">
+            <div class="col-sm-9"></div>
+            <input type="submit" class="btn btn-primary mt-2 col-sm-2 my-2 mx-auto text-center" style="max-width: 18rem;" value="Add Component" >
+        </div>
+    </form>
 </div>
-<script>
-    let lnk = document.getElementById('all_complaints-link');
-    lnk.classList.add('active');
-</script>
+
 
 {% endblock body_content %}
 

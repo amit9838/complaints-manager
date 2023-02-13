@@ -44,6 +44,7 @@ urlpatterns = [
     path('assign_engineer/<int:pk>', views.assign_engineer , name="assign_engineer"),
     path('delete_complaint/<int:pk>', views.deleteComplaint, name="delete_complaint"),
     path('reset_progress/<int:pk>', views.reset_complaint_progress , name="reset_complaint_progress"),
+    path('force_close_complaint/<int:pk>', views.force_close_complaint , name="force_close_complaint"),
     path('complaints_log/', Complaints_log_api.as_view(), name="complaints_log"),
     path('close_complaint/<int:pk>', views.close_complaint, name="close_complaint"),
     path('print_record/<int:pk>', views.print_record, name="print_record"),

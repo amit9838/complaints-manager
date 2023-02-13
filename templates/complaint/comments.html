@@ -34,7 +34,7 @@
         padding: 0.75rem 1.25rem;
     }
 
-    .comment_header_left{
+    .comment_header_left {
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -42,14 +42,13 @@
     }
 
     @media screen and (max-width:760px) {
-        .comment_header_left{
+        .comment_header_left {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
     }
-
 </style>
 
 <div class="card shadow-sm">
@@ -60,111 +59,110 @@
         {% for comment in comments %}
 
         <div class="card shadow-none bg-light py-0 mb-3 border  mx-auto rounded ">
-                {% if comment.user == request.user %}
-                    <div class="card-header py-1 px-1 d-flex justify-content-between" style = "background-color:rgb(203, 216, 234);">
+            {% if comment.user == request.user %}
+            <div class="card-header py-1 px-1 d-flex justify-content-between"
+                style="background-color:rgb(203, 216, 234);">
                 {% else %}
-                    <div class="card-header bg-light py-1 px-1 d-flex justify-content-between">
-                {% endif %}
-                <!-- <img src="https://via.placeholder.com/50x50" class="rounded-circle mr-2" alt="User Image"> -->
-                <span class="comment_header_left">
-                    <strong >{{comment.user.get_full_name}} </strong>
-                    <small class="ml-2">Posted:{{comment.date_added|date:' M-d-Y'}}</small>
-                </span>
-                <div class="d-flex">
-                    {% if comment.user.is_superuser %}
-                    <span class="badge text-dark border bg-white rounded-pill my-auto px-2">Admin</span>
-
-                    {% elif comment.user.is_staff %}
-                    <span class="badge text-dark border bg-white rounded-pill my-auto px-2">Staff</span>
-
-
-                    {% else %}
-                    <span class="badge text-dark border bg-white rounded-pill my-auto px-2">Engineer</span>
+                <div class="card-header bg-light py-1 px-1 d-flex justify-content-between">
                     {% endif %}
+                    <!-- <img src="https://via.placeholder.com/50x50" class="rounded-circle mr-2" alt="User Image"> -->
+                    <span class="comment_header_left">
+                        <strong>{{comment.user.get_full_name}} </strong>
+                        <small class="ml-2">Posted:{{comment.date_added|date:' M-d-Y'}}</small>
+                    </span>
+                    <div class="d-flex">
+                        {% if comment.user.is_superuser %}
+                        <span class="badge text-dark border bg-white rounded-pill my-auto px-2">Admin</span>
 
-                    <!-- Button trigger modal -->
-                    {% if comment.user == request.user %}
-                    <button type="button" class="btn btn-primary px-2 py-0 my-auto mx-1 border rounded-pill  "
-                        data-bs-toggle="modal" data-bs-target="#update{{comment.id}}" style="font-size: .7rem;">
-                        Edit
-                    </button>
-                    {% endif %}
+                        {% elif comment.user.is_staff %}
+                        <span class="badge text-dark border bg-white rounded-pill my-auto px-2">Staff</span>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="update{{comment.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update Comment</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+
+                        {% else %}
+                        <span class="badge text-dark border bg-white rounded-pill my-auto px-2">Engineer</span>
+                        {% endif %}
+
+                        <!-- Button trigger modal -->
+                        {% if comment.user == request.user %}
+                        <button type="button" class="btn btn-primary px-2 py-0 my-auto mx-1 border rounded-pill  "
+                            data-bs-toggle="modal" data-bs-target="#update{{comment.id}}" style="font-size: .7rem;">
+                            Edit
+                        </button>
+                        {% endif %}
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="update{{comment.id}}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Update Comment</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'update_comment' comment.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="mb-2 mx-1">
+                                                <label for="exampleFormControlTextarea1" class="form-label">
+                                                    Old Comment</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                                    name="message">{{comment.user_comment}}</textarea>
+                                            </div>
+                                            <input type="text" name="cmp_id" id="" value={{complaint.id}} hidden>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                    </form>
                                 </div>
-                                <div class="modal-body">
-                                    <form action="{% url 'update_comment' comment.id %}" method="POST">
-                                        {% csrf_token %}
-                                        <div class="mb-2 mx-1">
-                                            <label for="exampleFormControlTextarea1" class="form-label">
-                                                Old Comment</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-                                                name="message">{{comment.user_comment}}</textarea>
-                                        </div>
-                                        <input type="text" name="cmp_id" id="" value={{complaint.id}} hidden>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                                </form>
                             </div>
                         </div>
-                    </div>
 
-
-                    <!-- <a class="badge text-dark border bg-white rounded px-2">:</a> -->
-                    {% if comment.user == request.user %}
-                    <div class="dropdown dropstart">
-                        <a class="badge bg-white border  text-dark px-1 py-1 mx-1" type="button"
-                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </a>
-                        <ul class="dropdown-menu bg mt-4"  aria-labelledby="dropdownMenuButton1">
-                            <form action="{% url 'delete_comment' comment.id %}" method="POST">
-                                {% csrf_token %}
-                                <input type="text" name="cmp_id" id="" value={{complaint.id}} hidden>
-                                <button class="dropdown-item" type="submit">Delete</button>
-                            </form>
-                        </ul>
+                        {% if comment.user == request.user %}
+                        <div class="btn-group droplleft">
+                            <button type="button" class="btn btn-secondary dropdown-toggdle px-1 py-0 " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                        
+                            <ul class="dropdown-menu bg" aria-labelledby="dropdownMenuButton1">
+                                <form action="{% url 'delete_comment' comment.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="text" name="cmp_id" id="" value={{complaint.id}} hidden>
+                                    <button class="dropdown-item" type="submit">Delete</button>
+                                </form>
+                            </ul>
+                        </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
+                </div>
+                <div class="card-body bg-white">
+                    <p class="card-text">{{comment.user_comment}}</p>
                 </div>
             </div>
-            <div class="card-body bg-white">
-                <p class="card-text">{{comment.user_comment}}</p>
-            </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
 
-        <hr class="my-1">
-        <div class="px-1 py-1">
-            <form action="{% url 'user_comment' complaint.id %}" class="bg-light py-2 px-0 border rounded"
-                method="post">
-                {% csrf_token %}
-                <div class="mb-2 mx-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Write Your Comment Here</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message"
-                        placeholder="Leave a message..." minlength=1></textarea>
-                </div>
-                <div class="d-flex justify-content-end mx-3">
-                    <button class="btn btn-primary" type="submit">
-                        Comment
-                    </button>
-                </div>
-            </form>
+            <hr class="my-1">
+            <div class="px-1 py-1">
+                <form action="{% url 'user_comment' complaint.id %}" class="bg-light py-2 px-0 border rounded"
+                    method="post">
+                    {% csrf_token %}
+                    <div class="mb-2 mx-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Write Your Comment Here</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="message"
+                            placeholder="Leave a message..." minlength=1></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end mx-3">
+                        <button class="btn btn-primary" type="submit">
+                            Comment
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
-{% endblock %}
+    {% endblock %}
