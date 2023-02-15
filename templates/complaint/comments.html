@@ -2,7 +2,6 @@
 
 {% block title %}All Complaints{% endblock title %}
 
-
 {% block body_content %}
 {% include 'home/partials/_message.html' %}
 
@@ -83,24 +82,24 @@
                         {% endif %}
 
                         <!-- Button trigger modal -->
+                        <!-- Button trigger modal -->
                         {% if comment.user == request.user %}
-                        <button type="button" class="btn btn-primary px-2 py-0 my-auto mx-1 border rounded-pill  "
-                            data-bs-toggle="modal" data-bs-target="#update{{comment.id}}" style="font-size: .7rem;">
+                        <button type="button" class="btn btn-primary px-2 py-0 my-auto mx-1 border rounded-pill " data-toggle="modal" data-target="#update{{comment.id}}" style="font-size: .7rem;">
                             Edit
                         </button>
-                        {% endif %}
-
+                        
                         <!-- Modal -->
-                        <div class="modal fade" id="update{{comment.id}}" tabindex="-1"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                        <div class="modal fade" id="update{{comment.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Update Comment</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                     </div>
                                     <div class="modal-body">
+                                    
                                         <form action="{% url 'update_comment' comment.id %}" method="POST">
                                             {% csrf_token %}
                                             <div class="mb-2 mx-1">
@@ -120,20 +119,22 @@
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+
 
                         {% if comment.user == request.user %}
-                        <div class="btn-group droplleft">
-                            <button type="button" class="btn btn-secondary dropdown-toggdle px-1 py-0 " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="btn-group dropleft">
+                            <button type="button" class="btn btn-secondary dropdown-toggdle px-1 py-0 rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="bi bi-three-dots-vertical"></i>
                             </button>
                         
-                            <ul class="dropdown-menu bg" aria-labelledby="dropdownMenuButton1">
+                            <div class="dropdown-menu bg mt-3" aria-labelledby="dropdownMenuButton1">
                                 <form action="{% url 'delete_comment' comment.id %}" method="POST">
                                     {% csrf_token %}
                                     <input type="text" name="cmp_id" id="" value={{complaint.id}} hidden>
                                     <button class="dropdown-item" type="submit">Delete</button>
                                 </form>
-                            </ul>
+                            </div>
                         </div>
                         {% endif %}
                     </div>

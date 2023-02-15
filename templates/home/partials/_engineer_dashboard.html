@@ -156,6 +156,39 @@
 
     </div>
 
+    <style>
+        .comment_link {
+            display: none;
+            transition: ease-in-out .2s;
+            /* direction: none; */
+        }
+        .comment_link:link {
+            text-decoration: none;
+        }
+        .comment_show {
+            display: block;
+        }
+        .comment_show:hover{
+            color: rgb(18, 96, 175);
+            font-weight: 600;
+            border-radius: .1rem;
+            transform: scale(1.05);
+            /* background-color: rgb(218, 233, 255); */
+    
+        }
+        .comment_num{
+            position: relative;
+            padding: 0 .18rem;
+            font-size: .65rem;
+            font-weight:600 ;
+            top: 3px;
+            left: -5px;
+            border-radius:5rem;
+            border: 1px solid rgb(158, 198, 238);
+        }
+    </style>
+
+
 <div class="card-body px-0 pt-0" id="table_container" style="overflow-x:scroll ;">
     <table class="table table-sm table-hover my-0" style="min-width: 50rem;">
         <thead class="">
@@ -164,7 +197,8 @@
                 <th class="border-0" width="150">Product</th>
                 <th class="border-0" width="400">Problem</th>
                 <th class="border-0" width="100">Assigned on</th>
-                <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center; ">Status</th>
+                <th class="border-0" width="60"></th>
+                <th class="border-0" style="width: 10rem; min-width:5rem; text-align: center;">Status</th>
                 <th class="border-0">View</th>
             </tr>
         </thead>
@@ -172,14 +206,17 @@
         <tbody class="table_body">
             {% for complaint in complaints_assigned %}
             <tr>
-                <th class="px-3" scope="row"><span># </span> <span>{{complaint.id}}</span></th>
+                <th class="px-3" scope="row"><span># </span> <span class="complaint_id">{{complaint.id}}</span></th>
                 <td> <span>{{complaint.brand}}</span> - <span>{{complaint.model_no}}</span> </td>
                 <td>{{complaint.problem|truncatewords:5}}</td>
                 <td>{{complaint.assigned_date}}</td>
+                <td class="text-center mx-auto">
+                    <a href="{% url 'user_comment' complaint.id %}" class="comment_link text-center mx-auto" ><i class="bi bi-chat-square"></i> <span class="comment_num text-center m-auto">0</span> </a>
+                </td>
                 <td style="text-align: center;"><span class="mx-2 status_badge st{{complaint.complaint_status}}"
                         id="status_badge" style="font-size: .9rem;"></span></td>
                 <td class="px-3" width="40">
-                    <a href="{% url 'view_complaint' complaint.id %}">
+                    <a href="{% url 'view_complaint_engg' complaint.id %}">
                         <div class="btn btn-outline-primary rounded py-0 px-2"> -> </div>
                     </a>
 
@@ -194,4 +231,29 @@
 <script>
     let lnk = document.getElementById('dashboard-link');
     lnk.classList.add('active');
+
+
+
+    let complaint_id = document.getElementsByClassName("complaint_id");
+    let comment_link = document.getElementsByClassName("comment_link");
+
+    comment_link_arr = Array.from(comment_link);
+
+    Array.from(complaint_id).forEach(async (e,i) => {
+        let hasComment = await get_comment_info(e.innerText);
+        if (hasComment) {        
+            comment_link[i].classList.add('comment_show');
+            comment_link[i].children[1].innerText = hasComment
+        }
+    });
+    // console.log(complaint_id);
+
+
+    async function get_comment_info(id) {
+            url = `{% url 'has_comments' 121%}`
+            url = url.replace('121',id)
+            const response = await fetch(url);
+            res = await response.text();
+            return Number(res.slice(1,-1));
+        } 
 </script>

@@ -40,10 +40,10 @@
     .comment_link:link {
         text-decoration: none;
     }
-    .show {
+    .comment_show {
         display: block;
     }
-    .show:hover{
+    .comment_show:hover{
         color: rgb(18, 96, 175);
         font-weight: 600;
         border-radius: .1rem;
@@ -325,7 +325,7 @@ comment_link_arr = Array.from(comment_link);
 Array.from(complaint_id).forEach(async (e,i) => {
     let hasComment = await get_comment_info(e.innerText);
     if (hasComment) {        
-        comment_link[i].classList.add('show');
+        comment_link[i].classList.add('comment_show');
         comment_link[i].children[1].innerText = hasComment
     }
 });
