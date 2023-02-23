@@ -123,12 +123,12 @@
 
 
                         {% if comment.user == request.user %}
-                        <div class="btn-group dropleft">
+                        <div class="btn-group">
                             <button type="button" class="btn btn-secondary dropdown-toggdle px-1 py-0 rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="bi bi-three-dots-vertical"></i>
                             </button>
                         
-                            <div class="dropdown-menu bg mt-3" aria-labelledby="dropdownMenuButton1">
+                            <div class="dropdown-menu bg dropdown-menu-right py-1" aria-labelledby="dropdownMenuButton1">
                                 <form action="{% url 'delete_comment' comment.id %}" method="POST">
                                     {% csrf_token %}
                                     <input type="text" name="cmp_id" id="" value={{complaint.id}} hidden>

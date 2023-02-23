@@ -48,7 +48,7 @@
 
             <form action="{% url 'force_close_complaint' complaint.id %}" method="POST">
                 <label>Select status</label>
-                <small>(Default selection - Repaired)</small>
+                <small>(Default selection is - Repaired)</small>
                 <br>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-primary btn-sm active">
@@ -60,11 +60,11 @@
                 </div>
                 <br>
 
-                <label class="mt-2" for="password">Enter Admin Password</label>
+                <label class="mt-2" for="password">Enter your password</label>
                 {% csrf_token %}
                 <div class="un-assign-setting  d-flex align-items-center justify-content-between flex-wrap"
                     style="min-width: 16rem; width: fit-content;">
-                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name="password">
+                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name="password" required>
                     <button type="submit" class="btn btn-primary btn-sm rounded ">Force Close</button>
                 </div>
             </form>
@@ -95,12 +95,12 @@
                     </tr>
                 </table>
             </div>
-            <label for="password">Enter Admin Password</label>
+            <label for="password">Enter your password</label>
             <form action="{% url 'delete_complaint' complaint.id %}" method="POST">
                 {% csrf_token %}
                 <div class="un-assign-setting  d-flex align-items-center justify-content-between flex-wrap"
                     style="min-width: 16rem; width: fit-content;">
-                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name="password">
+                    <input class="px-1 my-1 mr-2" type="password" placeholder="Password" name="password" required>
                     <button type="submit" class="btn btn-danger btn-sm rounded ">Confirm Delete</button>
                 </div>
             </form>

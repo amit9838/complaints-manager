@@ -133,7 +133,7 @@ def delete_checklist(request, pk_cmp,pk_chk):
     messages.error(request, 'Checklist item deleted successfully')
     return redirect('add_checklist',pk_cmp)
 
-# Delete compalint forceully ! Requires password -- Added in compalint settigs page.
+# Delete compalint forceully! Requires password -- Added in compalint settigs page.
 def deleteComplaint(request,pk):
     if request.method == 'POST' and request.user.is_staff:
         usr = request.user
@@ -372,18 +372,26 @@ def reset_complaint_progress(request,pk):
 def force_close_complaint(request,pk):
     """Forcefully close the the compalaint without the need of verification"""
     complaint = Complaint.objects.get(id = pk)
+    user = request.user
     if request.method == "POST" and request.user.is_staff:
-        stat = request.POST['status']
-        if not stat:
+        stat = 0
+        try:
+            stat = request.POST['status']
+        except Exception as e:
+            print("No status selected, Closing with default value.")
+            stat = 5
+
+        password = request.POST['password']
+   
+        if user.check_password(password):
             complaint.complaint_status = stat
             complaint.save()
             messages.success(request, 'Complaint progress has been forcefully closed')
-        
+            return redirect('complaint_settings', pk)
         else:
-            complaint.complaint_status = stat
-            complaint.save()
-            messages.success(request, 'Complaint progress has been forcefully closed')
-        return redirect('complaint_settings', pk)
+            messages.error(request, 'Invalid Password!')
+            return redirect('complaint_settings', pk)
+    messages.error(request, 'Some Error occured!')
     return redirect('complaint_settings', pk)
 
 
