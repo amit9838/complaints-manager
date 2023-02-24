@@ -321,27 +321,27 @@
 <!-- Header --------------------------------------------------------------------------------->
 <div class="card flex-fill  shadow-sm">
         <div class="card-body row  py-2 px-2">
-                <div class="col-md-7 my-auto">
-                        <div class=" d-flex align-items-center fs-5">
-                                <h3 class="title text-secondary align-center my-auto">Complaint<strong>
-                                                #{{complaint.id}} |&nbsp;</strong></h3>
-                                <span style="letter-spacing: -.5px;">
+                <div class="col-md-6 my-auto">
+                        <div class=" d-flex align-items-center flex-wrap">
+                                <div class="title text-secondary align-center my-auto fs-3">Complaint<strong>
+                                                #{{complaint.id}} |&nbsp;</strong></div>
+                                <div style="letter-spacing: -1px; font-size: .8rem;">
                                         {% if complaint.updated_by %}
                                         <span class="text-secondary">Last Updated: {{complaint.updated_date}}</span>
                                         {% else %}
                                         <span class="text-secondary">Last Updated: {{complaint.registred_date}}</span>
                                         {% endif %}
-                                </span>
+                                </div>
                         </div>
                         
                 </div>
-                <div class="col-md-5 header_btn btn-group">
-                        <a href="{% url 'user_comment' complaint.id %}" class="btn btn-secondary px-1"><i
-                                        class="bi bi-chat-square"></i> Comment({{comment_count}})</a>
-                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-secondary px-1"><i class="bi bi-pencil"></i> Edit</a>
-                        <a href="" class="btn btn-secondary "><i class="bi bi-share"></i> Share</a>
-                        <a href="{% url 'print_record' complaint.id %}" class="btn btn-secondary "><i class="bi bi-printer"></i> Print</a>
-                        <a href="{% url 'complaint_settings' complaint.id %}" class="btn btn-secondary px-"><i class="bi bi-sliders"></i> Settings</a>
+                <div class="col-md-6 header_btn btn-group">
+                        <a href="{% url 'user_comment' complaint.id %}" class="btn btn-secondary d-flex flex-wrap align-items-center justify-content-center px-1"><i
+                                        class="bi bi-chat-square"></i>  <div class="ml-1">Comment({{comment_count}})</div></a>
+                        <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-secondary d-flex flex-wrap align-items-center justify-content-center px-2"><i class="bi bi-pencil"></i>  <div class="ml-1">Edit</div> </a>
+                        <a href="" class="btn btn-secondary d-flex flex-wrap align-items-center justify-content-center px-1"><i class="bi bi-share"></i> <div class="ml-1">Share</div></a>
+                        <a href="{% url 'print_record' complaint.id %}" class="btn btn-secondary d-flex flex-wrap align-items-center justify-content-center px-1"><i class="bi bi-printer"></i> <div class="ml-1">Print</div></a>
+                        <a href="{% url 'complaint_settings' complaint.id %}" class="btn btn-secondary d-flex flex-wrap align-items-center justify-content-center px-1"><i class="bi bi-sliders"></i> <div class="ml-1">Settings</div></a>
                 </div>
         </div>
 </div>
@@ -548,6 +548,12 @@
                                                                 <td class="text-secondary">Physical Condition</td>
                                                                 <td>{{complaint.physical_condition}}</td>
                                                         </tr>
+                                                        {% if complaint.details %}
+                                                        <tr>
+                                                                <td class="text-secondary">Other Details</td>
+                                                                <td>{{complaint.details}}</td>
+                                                        </tr>
+                                                        {% endif %}
                                                         {% if complaint.updated_by %}
                                                         <tr>
                                                                 <td class="text-secondary ">Updated</td>

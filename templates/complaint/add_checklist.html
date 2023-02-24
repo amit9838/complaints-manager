@@ -6,21 +6,15 @@
 {% block body_content %}
 {% include 'home/partials/_message.html' %}
 
-<div class=" border-1 px-1 row bg-white p-3">
-    <div class="col-md-7 ">
-        <div class="container rounded border bg-light p-1 py-1">
-
-            <h4 class="text-secondary bg-light py-2 px-3">Complain Information</h4>
+<div class=" border-0 px-1 row bg-white rounded p-3 shadow-sm">
+    <div class="col-md-7">
+        <div class="container rounded border  px-0 py-1">
+            <h4 class="text-secondary py-2 px-3 my-auto">Complaint Information</h4>
+            <hr class="my-1">
             <div class="form-container px-2 mx-3 rounded bg-white py-2">
-                <strong>
-                    <h4>Complaint Details</h4>
-                </strong>
                 <div class="details-container" id="details_container">
-
-
-                    <table class='table  table-sm table-borderless table-striped'>
+                    <table class='  table-sm table-borderless'>
                         <thead>
-
                         </thead>
                         <tbody>
                             <tr></tr>
@@ -65,6 +59,10 @@
                                 <td>{{complaint.physical_condition}}</td>
                             </tr>
                             <tr>
+                                <th>Other Details</th>
+                                <td>{{complaint.details}}</td>
+                            </tr>
+                            <tr>
                                 <th>Problem</th>
                                 <td>{{complaint.problem}}</td>
                             </tr>
@@ -72,30 +70,25 @@
                     </table>
                 </div>
             </div>
+            <hr class="my-1">
             <div class="action-bar d-flex ml-3">
-                <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-primary my-2 "><i
-                        class="fa-solid fa-pencil"></i> Edit</a>
+                <a href="{% url 'update_complaint' complaint.id %}" class="btn btn-primary my-1"><- Update Complaint</a>
             </div>
         </div>
     </div>
 
 
     <div class="container col-md-5">
-        <div class="container bg-light  border rounded">
-
-            <h4 class="text-secondary bg-light py-2 px-1">Pre Repair Checklist</h4>
-            <div class="form-container px-2 py-1 rounded bg-white py-2">
-                <strong>
-                    <h4>Pre Repair Checklist</h4>
-                </strong>
-                <hr class="my-0">
-                <div class="arrtibute-container" id="attribute_container">
-
-                    <table class='table  table-sm table-borderless'>
+        <div class="container border rounded px-0 py-1 " style="height: 100%;">
+            <h4 class="text-secondary py-2 ml-3 my-auto">Pre Repair Checklist</h4>
+            <hr class="my-1">
+            <div class="form-container px-2">
+                <div class="arrtibute-container  borsder rounded-2 my-2" id="attribute_container">
+                    <table class=' table-sm'>
                         <thead>
-                            <th>Attribute</th>
-                            <th>Value</th>
-                            <th>Action</th>
+                            <th width = 140 class="border-bottom">Attribute</th>
+                            <th width = 200 class="border-bottom">Value</th>
+                            <th width = 80 class="border-bottom">Action</th>
                         </thead>
                         <tbody>
                             <tr></tr>
@@ -106,9 +99,9 @@
                                 <td width="100">
                                     <span class>
 
-                                        <button type="button" class="more_attr btn btn-primary btn-sm rounded"
+                                        <button type="button" class="more_attr btn btn-light btn-sm rounded py-0"
                                         data-toggle="modal" data-target="#model_update{{item.id}}">
-                                        <i class="fa-solid fa-pencil"></i>
+                                        <i class="fa-solid fa-pencil text-primary"></i>
                                     </button>
 
                                     <!-- Modal -->
@@ -151,8 +144,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="btn btn-danger btn-sm rounded" href="{% url  'delete_checklist' complaint.id  item.id %}">
-                                        <i class="fa-solid fa-xmark"></i></a>
+                                    <a class="btn btn-light btn-sm rounded" href="{% url  'delete_checklist' complaint.id  item.id %}">
+                                        <i class="fa-solid fa-xmark text-danger"></i></a>
                             </span>
                             </td>
                       </tr>
@@ -160,15 +153,16 @@
                 </tbody>
                 </table>
             </div>
-            <!-- Button trigger modal -->
 
+
+            <!-- Button trigger modal -->
             <button type="button" class="more_attr btn btn-primary btn-sm w-100 rounded" data-toggle="modal"
-                data-target="#exampleModal">
+                data-target="#add_checklist">
                 + Add Attribute
             </button>
 
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="add_checklist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -203,10 +197,12 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        <div class="action-bar d-flex justify-content-end">
-            <a href="{% url 'all_complaints' %}" class="btn btn-success my-2 "> Finish =></a>
+    </div>
+    <div class="" style="position:relative; bottom:3.5rem;">
+        <hr class="my-1">
+        <div class="action-bar d-flex justify-content-end mx-2">
+            <a href="{% url 'all_complaints' %}" class="btn btn-success my-1"> Finish -></a>
         </div>
     </div>
 

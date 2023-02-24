@@ -9,76 +9,95 @@
     }
 </style>
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-white">
+<nav aria-label="breadcrumb ">
+    <ol class="breadcrumb bg-white shadow-sm">
         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{% url 'all_complaints' %}">All Complaints</a></li>
         <li class="breadcrumb-item"><a href="{% url 'view_complaint' complaint.id %}">View Complaint</a></li>
         <li class="breadcrumb-item active" aria-current="page">Update Complaint</li>
     </ol>
 </nav>
-<div class="card">
+
+<div class="card p-0 shadow-sm">
     {% include 'home/partials/_message.html' %}
-    <div class="card-header pb-0 my-0">
-        <h3 class="text-secondary bg-light px-2 py-1 btn-block rounded"> Update Complaint </h3>
-        <!-- <hr class="my-1">     -->
+
+    <div class="card-header pb-0 my-0 px-0">
+        <h3 class="text-secondary  px-2 py-1 ml-3 " > New Complaint </h3>
+        <hr class="my-1">    
     </div>
-        <style>
-            .form-control {
-                /* margin-top: .5rem; */
-                margin-bottom: .5rem;
-            }
-        </style>
-        <div class="card-body  mt-0 pb-2 mt-0 pt-0 mx-2">
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-sm-6 border-1 px-1">
-                        <div class="border rounded">
-                            <h4 class="text-secondary bg-light py-2 px-1">Customer Info</h4>
-                            <div class="form-container px-3 pb-2 bg-white w-100">
-                                {{complaint_register_form.customer_name.label_tag}}
-                                {{complaint_register_form.customer_name}}
-                                {{complaint_register_form.customer_mob.label_tag}}
-                                {{complaint_register_form.customer_mob}}
-                                {{complaint_register_form.customer_email.label_tag}}
-                                {{complaint_register_form.customer_email}}
-                                {{complaint_register_form.customer_address.label_tag}}
-                                {{complaint_register_form.customer_address}}
+    
+    <div class="card-body  mt-0 pb-2" >
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6 border-1 px-1" >
+                    <div class="border rounded">
+                        <h4 class = "text-secondary ml-3 my-2 py-1" >Customer Info</h4>
+                        <hr class="my-1">    
+                        <div class="form-container mx-3 my-3">
+                            {{complaint_register_form.customer_name.label_tag}}
+                            {{complaint_register_form.customer_name}}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{complaint_register_form.customer_mob.label_tag}}
+                                    {{complaint_register_form.customer_mob}}
+                                </div>
+                                <div class="col-md-6">
+                                    {{complaint_register_form.customer_email.label_tag}}
+                                    {{complaint_register_form.customer_email}}
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-6 border-1 px-1">
-                        <div class="border rounded">
-                            <h4 class="text-secondary bg-light py-2 px-1">Product Info</h4>
-                            <div class="form-container px-3 pb-2 bg-white w-100">
-                                <label for="category">Category</label>
-                                <select name="category" id="category" class="form-control form-control-sm w-50">
-                                        <!-- category goes here -->
-                                </select>
-                                {{complaint_register_form.brand.label_tag}}
-                                {{complaint_register_form.brand}}
-                                {{complaint_register_form.model_no.label_tag}}
-                                {{complaint_register_form.model_no}}
-                                {{complaint_register_form.serial_no.label_tag}}
-                                {{complaint_register_form.serial_no}}
-                                {{complaint_register_form.physical_condition.label_tag}}
-                                {{complaint_register_form.physical_condition}}
-                                {{complaint_register_form.problem.label_tag}}
-                                {{complaint_register_form.problem}}
-                            </div>
+                            {{complaint_register_form.customer_address.label_tag}}
+                            {{complaint_register_form.customer_address}}
                         </div>
                     </div>
                 </div>
+
+
+                <div class="col-sm-6 border-1 px-1" >
+                    <div class="border rounded">
+                        <h4 class = "text-secondary ml-3 my-2 py-1" >Product Info</h4>
+                        <hr class="my-1">    
+                        <div class="form-container mx-3 my-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="category">Category</label>
+                                    <select name="category" id="category" class="form-control form-control-sm rounded-2">
+                                        <!-- category goes here -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    {{complaint_register_form.brand.label_tag}}
+                                    {{complaint_register_form.brand}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{complaint_register_form.model_no.label_tag}}
+                                    {{complaint_register_form.model_no}}
+                                </div>
+                                <div class="col-md-6">
+                                    {{complaint_register_form.physical_condition.label_tag}}
+                                    {{complaint_register_form.physical_condition}}
+                                </div>
+                            </div>
+                            {{complaint_register_form.serial_no.label_tag}}
+                            {{complaint_register_form.serial_no}}
+                            {{complaint_register_form.details.label_tag}}
+                            {{complaint_register_form.details}}
+                            {{complaint_register_form.problem.label_tag}}
+                            {{complaint_register_form.problem}}
+                        </div>
+                    </div>
+                </div>  
+                </div>
                 <!-- {{complaint_register_form}} -->
-                <div class="submit-btn border-top mt-4 py-0 d-flex py-2 align-items-center justify-content-end">
+                <div class="submit-btn mt-2 py-0 d-flex py-2 align-items-center justify-content-end">
                     <div class="chk">
-                        <a href = "{% url 'add_checklist' complaint.id %}" class= "btn btn-primary">Update Checklist</a>
+                        <a href = "{% url 'add_checklist' complaint.id %}" class= "btn btn-primary">Manage Checklist -></a>
                     </div>
                     <div class="btn-container col-sm-2 float-right  mr-0 pr-0" style="min-width:10rem;">
-                        <button type="submit" class="btn btn-success btn-block"> Done</button>
+                        <button type="submit" class="btn btn-success btn-block"><i class="fa-solid fa-floppy-disk"></i> Save</button>
                     </div>
                 </div>
             </form>
@@ -87,12 +106,12 @@
     <script>
         let cat = document.getElementById('category');
         catrgories = {{categories|safe}};
-    
+        let sel_cat = '{{complaint.category}}'
         str = `<option value="null">Select Category</option>`;
         if(catrgories.length>0){
             catrgories.forEach((e) => {
                 str+=`
-                <option value="${e.toLowerCase()}" ${e.toLowerCase()=='{{complaint.category}}' ? `selected`:``} >${e}</option>
+                <option value="${e.toLowerCase()}" ${e.toLowerCase()==sel_cat.toLocaleLowerCase() ? `selected`:``} >${e}</option>
                 `
             });
             cat.innerHTML = str;

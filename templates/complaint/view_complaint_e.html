@@ -34,14 +34,14 @@
 <div class="card flex-fill shadow-sm">
 
         <div class="card-body">
-                <div class="titlebar row bg-light ">
-                        <div class="col-sm-9 left d-flex bg-light mb-1   align-items-center rounded flex-wrap  mx-0">
+                <div class="titlebar row bg-light px-0  mx-0 rounded" style="justify-content: space-between;">
+                        <div class="col-sm-9 left d-flex bg-light mb-1 align-items-center rounded flex-wrap ">
                                 <h3 class="pl-2 my-2 px-2 text-secondary rounded"> Complaint ID #{{complaint.id}}</h3>
                                 <span class="badge mx-2" id="status_badge"
                                 style="font-size: .9rem;">{{complaint.complaint_status}}</span>
                                 <!-- <h3 class="px-2 py-2 text-right bg-white my-2 text-secondary w-25 ">Status: </h3> -->
                         </div>
-                        <div class="right col-sm-2 my-auto" style="min-width: 10rem; max-width: 12rem; position: relative; ">
+                        <div class="right col-sm-3  my-auto d-flex justify-content-end" style="min-width: 10rem; max-width: 12rem; ">
                                 <a href="{% url 'user_comment' complaint.id %}" class="btn btn-secondary"><i
                                         class="bi bi-chat-square"></i> Comment({{comment_count}})</a>
                         </div>
@@ -60,15 +60,10 @@
                 <div class="complaint_details_container row justify-content-between px-1 text-dark"
                         style="flex-wrap:wrap;">
                         <div class="container-left col-sm-5 rounded px-2" style=" height: fit-content; ">
-                                <!-- <h5 class="bg-light p-1 pl-2 rounded my-1"> ComStatus</h5> -->
-
-                                <!-- <hr class="my-0"> -->
-
-
                                 <div class="control_bar  bg-light  mt-2 py-2 align-items-center mx-auto  rounded mb-3"
                                         style=" width: 95%; border: 1px solid rgb(235, 234, 234); ">
                                         <h5 class="text-center" style="text-decoration:underline rgb(203, 203, 203);">
-                                                <strong>Complaint Status</strong></h5>
+                                                <strong class="text-dark">Complaint Status</strong></h5>
 
                                         {% if complaint.complaint_status > 4 or complaint.complaint_status < 2 %} <h3
                                                 class="text-center text-secondary bg-white py-3 mx-4 rounded "><i
@@ -123,7 +118,7 @@
                                 </div>
                         </div>
 
-                        <div class="container-right bg-white col-sm-6 mr-2 p-1 border rounded ">
+                        <div class="container-right bg-white col-sm-6 mr-2 p-1 mt-2 border rounded ">
                                 <h5 class="my-1 p-1 pl-2">Product Details</h5>
                                 <hr class="m-0">
                                 <div class="contents px-2  py-2 ">
@@ -152,6 +147,12 @@
                                                                 <td class="text-secondary">Physical Condition</td>
                                                                 <td>{{complaint.physical_condition}}</td>
                                                         </tr>
+                                                        {% if complaint.details %}
+                                                                <tr>
+                                                                        <td class="text-secondary">Other Details</td>
+                                                                        <td>{{complaint.details}}</td>
+                                                                </tr>
+                                                        {% endif %}
                                                         {% if complaint.updated_by %}
                                                         <tr>
                                                                 <td class="text-secondary ">Updated</td>

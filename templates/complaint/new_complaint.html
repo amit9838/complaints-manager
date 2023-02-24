@@ -10,60 +10,81 @@
     }
 </style>
 
-<div class="card">
+<div class="card p-0 shadow-sm">
     {% include 'home/partials/_message.html' %}
 
-    <div class="card-header pb-0 my-0">
-        <h3 class="text-secondary  px-2 py-1 " > New Complaint </h3>
-        <!-- <hr class="my-1">     -->
+    <div class="card-header pb-0 my-0 px-0">
+        <h3 class="text-secondary  px-2 py-1 ml-3 " > New Complaint </h3>
+        <hr class="my-1">    
     </div>
-
+    
     <div class="card-body  mt-0 pb-2" >
         <form action="" method="post">
             {% csrf_token %}
             <div class="row">
                 <div class="col-sm-6 border-1 px-1" >
                     <div class="border rounded">
-                        <h4 class = "text-secondary bg-light py-2 px-1">Customer Info</h4>
-                        <div class="form-container px-3 pb-2 bg-white w-100">
+                        <h4 class = "text-secondary ml-3 my-2 py-1" >Customer Info</h4>
+                        <hr class="my-1">    
+                        <div class="form-container mx-3 my-3">
                             {{complaint_register_form.customer_name.label_tag}}
                             {{complaint_register_form.customer_name}}
-                            {{complaint_register_form.customer_mob.label_tag}}
-                            {{complaint_register_form.customer_mob}}
-                            {{complaint_register_form.customer_email.label_tag}}
-                            {{complaint_register_form.customer_email}}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{complaint_register_form.customer_mob.label_tag}}
+                                    {{complaint_register_form.customer_mob}}
+                                </div>
+                                <div class="col-md-6">
+                                    {{complaint_register_form.customer_email.label_tag}}
+                                    {{complaint_register_form.customer_email}}
+                                </div>
+                            </div>
                             {{complaint_register_form.customer_address.label_tag}}
                             {{complaint_register_form.customer_address}}
                         </div>
                     </div>
                 </div>
 
-
+                
                 <div class="col-sm-6 border-1 px-1" >
                     <div class="border rounded">
-                        <h4 class = "text-secondary bg-light py-2 px-1">Product Info</h4>
-                        <div class="form-container px-3 pb-2 bg-white w-100">
-                            <label for="category">Category</label>
-                            <select name="category" id="category" class="form-control form-control-sm w-50">
-                                    <!-- category goes here -->
-                            </select>
-                            {{complaint_register_form.brand.label_tag}}
-                            {{complaint_register_form.brand}}
-                            {{complaint_register_form.model_no.label_tag}}
-                            {{complaint_register_form.model_no}}
+                        <h4 class = "text-secondary ml-3 my-2 py-1" >Product Info</h4>
+                        <hr class="my-1">    
+                        <div class="form-container mx-3 my-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="category">Category</label>
+                                    <select name="category" id="category" class="form-control form-control-sm rounded-2">
+                                        <!-- category goes here -->
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    {{complaint_register_form.brand.label_tag}}
+                                    {{complaint_register_form.brand}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{complaint_register_form.model_no.label_tag}}
+                                    {{complaint_register_form.model_no}}
+                                </div>
+                                <div class="col-md-6">
+                                    {{complaint_register_form.physical_condition.label_tag}}
+                                    {{complaint_register_form.physical_condition}}
+                                </div>
+                            </div>
                             {{complaint_register_form.serial_no.label_tag}}
                             {{complaint_register_form.serial_no}}
-                            {{complaint_register_form.physical_condition.label_tag}}
-                            {{complaint_register_form.physical_condition}}
+                            {{complaint_register_form.details.label_tag}}
+                            {{complaint_register_form.details}}
                             {{complaint_register_form.problem.label_tag}}
                             {{complaint_register_form.problem}}
                         </div>
                     </div>
                 </div>  
-                
             </div>
             <!-- {{complaint_register_form}} -->
-            <div class="submit-btn border-top mt-4 py-0">
+            <div class="submit-btn mt-2 py-0">
                 <div class="btn-container col-sm-2 float-right mt-2 mr-0 pr-0" style="min-width:10rem;">
                     <button type="submit" class="btn btn-primary btn-block"> Next</button>
                 </div>

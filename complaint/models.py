@@ -67,7 +67,8 @@ class Complaint(models.Model):
     model_no = models.CharField(max_length=256,null=True, blank=True)
     serial_no = models.CharField(max_length=128, null=True,  blank=True)
     physical_condition = models.CharField(max_length=2048 ,null=True, blank=True)
-    problem = models.CharField(max_length=5000)
+    problem = models.CharField(max_length=5000,blank=True)
+    details = models.CharField(max_length=5000,blank=True)
 
 
 

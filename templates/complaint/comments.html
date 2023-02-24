@@ -42,31 +42,39 @@
 
     @media screen and (max-width:760px) {
         .comment_header_left {
-            display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            align-items: start;
         }
     }
 </style>
 
 <div class="card shadow-sm">
-    <div class="card-header  border bg-light ">
-        <h4 class="my-auto">{{complaint}}</h4>
+    <div class="header my-2  ml-3">
+        <h4 class="my-auto text-secondary">#{{complaint}}</h4>
     </div>
+    <hr class="my-1"> 
     <div class="card-body">
         {% for comment in comments %}
 
         <div class="card shadow-none bg-light py-0 mb-3 border  mx-auto rounded ">
             {% if comment.user == request.user %}
             <div class="card-header py-1 px-1 d-flex justify-content-between"
-                style="background-color:rgb(203, 216, 234);">
-                {% else %}
+                style="background-color:rgb(225, 229, 238);">
+            {% else %}
                 <div class="card-header bg-light py-1 px-1 d-flex justify-content-between">
-                    {% endif %}
+            {% endif %}
                     <!-- <img src="https://via.placeholder.com/50x50" class="rounded-circle mr-2" alt="User Image"> -->
                     <span class="comment_header_left">
+
+                        {% if comment.user == request.user %}
+                        <span>
+                            <strong >{{comment.user.get_full_name}}</strong>
+                            <span class="text-secondary">(You)</span>
+                        </span>
+                        {% else %}
                         <strong>{{comment.user.get_full_name}} </strong>
+                        {% endif %}
+
                         <small class="ml-2">Posted:{{comment.date_added|date:' M-d-Y'}}</small>
                     </span>
                     <div class="d-flex">
@@ -104,7 +112,7 @@
                                             {% csrf_token %}
                                             <div class="mb-2 mx-1">
                                                 <label for="exampleFormControlTextarea1" class="form-label">
-                                                    Old Comment</label>
+                                                    Update Comment</label>
                                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
                                                     name="message">{{comment.user_comment}}</textarea>
                                             </div>

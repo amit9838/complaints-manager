@@ -276,7 +276,7 @@ def view_complaint_engg(request,pk):
             check_list = CheckList.objects.filter(complaint = complaint)
             comment_count = Comment.objects.filter(complaint=complaint).count
 
-            print(complaint.complaint_status)
+            # print(complaint.complaint_status)
             context = {
                 'components':component_list,
                 'check_list':check_list,
@@ -411,7 +411,7 @@ def add_component(request,pk_cmp):
         # print(pk_cmp)
         # print(vars(complaint_item))
         pk_pro = request.POST['pk_pro']
-        print(pk_pro)
+        # print(pk_pro)
         product = Product.objects.get(id = pk_pro)
         # print(product)
         is_listed_pro1 = ""
