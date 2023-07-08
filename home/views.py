@@ -9,7 +9,7 @@ from django. contrib.auth. decorators import login_required
 from django.db.models import Count
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import JsonResponse
 import datetime
 import requests
 
@@ -172,6 +172,8 @@ from decouple import config
 def OTP_verification(request,pk):
     complaint = Complaint.objects.get(id=pk)
     all_otps = ComplaintOTP.objects.filter(complaint = complaint)
+    number = "+91"+str(complaint.customer_mob)
+
     if request.method == 'GET':
         expires_in= 30  #calculate time in minutes
         otp = random.randint(1001,9999)
@@ -183,9 +185,11 @@ def OTP_verification(request,pk):
             otp_obj.otp = str(otp)
             otp_obj.expires_at = expiry_time
             otp_obj.save()
-
+            response_code = sendSMS(number,otp)
+            if response_code == 200:
+                print("otp sent successfully :", otp)
+                return JsonResponse({"message":"otp sent successfully!", "statuss":"success"},safe=False)
         else:
-            number = "+917800812931"
             print("otp sending")
             response_code = sendSMS(number,otp)
             if response_code == 200:

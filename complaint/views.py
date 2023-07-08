@@ -74,7 +74,8 @@ def update_complaint(request,pk):
                 return render(request, 'complaint/update_complaint.html',context) 
             if request.method == "POST":
                 form = ComplaintRegisterForm(request.POST, instance=complaint)
-                form.fields['customer_mob'].disabled = True
+                if not request.user.is_superuser:
+                    form.fields['customer_mob'].disabled = True
                 if form.is_valid():
                     form.save()
                     messages.success(request, 'Complaint has been successfully updated.')
