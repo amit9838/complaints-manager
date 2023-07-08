@@ -83,6 +83,20 @@
     </form>
 </div>
 
+<script>
+    let cat = document.getElementById('category');
+    catrgories = {{categories|safe}};
+
+    str = `<option value="null">Select Category</option>`;
+    if(catrgories.length>0){
+        catrgories.forEach(e => {
+            str+=`
+            <option value="${e.toLowerCase()}">${e}</option>
+            `
+        });
+        cat.innerHTML = str;
+    }
+</script>
 
 {% endblock body_content %}
 

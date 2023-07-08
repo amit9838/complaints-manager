@@ -56,7 +56,6 @@ def update_complaint(request,pk):
             if not request.user.is_superuser:
                 form.fields['customer_mob'].disabled = True
             context = {
-                    
                     'complaint_register_form':form,
                     'complaint':complaint
                 }
@@ -361,6 +360,7 @@ def reset_complaint_progress(request,pk):
         complaint.resolved_date = None
         complaint.closed_by = None
         complaint.closed_date = None
+        complaint.is_verified = False
         complaint.updated_by = request.user
         complaint.updated_date = datetime.datetime.now()
         complaint.save()
@@ -408,12 +408,8 @@ def list_components(request,pk):
 def add_component(request,pk_cmp):
     if request.method == "POST":
         complaint_item =  Complaint.objects.get(id=pk_cmp)
-        # print(pk_cmp)
-        # print(vars(complaint_item))
         pk_pro = request.POST['pk_pro']
-        # print(pk_pro)
         product = Product.objects.get(id = pk_pro)
-        # print(product)
         is_listed_pro1 = ""
         try:
             is_listed_pro1 = Item.objects.filter(product = product,complaint = complaint_item)

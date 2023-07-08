@@ -113,22 +113,22 @@ class AddComponentForm_manual(ModelForm):
     )
     brand = forms.CharField(
         label="Brand",
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={'class':'form-control form-control-sm','type':'text','placeholder':''})
     )
     desc = forms.CharField(
         label="Description",
-        required=False,
+        required=True,
         widget=forms.Textarea(attrs={'class':'form-control form-control-sm','type':'text','placeholder':'','rows':5})
     )
     category = forms.CharField(
         label="Category",
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={'class':'form-control form-control-sm','type':'text','placeholder':''})
     )
     warrenty = forms.CharField(
         label='Warrenty (in months)',
-        required=False,
+        required=True,
         widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
     )
     quantity = forms.CharField(
@@ -137,12 +137,12 @@ class AddComponentForm_manual(ModelForm):
     )
     unit_price = forms.CharField(
         label='Unit Price',
-        required=False,
+        required=True,
         widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':''})
     )
     tax = forms.CharField(
         label='Tax',
-        required=False,
+        required=True,
         widget=forms.NumberInput(attrs={'class':'form-control form-control-sm', 'type':'number','placeholder':'Skip if not applicable'})
     )
 
